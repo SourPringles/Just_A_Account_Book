@@ -1,14 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LinkPage extends StatefulWidget {
+  const LinkPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LinkPage> createState() => _LinkPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LinkPageState extends State<LinkPage> {
   final _key = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwdController = TextEditingController();
@@ -28,13 +28,8 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 15),
                 passwordInput(),
                 const SizedBox(height: 15),
-                loginButton(),
+                submitButton(),
                 const SizedBox(height: 15),
-                TextButton(
-                  onPressed: () => Navigator.pushNamed(context, '/signup'),
-                  child: const Text("Sign Up"),
-                ),
-                temporaryLoginButton(),
               ],
             ),
           ),
@@ -84,49 +79,38 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  ElevatedButton loginButton() {
+  ElevatedButton submitButton() {
     return ElevatedButton(
       onPressed: () async {
         if (_key.currentState!.validate()) {
           // 여기에 작성
           try {
-            await FirebaseAuth.instance
-                .signInWithEmailAndPassword(
-                  email: _emailController.text,
-                  password: _pwdController.text,
-                )
-                .then((_) => Navigator.pushNamed(context, "/"));
+            final credential = EmailAuthProvider.credential(
+              email: _emailController.text,
+              password: _pwdController.text,
+            );
+            await FirebaseAuth.instance.currentUser?.linkWithCredential(
+              credential,
+            );
+            Navigator.pushNamed(context, "/");
           } on FirebaseAuthException catch (e) {
-            if (e.code == 'user-not-found') {
-              debugPrint('No user found for that email.');
-            } else if (e.code == 'wrong-password') {
-              debugPrint('Wrong password provided for that user.');
+            if (e.code == 'weak-password') {
+              print('The password provided is too weak.');
+            } else if (e.code == 'email-already-in-use') {
+              print('The account already exists for that email.');
+            } else if (e.code == 'provider-already-linked') {
+              print('The provider has already been linked to the user.');
+            } else if (e.code == 'invalid-credential') {
+              print('The provider\'s credential is not valid.');
             }
+          } catch (e) {
+            print(e.toString());
           }
         }
       },
       child: Container(
         padding: const EdgeInsets.all(15),
-        child: const Text("Login", style: TextStyle(fontSize: 18)),
-      ),
-    );
-  }
-
-  ElevatedButton temporaryLoginButton() {
-    return ElevatedButton(
-      onPressed: () async {
-        // 익명 로그인은 폼 검증이 필요하지 않음
-        try {
-          await FirebaseAuth.instance.signInAnonymously().then(
-            (_) => Navigator.pushNamed(context, "/"),
-          );
-        } on FirebaseAuthException catch (e) {
-          debugPrint(e.toString());
-        }
-      },
-      child: Container(
-        padding: const EdgeInsets.all(15),
-        child: const Text("temporary login", style: TextStyle(fontSize: 18)),
+        child: const Text("Sign Up", style: TextStyle(fontSize: 18)),
       ),
     );
   }

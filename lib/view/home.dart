@@ -118,7 +118,18 @@ class _HomePageState extends State<HomePage> {
       case 0:
         return SingleChildScrollView(
           padding: const EdgeInsets.all(16),
-          child: Column(children: [CalendarWidget()]),
+          child: Column(
+            children: [
+              CalendarWidget(
+                initialSelectedDate: _selectedDate,
+                onDateSelected: (date) {
+                  setState(() {
+                    _selectedDate = date;
+                  });
+                },
+              ),
+            ],
+          ),
         );
       case 1:
         return Column(
@@ -235,7 +246,7 @@ class _HomePageState extends State<HomePage> {
     final result = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return const AddTransactionDialog();
+        return AddTransactionDialog(initialDate: _selectedDate);
       },
     );
 

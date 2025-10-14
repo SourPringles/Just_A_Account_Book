@@ -5,7 +5,9 @@ import '../../services/transaction_service.dart';
 import '../../models/transaction_model.dart';
 
 class AddTransactionDialog extends StatefulWidget {
-  const AddTransactionDialog({super.key});
+  final DateTime? initialDate;
+
+  const AddTransactionDialog({super.key, this.initialDate});
 
   @override
   State<AddTransactionDialog> createState() => _AddTransactionDialogState();
@@ -18,7 +20,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
 
   TransactionType _selectedType = TransactionType.expense;
   String _selectedCategory = '';
-  DateTime _selectedDate = DateTime.now();
+  late DateTime _selectedDate;
 
   // 카테고리 목록
   final Map<TransactionType, List<String>> _categories = {
@@ -29,6 +31,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
   @override
   void initState() {
     super.initState();
+    _selectedDate = widget.initialDate ?? DateTime.now();
     _selectedCategory = _categories[_selectedType]!.first;
   }
 

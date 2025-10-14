@@ -9,16 +9,30 @@ int weeklyTotal = 00000;
 int monthlyTotal = 00000;
 
 class CalendarWidget extends StatefulWidget {
-  const CalendarWidget({super.key});
+  final DateTime? initialSelectedDate;
+  final Function(DateTime)? onDateSelected;
+
+  const CalendarWidget({
+    super.key,
+    this.initialSelectedDate,
+    this.onDateSelected,
+  });
 
   @override
   State<CalendarWidget> createState() => _CalendarWidgetState();
 }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
-  DateTime _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
+  late DateTime _selectedDay;
+  late DateTime _focusedDay;
   CalendarFormat _calendarFormat = CalendarFormat.month;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDay = widget.initialSelectedDate ?? DateTime.now();
+    _focusedDay = widget.initialSelectedDate ?? DateTime.now();
+  }
 
   // 기본 날짜 셀 디자인 생성 함수
   Widget _buildDefaultCell(DateTime date) {
@@ -103,6 +117,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               _selectedDay = selectedDay;
               _focusedDay = focusedDay; // update `_focusedDay` here as well
             });
+            // 선택된 날짜를 부모 위젯에 알림
+            widget.onDateSelected?.call(selectedDay);
           },
           onFormatChanged: (format) {
             if (mounted) {

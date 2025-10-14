@@ -48,7 +48,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   @override
   void didUpdateWidget(CalendarWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
+
     // refreshTrigger가 변경되면 데이터 리로드
     if (widget.refreshTrigger != oldWidget.refreshTrigger) {
       _loadMonthlyData(forceReload: true);
@@ -62,7 +62,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
     // 현재 월과 같으면 다시 로드하지 않음 (강제 리로드가 아닌 경우)
     final monthKey = DateFormat('yyyy-MM').format(_focusedDay);
-    if (!forceReload && _currentMonthKey == monthKey && _dailyTotals.isNotEmpty) {
+    if (!forceReload &&
+        _currentMonthKey == monthKey &&
+        _dailyTotals.isNotEmpty) {
       return;
     }
 

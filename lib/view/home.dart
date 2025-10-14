@@ -26,6 +26,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   DateTime _selectedDate = DateTime.now();
   int _currentIndex = 0;
+  int _refreshTrigger = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +123,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               CalendarWidget(
                 initialSelectedDate: _selectedDate,
+                refreshTrigger: _refreshTrigger,
                 onDateSelected: (date) {
                   setState(() {
                     _selectedDate = date;
@@ -253,7 +255,8 @@ class _HomePageState extends State<HomePage> {
     // 거래가 성공적으로 추가되면 화면을 새로고침
     if (result == true) {
       setState(() {
-        // 상태를 업데이트하여 StreamBuilder가 다시 빌드되도록 함
+        // 캘린더 새로고침 트리거
+        _refreshTrigger++;
       });
     }
   }

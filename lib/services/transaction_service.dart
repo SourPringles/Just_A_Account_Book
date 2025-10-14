@@ -133,6 +133,36 @@ class TransactionService {
         );
   }
 
+  // 특정 월의 거래 내역 가져오기 (Future 버전 - 캘린더용)
+  static Future<List<TransactionModel>> getMonthlyTransactionsFuture({
+    required String userId,
+    required DateTime month,
+  }) async {
+    try {
+      final startOfMonth = DateTime(month.year, month.month, 1);
+      final endOfMonth = DateTime(month.year, month.month + 1, 0, 23, 59, 59);
+
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('transactions')
+          .where(
+            'date',
+            isGreaterThanOrEqualTo: Timestamp.fromDate(startOfMonth),
+          )
+          .where('date', isLessThanOrEqualTo: Timestamp.fromDate(endOfMonth))
+          .orderBy('date', descending: true)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => TransactionModel.fromFirestore(doc))
+          .toList();
+    } catch (e) {
+      print('Error getting monthly transactions: $e');
+      return [];
+    }
+  }
+
   // 특정 카테고리의 거래 내역 가져오기
   static Stream<List<TransactionModel>> getTransactionsByCategory({
     required String userId,

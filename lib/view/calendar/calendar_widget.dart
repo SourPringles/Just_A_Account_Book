@@ -1,6 +1,10 @@
 import 'package:financial_manage_app_project/view/calendar/sum_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
+import '../../services/transaction_service.dart';
+import '../../models/transaction_model.dart';
 
 // TEST VALUE
 int monthIncome = 00000;
@@ -11,11 +15,13 @@ int monthlyTotal = 00000;
 class CalendarWidget extends StatefulWidget {
   final DateTime? initialSelectedDate;
   final Function(DateTime)? onDateSelected;
+  final int? refreshTrigger; // 새로고침을 위한 트리거
 
   const CalendarWidget({
     super.key,
     this.initialSelectedDate,
     this.onDateSelected,
+    this.refreshTrigger,
   });
 
   @override
@@ -27,11 +33,89 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   late DateTime _focusedDay;
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
+  // 날짜별 거래 데이터 캐시 (날짜 -> {income: double, expense: double})
+  Map<String, Map<String, double>> _dailyTotals = {};
+  String _currentMonthKey = '';
+
   @override
   void initState() {
     super.initState();
     _selectedDay = widget.initialSelectedDate ?? DateTime.now();
     _focusedDay = widget.initialSelectedDate ?? DateTime.now();
+    _loadMonthlyData();
+  }
+
+  @override
+  void didUpdateWidget(CalendarWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    
+    // refreshTrigger가 변경되면 데이터 리로드
+    if (widget.refreshTrigger != oldWidget.refreshTrigger) {
+      _loadMonthlyData(forceReload: true);
+    }
+  }
+
+  // 현재 표시 중인 달의 거래 데이터를 로드
+  Future<void> _loadMonthlyData({bool forceReload = false}) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    // 현재 월과 같으면 다시 로드하지 않음 (강제 리로드가 아닌 경우)
+    final monthKey = DateFormat('yyyy-MM').format(_focusedDay);
+    if (!forceReload && _currentMonthKey == monthKey && _dailyTotals.isNotEmpty) {
+      return;
+    }
+
+    if (mounted) {
+      setState(() {
+        _currentMonthKey = monthKey;
+      });
+    }
+
+    try {
+      final transactions =
+          await TransactionService.getMonthlyTransactionsFuture(
+            userId: user.uid,
+            month: _focusedDay,
+          );
+
+      final Map<String, Map<String, double>> newTotals = {};
+
+      for (final transaction in transactions) {
+        final dateKey = DateFormat('yyyy-MM-dd').format(transaction.date);
+
+        if (!newTotals.containsKey(dateKey)) {
+          newTotals[dateKey] = {'income': 0, 'expense': 0};
+        }
+
+        if (transaction.type == TransactionType.income) {
+          newTotals[dateKey]!['income'] =
+              (newTotals[dateKey]!['income'] ?? 0) + transaction.amount;
+        } else {
+          newTotals[dateKey]!['expense'] =
+              (newTotals[dateKey]!['expense'] ?? 0) + transaction.amount;
+        }
+      }
+
+      if (mounted) {
+        setState(() {
+          _dailyTotals = newTotals;
+        });
+      }
+    } catch (e) {
+      print('Error loading monthly data: $e');
+    }
+  }
+
+  // 특정 날짜의 수입/지출 합계 가져오기
+  Map<String, double> _getDailyTotals(DateTime date) {
+    final dateKey = DateFormat('yyyy-MM-dd').format(date);
+    return _dailyTotals[dateKey] ?? {'income': 0, 'expense': 0};
+  }
+
+  // 외부에서 데이터를 강제로 리로드할 수 있는 메서드
+  void refreshData() {
+    _loadMonthlyData(forceReload: true);
   }
 
   // 기본 날짜 셀 디자인 생성 함수
@@ -42,6 +126,23 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       dateTextColor = Colors.red;
     } else if (date.weekday == DateTime.saturday) {
       dateTextColor = Colors.blue;
+    }
+
+    // 해당 날짜의 거래 데이터 가져오기
+    final dailyTotals = _getDailyTotals(date);
+    final income = dailyTotals['income'] ?? 0;
+    final expense = dailyTotals['expense'] ?? 0;
+
+    // 금액을 간단한 형태로 포맷 (천원 단위)
+    String formatAmount(double amount) {
+      if (amount == 0) return '';
+      if (amount >= 10000) {
+        return '${NumberFormat('#.#').format(amount / 10000)}만';
+      } else if (amount >= 1000) {
+        return '${(amount / 1000).toInt()}천';
+      } else {
+        return amount.toInt().toString();
+      }
     }
 
     return Container(
@@ -66,23 +167,33 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               ),
             ),
           ),
-          // 텍스트 영역 (두 줄)
+          // 거래 금액 영역 (수입/지출)
           Expanded(
             child: Container(
               margin: const EdgeInsets.all(2.0),
               padding: const EdgeInsets.all(4.0),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // 수입 (초록색)
                   Text(
-                    '+00000',
-                    style: TextStyle(fontSize: 12, color: Colors.red),
+                    income > 0 ? '+${formatAmount(income)}' : '',
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.green,
+                      fontWeight: FontWeight.w500,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
+                  // 지출 (빨간색)
                   Text(
-                    '-00000',
-                    style: TextStyle(fontSize: 12, color: Colors.blue),
+                    expense > 0 ? '-${formatAmount(expense)}' : '',
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.red,
+                      fontWeight: FontWeight.w500,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -132,6 +243,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               setState(() {
                 _focusedDay = focusedDay;
               });
+              // 월이 변경되면 새로운 거래 데이터 로드
+              _loadMonthlyData();
             }
           },
           calendarStyle: const CalendarStyle(

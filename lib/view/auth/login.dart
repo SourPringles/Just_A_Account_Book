@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -88,19 +89,25 @@ class _LoginPageState extends State<LoginPage> {
     return ElevatedButton(
       onPressed: () async {
         if (_key.currentState!.validate()) {
-          // 여기에 작성
           try {
-            await FirebaseAuth.instance
-                .signInWithEmailAndPassword(
-                  email: _emailController.text,
-                  password: _pwdController.text,
-                )
-                .then((_) => Navigator.pushNamed(context, "/"));
+            await AuthService.signInWithEmailPassword(
+              email: _emailController.text,
+              password: _pwdController.text,
+            );
+            if (mounted) {
+              Navigator.pushNamed(context, "/");
+            }
           } on FirebaseAuthException catch (e) {
+            String message = 'An error occurred';
             if (e.code == 'user-not-found') {
-              debugPrint('No user found for that email.');
+              message = 'No user found for that email.';
             } else if (e.code == 'wrong-password') {
-              debugPrint('Wrong password provided for that user.');
+              message = 'Wrong password provided for that user.';
+            }
+            if (mounted) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(message)));
             }
           }
         }
@@ -115,13 +122,17 @@ class _LoginPageState extends State<LoginPage> {
   ElevatedButton temporaryLoginButton() {
     return ElevatedButton(
       onPressed: () async {
-        // 익명 로그인은 폼 검증이 필요하지 않음
         try {
-          await FirebaseAuth.instance.signInAnonymously().then(
-            (_) => Navigator.pushNamed(context, "/"),
-          );
+          await AuthService.signInAnonymously();
+          if (mounted) {
+            Navigator.pushNamed(context, "/");
+          }
         } on FirebaseAuthException catch (e) {
-          debugPrint(e.toString());
+          if (mounted) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
+          }
         }
       },
       child: Container(

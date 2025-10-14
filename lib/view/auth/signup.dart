@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../services/auth_service.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -10,6 +11,7 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _key = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwdController = TextEditingController();
   @override
@@ -24,6 +26,8 @@ class _SignupPageState extends State<SignupPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                nameInput(),
+                const SizedBox(height: 15),
                 emailInput(),
                 const SizedBox(height: 15),
                 passwordInput(),
@@ -38,10 +42,29 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
+  TextFormField nameInput() {
+    return TextFormField(
+      controller: _nameController,
+      autofocus: true,
+      validator: (val) {
+        if (val!.isEmpty) {
+          return 'The input is empty.';
+        } else {
+          return null;
+        }
+      },
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: 'Input your name.',
+        labelText: 'Name',
+        labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
   TextFormField emailInput() {
     return TextFormField(
       controller: _emailController,
-      autofocus: true,
       validator: (val) {
         if (val!.isEmpty) {
           return 'The input is empty.';
@@ -83,22 +106,33 @@ class _SignupPageState extends State<SignupPage> {
     return ElevatedButton(
       onPressed: () async {
         if (_key.currentState!.validate()) {
-          // 여기에 작성
           try {
-            final credential = await FirebaseAuth.instance
-                .createUserWithEmailAndPassword(
-                  email: _emailController.text,
-                  password: _pwdController.text,
-                )
-                .then((_) => Navigator.pushNamed(context, "/"));
+            await AuthService.signUpWithEmailPassword(
+              email: _emailController.text,
+              password: _pwdController.text,
+              name: _nameController.text,
+            );
+            if (mounted) {
+              Navigator.pushNamed(context, "/");
+            }
           } on FirebaseAuthException catch (e) {
+            String message = 'An error occurred';
             if (e.code == 'weak-password') {
-              print('The password provided is too weak.');
+              message = 'The password provided is too weak.';
             } else if (e.code == 'email-already-in-use') {
-              print('The account already exists for that email.');
+              message = 'The account already exists for that email.';
+            }
+            if (mounted) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(message)));
             }
           } catch (e) {
-            print(e.toString());
+            if (mounted) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
+            }
           }
         }
       },

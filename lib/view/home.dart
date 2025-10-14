@@ -1,7 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'auth/login.dart';
-import 'auth/link.dart';
 import 'package:flutter/material.dart';
+
+import '../services/auth_service.dart';
+import 'auth/login.dart';
+import 'auth/auth.dart';
+import 'calendar/calendar_widget.dart';
+import 'transactions/add_transaction_dialog.dart';
+import 'transactions/monthly_summary_widget.dart';
+import 'transactions/transaction_list_widget.dart';
+
+//TEST VALUE
+int currentMonth = 9;
+int monthIncome = 00000;
+int monthExpense = 00000;
+int weeklyTotal = 00000;
+int monthlyTotal = 00000;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +24,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  DateTime _selectedDate = DateTime.now();
+  int _currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -21,13 +37,20 @@ class _HomePageState extends State<HomePage> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: const Text("Firebase App"),
+              title: const Text('가계부'),
               actions: [
                 IconButton(
+                  icon: const Icon(Icons.settings),
+                  onPressed: () => _showAccountInfoDialog(context, user.data),
+                ),
+                IconButton(
                   icon: const Icon(Icons.logout),
-                  onPressed: () async => await FirebaseAuth.instance
-                      .signOut()
-                      .then((_) => Navigator.pushNamed(context, "/login")),
+                  onPressed: () async {
+                    await AuthService.signOut();
+                    if (context.mounted) {
+                      Navigator.pushNamed(context, "/login");
+                    }
+                  },
                 ),
               ],
             ),
@@ -35,6 +58,29 @@ class _HomePageState extends State<HomePage> {
               builder: (context, constraints) {
                 return _buildResponsiveBody(context, user.data, constraints);
               },
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => _showAddTransactionDialog(context),
+              child: const Icon(Icons.add),
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.calendar_today),
+                  label: '캘린더',
+                ),
+                BottomNavigationBarItem(icon: Icon(Icons.list), label: '거래내역'),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.analytics),
+                  label: '요약',
+                ),
+              ],
             ),
           );
         }
@@ -60,201 +106,144 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildWideScreenLayout(User? user) {
-    return Center(
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 800),
-        padding: const EdgeInsets.all(40),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 왼쪽: 사용자 정보
-            Expanded(
-              flex: 1,
-              child: Card(
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        "User Information",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      _buildUserInfo(user),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 20),
-            // 오른쪽: 액션 버튼들
-            Expanded(
-              flex: 1,
-              child: Card(
-                elevation: 4,
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text(
-                        "Actions",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      _buildActionButtons(user),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return _buildNarrowScreenLayout(user);
   }
 
   Widget _buildMediumScreenLayout(User? user) {
-    return Center(
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 600),
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Card(
-              elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    const Text(
-                      "Welcome!",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    _buildUserInfo(user),
-                    const SizedBox(height: 20),
-                    _buildActionButtons(user),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    return _buildNarrowScreenLayout(user);
   }
 
   Widget _buildNarrowScreenLayout(User? user) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          const SizedBox(height: 20),
-          const Text(
-            "Successfully logged in!",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
+    switch (_currentIndex) {
+      case 0:
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(children: [CalendarWidget()]),
+        );
+      case 1:
+        return Column(
+          children: [
+            Expanded(
+              child: TransactionListWidget(
+                selectedDate: _selectedDate,
+                showDailyOnly: false,
+              ),
+            ),
+          ],
+        );
+      case 2:
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              MonthlySummaryWidget(month: _selectedDate),
+              const SizedBox(height: 16),
+              TransactionListWidget(
+                selectedDate: _selectedDate,
+                showDailyOnly: true,
+              ),
+            ],
           ),
-          const SizedBox(height: 20),
-          _buildUserInfo(user),
-          const SizedBox(height: 20),
-          _buildActionButtons(user),
-        ],
-      ),
+        );
+      default:
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(children: [CalendarWidget()]),
+        );
+    }
+  }
+
+  void _showAccountInfoDialog(BuildContext context, User? user) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final dialogPadding = screenWidth < 400 ? 16.0 : 24.0;
+    final titleFontSize = screenWidth < 400 ? 16.0 : 20.0;
+    final maxDialogWidth = screenWidth < 500 ? screenWidth * 0.9 : 400.0;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(dialogPadding),
+            constraints: BoxConstraints(
+              maxWidth: maxDialogWidth,
+              maxHeight: screenWidth < 400 ? 600 : 500,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  children: [
+                    // 중앙 정렬된 제목
+                    Center(
+                      child: Text(
+                        "Account Information",
+                        style: TextStyle(
+                          fontSize: titleFontSize,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    // 우상단 닫기 버튼
+                    Positioned(
+                      right: 0,
+                      top: -8,
+                      child: IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.close),
+                        splashRadius: 20,
+                      ),
+                    ),
+                  ],
+                ),
+                const Divider(),
+                SizedBox(height: screenWidth < 400 ? 12 : 16),
+                Flexible(
+                  child: SingleChildScrollView(child: AuthWidget(user: user)),
+                ),
+                SizedBox(height: screenWidth < 400 ? 12 : 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        "Close",
+                        style: TextStyle(
+                          fontSize: screenWidth < 400 ? 14.0 : 16.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildUserInfo(User? user) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Current User UID:",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey[300]!),
-          ),
-          child: SelectableText(
-            user?.uid ?? "No UID available",
-            style: const TextStyle(fontSize: 12, fontFamily: 'monospace'),
-          ),
-        ),
-        const SizedBox(height: 12),
-        if (user?.isAnonymous == true)
-          const Text(
-            "(Anonymous User)",
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.orange,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-        if (user?.isAnonymous == false && user?.email != null)
-          Text("Email: ${user!.email}", style: const TextStyle(fontSize: 14)),
-      ],
+  Future<void> _showAddTransactionDialog(BuildContext context) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return const AddTransactionDialog();
+      },
     );
-  }
 
-  Widget _buildActionButtons(User? user) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (user?.isAnonymous == true) ...[
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const LinkPage()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-            ),
-            icon: const Icon(Icons.link),
-            label: const Text("Link Account"),
-          ),
-          const SizedBox(height: 12),
-        ],
-        ElevatedButton.icon(
-          onPressed: () {
-            // 추가 기능을 위한 플레이스홀더
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Feature coming soon!")),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 12),
-          ),
-          icon: const Icon(Icons.dashboard),
-          label: const Text("Dashboard"),
-        ),
-      ],
-    );
+    // 거래가 성공적으로 추가되면 화면을 새로고침
+    if (result == true) {
+      setState(() {
+        // 상태를 업데이트하여 StreamBuilder가 다시 빌드되도록 함
+      });
+    }
   }
 }

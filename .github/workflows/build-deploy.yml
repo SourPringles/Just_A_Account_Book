@@ -16,7 +16,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.6' # 사용하는 Flutter 버전으로 변경
+          flutter-version: '3.32.4' # 사용하는 Flutter 버전으로 변경
 
       - name: Install Dependencies
         run: flutter pub get
@@ -32,4 +32,4 @@ jobs:
         with:
           github_token: ${{ secrets.TEST_KEY_251022 }} # repository에서 사용할 시크릿 키 이름
           publish_dir: build/web
-          publish_branch: gh-pages
+          publish_branch: main

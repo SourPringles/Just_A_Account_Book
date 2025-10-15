@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'package:window_manager/window_manager.dart';
 import 'package:intl/date_symbol_data_local.dart';
+
+// 웹이 아닌 경우에만 import
+import 'dart:io' show Platform;
+import 'package:window_manager/window_manager.dart';
 
 import 'view/auth/login.dart';
 import 'view/auth/signup.dart';
@@ -19,14 +22,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting();
 
-  // Windows 플랫폼에서 창 크기 설정
-  if (Platform.isWindows) {
+  // 웹이 아닌 Windows 플랫폼에서만 창 크기 설정
+  if (!kIsWeb && Platform.isWindows) {
     await windowManager.ensureInitialized();
 
     WindowOptions windowOptions = const WindowOptions(
-      size: windowScreenSize, // 개발용 창 크기 (너비 1800px, 높이 1000px)
-      minimumSize: windowScreenSize, // 최소 창 크기
-      center: true, // 화면 중앙에 배치
+      size: windowScreenSize,
+      minimumSize: windowScreenSize,
+      center: true,
       backgroundColor: Colors.transparent,
       skipTaskbar: false,
       titleBarStyle: TitleBarStyle.normal,
@@ -48,6 +51,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Financial Management App',
       theme: ThemeData(primarySwatch: Colors.blue),
       initialRoute: '/',
       routes: {

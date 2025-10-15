@@ -45,7 +45,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBp5sSaa-Cy6FBO65VOSqai1EhR2VcXlKE',
-    appId: '1:659752238939:android:a158629c34e6f613b6647e',
+    appId: '1:659752238939:android:d2be2f03290e379eb6647e',
     messagingSenderId: '659752238939',
     projectId: 'financial-manage-app-project',
     storageBucket: 'financial-manage-app-project.firebasestorage.app',
@@ -53,7 +53,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDbPbp90oBuqAZM-lKoxgRs3kLYXjOvTOE',
-    appId: '1:659752238939:ios:5e8c524a007f8b43b6647e',
+    appId: '1:659752238939:ios:0b10fda990540659b6647e',
     messagingSenderId: '659752238939',
     projectId: 'financial-manage-app-project',
     storageBucket: 'financial-manage-app-project.firebasestorage.app',
@@ -62,22 +62,22 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyAp3G9j11JsDpc4WUDnA4kj4hVLqo-5kHA',
-    appId: '1:659752238939:web:1c9e81e275140754b6647e',
+    appId: '1:659752238939:web:baa453cd9284893db6647e',
     messagingSenderId: '659752238939',
     projectId: 'financial-manage-app-project',
     authDomain: 'financial-manage-app-project.firebaseapp.com',
     storageBucket: 'financial-manage-app-project.firebasestorage.app',
-    measurementId: 'G-S0JZM630KP',
+    measurementId: 'G-WVL42RSPVZ',
   );
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAp3G9j11JsDpc4WUDnA4kj4hVLqo-5kHA',
-    appId: '1:659752238939:web:1c9e81e275140754b6647e',
+    appId: '1:659752238939:web:a62d1318f61e9c57b6647e',
     messagingSenderId: '659752238939',
     projectId: 'financial-manage-app-project',
     authDomain: 'financial-manage-app-project.firebaseapp.com',
     storageBucket: 'financial-manage-app-project.firebasestorage.app',
-    measurementId: 'G-S0JZM630KP',
+    measurementId: 'G-K1JYCDK9DK',
   );
 
 }

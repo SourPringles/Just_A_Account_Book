@@ -190,7 +190,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           dayNumberSize: 16.0,
           amountSize: 12.0,
           headerSize: 16.0,
-          dayOfWeekSize: 16.0,
+          dayOfWeekSize: 14.0,
           rowHeight: 90.0,
         );
       case CalendarUIType.dev:

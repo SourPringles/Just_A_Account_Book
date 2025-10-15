@@ -167,5 +167,5 @@ app.*.symbols
 !/dev/ci/**/Gemfile.lock
 
 # ETC
-*/firebase_options.dart
+# */firebase_options.dart
 !/build/web

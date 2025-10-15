@@ -3,7 +3,7 @@ name: Deploy Flutter Web App to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - 251015_dev # 사용 브랜치로 변경
 
 jobs:
   build-and-deploy:

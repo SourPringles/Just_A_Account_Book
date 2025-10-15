@@ -10,6 +10,11 @@ import 'view/auth/login.dart';
 import 'view/auth/signup.dart';
 import 'view/home.dart';
 
+// 기준 크기
+const Size narrowScreenSize = Size(480, 800);
+const Size mobileScreenSize = Size(480, 1000);
+const Size windowScreenSize = Size(1280, 720);
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting();
@@ -19,8 +24,8 @@ void main() async {
     await windowManager.ensureInitialized();
 
     WindowOptions windowOptions = const WindowOptions(
-      size: Size(480, 1000), // 창 크기 (너비 480px, 높이 1000px)
-      minimumSize: Size(360, 800), // 최소 창 크기
+      size: windowScreenSize, // 창 크기 (너비 720px, 높이 1280px)
+      minimumSize: windowScreenSize, // 최소 창 크기
       center: true, // 화면 중앙에 배치
       backgroundColor: Colors.transparent,
       skipTaskbar: false,

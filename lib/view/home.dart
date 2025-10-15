@@ -100,21 +100,21 @@ class _HomePageState extends State<HomePage> {
     if (isWideScreen) {
       return _buildWideScreenLayout(user);
     } else if (isMediumScreen) {
-      return _buildMediumScreenLayout(user);
+      return _buildWindowScreenLayout(user);
     } else {
-      return _buildNarrowScreenLayout(user);
+      return _buildMobileScreenLayout(user);
     }
   }
 
   Widget _buildWideScreenLayout(User? user) {
-    return _buildNarrowScreenLayout(user);
+    return _buildMobileScreenLayout(user);
   }
 
-  Widget _buildMediumScreenLayout(User? user) {
-    return _buildNarrowScreenLayout(user);
+  Widget _buildWindowScreenLayout(User? user) {
+    return _buildMobileScreenLayout(user);
   }
 
-  Widget _buildNarrowScreenLayout(User? user) {
+  Widget _buildMobileScreenLayout(User? user) {
     switch (_currentIndex) {
       case 0:
         return SingleChildScrollView(

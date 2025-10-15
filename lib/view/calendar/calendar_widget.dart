@@ -6,12 +6,6 @@ import 'package:intl/intl.dart';
 import '../../services/transaction_service.dart';
 import '../../models/transaction_model.dart';
 
-// TEST VALUE
-int monthIncome = 00000;
-int monthExpense = 00000;
-int weeklyTotal = 00000;
-int monthlyTotal = 00000;
-
 class CalendarWidget extends StatefulWidget {
   final DateTime? initialSelectedDate;
   final Function(DateTime)? onDateSelected;
@@ -118,6 +112,50 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   // 외부에서 데이터를 강제로 리로드할 수 있는 메서드
   void refreshData() {
     _loadMonthlyData(forceReload: true);
+  }
+
+  // 월간 수입 합계 계산
+  double _getMonthlyIncome() {
+    double total = 0;
+    for (final dailyTotals in _dailyTotals.values) {
+      total += dailyTotals['income'] ?? 0;
+    }
+    return total;
+  }
+
+  // 월간 지출 합계 계산
+  double _getMonthlyExpense() {
+    double total = 0;
+    for (final dailyTotals in _dailyTotals.values) {
+      total += dailyTotals['expense'] ?? 0;
+    }
+    return total;
+  }
+
+  // 월간 순액 계산 (수입 - 지출)
+  double _getMonthlyBalance() {
+    return _getMonthlyIncome() - _getMonthlyExpense();
+  }
+
+  // 주간 합계 계산 (선택된 주의 합계)
+  double _getWeeklyTotal() {
+    if (_calendarFormat != CalendarFormat.week) return 0;
+
+    // 선택된 날짜가 포함된 주의 시작과 끝 계산
+    final startOfWeek = _selectedDay.subtract(
+      Duration(days: _selectedDay.weekday % 7),
+    );
+    double total = 0;
+
+    for (int i = 0; i < 7; i++) {
+      final date = startOfWeek.add(Duration(days: i));
+      final dailyTotals = _getDailyTotals(date);
+      final income = dailyTotals['income'] ?? 0;
+      final expense = dailyTotals['expense'] ?? 0;
+      total += income - expense; // 순액 (수입 - 지출)
+    }
+
+    return total;
   }
 
   // 기본 날짜 셀 디자인 생성 함수
@@ -387,7 +425,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         const SizedBox(height: 16),
         if (_calendarFormat == CalendarFormat.week)
           CommonSumWidget(
-            val: weeklyTotal,
+            val: _getWeeklyTotal().toInt(),
             label: '주간 합계',
             color: Colors.black,
           ),
@@ -395,10 +433,10 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         const SizedBox(height: 20),
         SumWidget(
           currentMonth: _focusedDay.month,
-          monthIncome: monthIncome,
-          monthExpense: monthExpense,
-          weeklyTotal: weeklyTotal,
-          monthlyTotal: monthlyTotal,
+          monthIncome: _getMonthlyIncome().toInt(),
+          monthExpense: _getMonthlyExpense().toInt(),
+          weeklyTotal: _getWeeklyTotal().toInt(),
+          monthlyTotal: _getMonthlyBalance().toInt(),
         ),
       ],
     );

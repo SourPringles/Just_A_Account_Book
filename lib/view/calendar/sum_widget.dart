@@ -27,9 +27,9 @@ class SumWidget extends StatelessWidget {
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
-        CommonSumWidget(val: monthIncome, label: '수입', color: Colors.red),
+        CommonSumWidget(val: monthIncome, label: '수입', color: Colors.green),
         const SizedBox(height: 8),
-        CommonSumWidget(val: monthExpense, label: '지출', color: Colors.blue),
+        CommonSumWidget(val: monthExpense, label: '지출', color: Colors.red),
         const SizedBox(height: 8),
         CommonSumWidget(val: monthlyTotal, label: '월간 합계', color: Colors.black),
       ],
@@ -52,6 +52,32 @@ class CommonSumWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 금액을 포맷팅하는 함수
+    String formatCurrency(int amount) {
+      final absAmount = amount.abs();
+      if (absAmount >= 10000) {
+        final manWon = absAmount / 10000;
+        return '${manWon.toStringAsFixed(manWon % 1 == 0 ? 0 : 1)}만원';
+      } else if (absAmount >= 1000) {
+        final cheonWon = absAmount / 1000;
+        return '${cheonWon.toStringAsFixed(cheonWon % 1 == 0 ? 0 : 1)}천원';
+      } else {
+        return '${absAmount}원';
+      }
+    }
+
+    final amount = val;
+
+    // 수입/지출에 따른 부호와 색상 결정
+    String getPrefix() {
+      if (label == '지출') return '-';
+      if (label == '수입') return '+';
+      return amount >= 0 ? '+' : '-';
+    }
+
+    final formattedAmount = formatCurrency(amount);
+    final prefix = getPrefix();
+
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -70,7 +96,7 @@ class CommonSumWidget extends StatelessWidget {
           Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
           const Spacer(),
           Text(
-            '+${val.toString()}원',
+            '$prefix$formattedAmount',
             style: TextStyle(
               fontSize: 12,
               color: color,

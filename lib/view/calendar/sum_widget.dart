@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
+// UI 타입을 나타내는 enum (calendar_widget.dart와 동일)
+enum SumWidgetUIType { mobile, window, dev }
+
 class SumWidget extends StatelessWidget {
   final int currentMonth;
   final int monthIncome;
   final int monthExpense;
   final int weeklyTotal;
   final int monthlyTotal;
+  final SumWidgetUIType uiType; // UI 타입
 
   const SumWidget({
     super.key,
@@ -15,7 +19,31 @@ class SumWidget extends StatelessWidget {
     required this.monthExpense,
     required this.weeklyTotal,
     required this.monthlyTotal,
+    this.uiType = SumWidgetUIType.mobile, // 기본값은 모바일
   });
+
+  // UI 타입에 따른 텍스트 크기 설정
+  double _getTitleFontSize() {
+    switch (uiType) {
+      case SumWidgetUIType.window:
+        return 18.0;
+      case SumWidgetUIType.dev:
+        return 14.0;
+      case SumWidgetUIType.mobile:
+        return 16.0;
+    }
+  }
+
+  double _getItemFontSize() {
+    switch (uiType) {
+      case SumWidgetUIType.window:
+        return 22.0;
+      case SumWidgetUIType.dev:
+        return 16.0;
+      case SumWidgetUIType.mobile:
+        return 20.0;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +52,32 @@ class SumWidget extends StatelessWidget {
       children: [
         Text(
           '$currentMonth 월',
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: _getTitleFontSize(),
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 8),
-        CommonSumWidget(val: monthIncome, label: '수입', color: Colors.green),
+        CommonSumWidget(
+          val: monthIncome,
+          label: '수입',
+          color: Colors.blue,
+          fontSize: _getItemFontSize(),
+        ),
         const SizedBox(height: 8),
-        CommonSumWidget(val: monthExpense, label: '지출', color: Colors.red),
+        CommonSumWidget(
+          val: monthExpense,
+          label: '지출',
+          color: Colors.red,
+          fontSize: _getItemFontSize(),
+        ),
         const SizedBox(height: 8),
-        CommonSumWidget(val: monthlyTotal, label: '월간 합계', color: Colors.black),
+        CommonSumWidget(
+          val: monthlyTotal,
+          label: '월간 합계',
+          color: Colors.black,
+          fontSize: _getItemFontSize(),
+        ),
       ],
     );
   }
@@ -42,12 +88,14 @@ class CommonSumWidget extends StatelessWidget {
   final int val;
   final String label;
   final Color color;
+  final double fontSize;
 
   const CommonSumWidget({
     super.key,
     required this.val,
     required this.label,
     required this.color,
+    this.fontSize = 20.0, // 기본 폰트 크기
   });
 
   @override
@@ -93,12 +141,15 @@ class CommonSumWidget extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+          Text(
+            label,
+            style: TextStyle(fontSize: fontSize, color: Colors.grey),
+          ),
           const Spacer(),
           Text(
             '$prefix$formattedAmount',
             style: TextStyle(
-              fontSize: 12,
+              fontSize: fontSize,
               color: color,
               fontWeight: FontWeight.bold,
             ),

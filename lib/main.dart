@@ -11,7 +11,7 @@ import 'view/auth/signup.dart';
 import 'view/home.dart';
 
 // 기준 크기
-const Size narrowScreenSize = Size(480, 800);
+const Size devScreenSize = Size(1800, 1000);
 const Size mobileScreenSize = Size(480, 1000);
 const Size windowScreenSize = Size(1280, 720);
 
@@ -24,7 +24,7 @@ void main() async {
     await windowManager.ensureInitialized();
 
     WindowOptions windowOptions = const WindowOptions(
-      size: windowScreenSize, // 창 크기 (너비 720px, 높이 1280px)
+      size: windowScreenSize, // 개발용 창 크기 (너비 1800px, 높이 1000px)
       minimumSize: windowScreenSize, // 최소 창 크기
       center: true, // 화면 중앙에 배치
       backgroundColor: Colors.transparent,

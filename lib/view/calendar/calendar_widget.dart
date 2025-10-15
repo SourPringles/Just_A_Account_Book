@@ -6,16 +6,38 @@ import 'package:intl/intl.dart';
 import '../../services/transaction_service.dart';
 import '../../models/transaction_model.dart';
 
+// UI 타입을 나타내는 enum
+enum CalendarUIType { mobile, window, dev }
+
+// 캘린더 텍스트 스타일 클래스
+class CalendarTextStyles {
+  final double dayNumberSize;
+  final double amountSize;
+  final double headerSize;
+  final double dayOfWeekSize;
+  final double rowHeight;
+
+  const CalendarTextStyles({
+    required this.dayNumberSize,
+    required this.amountSize,
+    required this.headerSize,
+    required this.dayOfWeekSize,
+    required this.rowHeight,
+  });
+}
+
 class CalendarWidget extends StatefulWidget {
   final DateTime? initialSelectedDate;
   final Function(DateTime)? onDateSelected;
   final int? refreshTrigger; // 새로고침을 위한 트리거
+  final CalendarUIType? uiType; // UI 타입 (모바일/윈도우/개발용)
 
   const CalendarWidget({
     super.key,
     this.initialSelectedDate,
     this.onDateSelected,
     this.refreshTrigger,
+    this.uiType, // null이면 자동으로 감지
   });
 
   @override
@@ -158,8 +180,42 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     return total;
   }
 
+  // UI 타입에 따른 텍스트 스타일 설정
+  CalendarTextStyles _getTextStyles() {
+    final uiType = widget.uiType ?? CalendarUIType.mobile; // null이면 모바일로 기본 설정
+
+    switch (uiType) {
+      case CalendarUIType.window:
+        return CalendarTextStyles(
+          dayNumberSize: 16.0,
+          amountSize: 12.0,
+          headerSize: 16.0,
+          dayOfWeekSize: 16.0,
+          rowHeight: 90.0,
+        );
+      case CalendarUIType.dev:
+        return CalendarTextStyles(
+          dayNumberSize: 15.0,
+          amountSize: 10.0,
+          headerSize: 12.0,
+          dayOfWeekSize: 12.0,
+          rowHeight: 70.0,
+        );
+      case CalendarUIType.mobile:
+        return CalendarTextStyles(
+          dayNumberSize: 14.0,
+          amountSize: 10.0,
+          headerSize: 14.0,
+          dayOfWeekSize: 14.0,
+          rowHeight: 80.0,
+        );
+    }
+  }
+
   // 기본 날짜 셀 디자인 생성 함수
   Widget _buildDefaultCell(DateTime date) {
+    final textStyles = _getTextStyles();
+
     // 요일에 따른 날짜 색상 설정
     Color dateTextColor = Colors.black;
     if (date.weekday == DateTime.sunday) {
@@ -201,7 +257,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             child: Text(
               date.day.toString(),
               style: TextStyle(
-                fontSize: 14,
+                fontSize: textStyles.dayNumberSize,
                 fontWeight: FontWeight.w500,
                 color: dateTextColor,
               ),
@@ -215,12 +271,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // 수입 (초록색)
+                  // 수입 (파란색)
                   Text(
                     income > 0 ? '+${formatAmount(income)}' : '',
-                    style: const TextStyle(
-                      fontSize: 10,
-                      color: Colors.green,
+                    style: TextStyle(
+                      fontSize: textStyles.amountSize,
+                      color: Colors.blue,
                       fontWeight: FontWeight.w500,
                     ),
                     maxLines: 1,
@@ -229,8 +285,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   // 지출 (빨간색)
                   Text(
                     expense > 0 ? '-${formatAmount(expense)}' : '',
-                    style: const TextStyle(
-                      fontSize: 10,
+                    style: TextStyle(
+                      fontSize: textStyles.amountSize,
                       color: Colors.red,
                       fontWeight: FontWeight.w500,
                     ),
@@ -248,6 +304,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final textStyles = _getTextStyles();
+
     return Column(
       children: [
         TableCalendar(
@@ -287,43 +345,52 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               _loadMonthlyData();
             }
           },
-          calendarStyle: const CalendarStyle(
+          calendarStyle: CalendarStyle(
             // 요일 헤더 스타일
             outsideDaysVisible: false,
             // 셀 크기 조정 - 높이를 증가시켜 텍스트 공간 확보
-            cellMargin: EdgeInsets.all(2.0),
-            cellPadding: EdgeInsets.all(4.0),
+            cellMargin: const EdgeInsets.all(2.0),
+            cellPadding: const EdgeInsets.all(4.0),
             // 기본 텍스트 스타일
-            defaultTextStyle: TextStyle(fontSize: 14),
-            weekendTextStyle: TextStyle(fontSize: 14, color: Colors.red),
+            defaultTextStyle: TextStyle(fontSize: textStyles.dayNumberSize),
+            weekendTextStyle: TextStyle(
+              fontSize: textStyles.dayNumberSize,
+              color: Colors.red,
+            ),
             // 셀의 최소 높이 설정
-            rowDecoration: BoxDecoration(),
+            rowDecoration: const BoxDecoration(),
           ),
-          rowHeight: 80.0, // 각 행의 높이를 80px로 증가
-          daysOfWeekStyle: const DaysOfWeekStyle(
+          rowHeight: textStyles.rowHeight, // UI 타입에 따른 행 높이
+          daysOfWeekStyle: DaysOfWeekStyle(
             // 요일 헤더의 높이와 스타일 조정
             weekdayStyle: TextStyle(
-              fontSize: 14,
+              fontSize: textStyles.dayOfWeekSize,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
             ),
             weekendStyle: TextStyle(
-              fontSize: 14,
+              fontSize: textStyles.dayOfWeekSize,
               fontWeight: FontWeight.w600,
               color: Colors.red,
             ),
           ),
-          headerStyle: const HeaderStyle(
+          headerStyle: HeaderStyle(
             formatButtonVisible: true,
             titleCentered: true,
             formatButtonShowsNext: false,
-            formatButtonDecoration: BoxDecoration(
+            formatButtonDecoration: const BoxDecoration(
               color: Colors.blue,
               borderRadius: BorderRadius.all(Radius.circular(12.0)),
             ),
-            formatButtonTextStyle: TextStyle(color: Colors.white, fontSize: 12),
-            leftChevronIcon: Icon(Icons.chevron_left, color: Colors.blue),
-            rightChevronIcon: Icon(Icons.chevron_right, color: Colors.blue),
+            formatButtonTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: textStyles.headerSize - 2,
+            ),
+            leftChevronIcon: const Icon(Icons.chevron_left, color: Colors.blue),
+            rightChevronIcon: const Icon(
+              Icons.chevron_right,
+              color: Colors.blue,
+            ),
           ),
           calendarBuilders: CalendarBuilders(
             // 기본 날짜 셀 빌더
@@ -412,7 +479,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   text,
                   style: TextStyle(
                     color: textColor,
-                    fontSize: 14,
+                    fontSize: textStyles.dayOfWeekSize,
                     fontWeight: FontWeight.w600,
                     height: 1.2,
                   ),
@@ -428,6 +495,13 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             val: _getWeeklyTotal().toInt(),
             label: '주간 합계',
             color: Colors.black,
+            fontSize:
+                (widget.uiType ?? CalendarUIType.mobile) ==
+                    CalendarUIType.window
+                ? 22.0
+                : (widget.uiType ?? CalendarUIType.mobile) == CalendarUIType.dev
+                ? 16.0
+                : 20.0,
           ),
 
         const SizedBox(height: 20),
@@ -437,6 +511,13 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           monthExpense: _getMonthlyExpense().toInt(),
           weeklyTotal: _getWeeklyTotal().toInt(),
           monthlyTotal: _getMonthlyBalance().toInt(),
+          uiType:
+              (widget.uiType ?? CalendarUIType.mobile) == CalendarUIType.mobile
+              ? SumWidgetUIType.mobile
+              : (widget.uiType ?? CalendarUIType.mobile) ==
+                    CalendarUIType.window
+              ? SumWidgetUIType.window
+              : SumWidgetUIType.dev,
         ),
       ],
     );

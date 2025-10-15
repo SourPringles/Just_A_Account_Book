@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'dart:async';
 import '../../services/transaction_service.dart';
 import '../../models/transaction_model.dart';
 
-class TransactionListWidget extends StatelessWidget {
+class TransactionListWidget extends StatefulWidget {
   final DateTime selectedDate;
   final bool showDailyOnly;
 
@@ -15,56 +16,135 @@ class TransactionListWidget extends StatelessWidget {
   });
 
   @override
+  State<TransactionListWidget> createState() => _TransactionListWidgetState();
+}
+
+class _TransactionListWidgetState extends State<TransactionListWidget> {
+  StreamSubscription<List<TransactionModel>>? _subscription;
+  List<TransactionModel> _transactions = [];
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTransactions();
+  }
+
+  @override
+  void didUpdateWidget(TransactionListWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.selectedDate != widget.selectedDate ||
+        oldWidget.showDailyOnly != widget.showDailyOnly) {
+      _loadTransactions();
+    }
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
+  void _loadTransactions() {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      setState(() {
+        _error = '로그인이 필요합니다';
+        _isLoading = false;
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    _subscription?.cancel();
+
+    // 메인 스레드에서 스트림을 처리하도록 수정
+    Future.microtask(() {
+      final stream = widget.showDailyOnly
+          ? TransactionService.getDailyTransactions(
+              userId: user.uid,
+              date: widget.selectedDate,
+            )
+          : TransactionService.getMonthlyTransactions(
+              userId: user.uid,
+              month: widget.selectedDate,
+            );
+
+      _subscription = stream.listen(
+        (transactions) {
+          if (mounted) {
+            setState(() {
+              _transactions = transactions;
+              _isLoading = false;
+              _error = null;
+            });
+          }
+        },
+        onError: (error) {
+          if (mounted) {
+            setState(() {
+              _error = error.toString();
+              _isLoading = false;
+            });
+          }
+        },
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return const Center(child: Text('로그인이 필요합니다'));
     }
 
-    return StreamBuilder<List<TransactionModel>>(
-      stream: showDailyOnly
-          ? TransactionService.getDailyTransactions(
-              userId: user.uid,
-              date: selectedDate,
-            )
-          : TransactionService.getMonthlyTransactions(
-              userId: user.uid,
-              month: selectedDate,
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('오류: $_error'),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _loadTransactions,
+              child: const Text('다시 시도'),
             ),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+          ],
+        ),
+      );
+    }
 
-        if (snapshot.hasError) {
-          return Center(child: Text('오류가 발생했습니다: ${snapshot.error}'));
-        }
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-        final transactions = snapshot.data ?? [];
-
-        if (transactions.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.receipt_long, size: 64, color: Colors.grey[400]),
-                const SizedBox(height: 16),
-                Text(
-                  showDailyOnly ? '오늘 거래 내역이 없습니다' : '이번 달 거래 내역이 없습니다',
-                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                ),
-              ],
+    if (_transactions.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.receipt_long, size: 64, color: Colors.grey[400]),
+            const SizedBox(height: 16),
+            Text(
+              widget.showDailyOnly ? '오늘 거래 내역이 없습니다' : '이번 달 거래 내역이 없습니다',
+              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
             ),
-          );
-        }
+          ],
+        ),
+      );
+    }
 
-        return ListView.builder(
-          itemCount: transactions.length,
-          itemBuilder: (context, index) {
-            final transaction = transactions[index];
-            return _buildTransactionTile(context, transaction);
-          },
-        );
+    return ListView.builder(
+      itemCount: _transactions.length,
+      itemBuilder: (context, index) {
+        final transaction = _transactions[index];
+        return _buildTransactionTile(context, transaction);
       },
     );
   }
@@ -74,7 +154,7 @@ class TransactionListWidget extends StatelessWidget {
     TransactionModel transaction,
   ) {
     final isIncome = transaction.type == TransactionType.income;
-    final color = isIncome ? Colors.green : Colors.red;
+    final color = isIncome ? Colors.blue : Colors.red;
     final icon = isIncome ? Icons.add_circle : Icons.remove_circle;
 
     return Card(

@@ -32,4 +32,4 @@ jobs:
         with:
           github_token: ${{ secrets.TEST_KEY_251022 }} # repository에서 사용할 시크릿 키 이름
           publish_dir: build/web
-          publish_branch: main
+          publish_branch: gh-pages

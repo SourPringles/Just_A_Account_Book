@@ -1,1 +1,15 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"financial-manage-app-project","appId":"1:659752238939:android:d2be2f03290e379eb6647e","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"financial-manage-app-project","configurations":{"android":"1:659752238939:android:d2be2f03290e379eb6647e","ios":"1:659752238939:ios:0b10fda990540659b6647e","web":"1:659752238939:web:a62d1318f61e9c57b6647e","windows":"1:659752238939:web:baa453cd9284893db6647e"}}}}}}
+{
+    "flutter": {
+        "platforms": {
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "financial-manage-app-project",
+                    "configurations": {
+                        "web": "1:659752238939:web:5b55a452e940c3b7b6647e",
+                        "windows": "1:659752238939:web:b641c05992e78d43b6647e"
+                    }
+                }
+            }
+        }
+    }
+}

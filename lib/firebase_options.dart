@@ -20,22 +20,8 @@ class DefaultFirebaseOptions {
       return web;
     }
     switch (defaultTargetPlatform) {
-      case TargetPlatform.android:
-        return android;
-      case TargetPlatform.iOS:
-        return ios;
-      case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
       case TargetPlatform.windows:
         return windows;
-      case TargetPlatform.linux:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for linux - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
       default:
         throw UnsupportedError(
           'DefaultFirebaseOptions are not supported for this platform.',
@@ -43,41 +29,23 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC3llczp0O2c8c11-F9pT0R6oGpWzB8_PY',
-    appId: '1:659752238939:android:d2be2f03290e379eb6647e',
-    messagingSenderId: '659752238939',
-    projectId: 'financial-manage-app-project',
-    storageBucket: 'financial-manage-app-project.firebasestorage.app',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCHOp-pXBIUrmgWMB7iLV4EjWV7b9On5v8',
-    appId: '1:659752238939:ios:0b10fda990540659b6647e',
-    messagingSenderId: '659752238939',
-    projectId: 'financial-manage-app-project',
-    storageBucket: 'financial-manage-app-project.firebasestorage.app',
-    iosBundleId: 'com.sourpringles.financialmanager',
-  );
-
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyCSGMpK7D7qnzG3XFPvnAIQQzZzDUv3aeE',
-    appId: '1:659752238939:web:baa453cd9284893db6647e',
+    appId: '1:659752238939:web:b641c05992e78d43b6647e',
     messagingSenderId: '659752238939',
     projectId: 'financial-manage-app-project',
     authDomain: 'financial-manage-app-project.firebaseapp.com',
     storageBucket: 'financial-manage-app-project.firebasestorage.app',
-    measurementId: 'G-WVL42RSPVZ',
+    measurementId: 'G-4MBTX406ZC',
   );
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCSGMpK7D7qnzG3XFPvnAIQQzZzDUv3aeE',
-    appId: '1:659752238939:web:a62d1318f61e9c57b6647e',
+    appId: '1:659752238939:web:5b55a452e940c3b7b6647e',
     messagingSenderId: '659752238939',
     projectId: 'financial-manage-app-project',
     authDomain: 'financial-manage-app-project.firebaseapp.com',
     storageBucket: 'financial-manage-app-project.firebasestorage.app',
-    measurementId: 'G-K1JYCDK9DK',
+    measurementId: 'G-3FW2GTKHVJ',
   );
-
 }

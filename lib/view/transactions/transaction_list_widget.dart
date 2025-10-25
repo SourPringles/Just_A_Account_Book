@@ -191,7 +191,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
             ],
             const SizedBox(height: 4),
             Text(
-              DateFormat('MM월 dd일 HH:mm').format(transaction.date),
+              DateFormat('MM월 dd일').format(transaction.date),
               style: TextStyle(color: Colors.grey[600], fontSize: 12),
             ),
           ],
@@ -228,7 +228,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
                 _buildDetailRow('설명', transaction.description),
               _buildDetailRow(
                 '날짜',
-                DateFormat('yyyy년 MM월 dd일 HH:mm').format(transaction.date),
+                DateFormat('yyyy년 MM월 dd일').format(transaction.date),
               ),
             ],
           ),

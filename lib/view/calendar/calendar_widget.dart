@@ -318,6 +318,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             CalendarFormat.month: '월간',
             CalendarFormat.week: '주간',
           },
+          availableGestures: AvailableGestures.none,
           selectedDayPredicate: (day) {
             return isSameDay(_selectedDay, day);
           },
@@ -504,21 +505,21 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                 : 20.0,
           ),
 
-        const SizedBox(height: 20),
-        SumWidget(
-          currentMonth: _focusedDay.month,
-          monthIncome: _getMonthlyIncome().toInt(),
-          monthExpense: _getMonthlyExpense().toInt(),
-          weeklyTotal: _getWeeklyTotal().toInt(),
-          monthlyTotal: _getMonthlyBalance().toInt(),
-          uiType:
-              (widget.uiType ?? CalendarUIType.mobile) == CalendarUIType.mobile
-              ? SumWidgetUIType.mobile
-              : (widget.uiType ?? CalendarUIType.mobile) ==
-                    CalendarUIType.window
-              ? SumWidgetUIType.window
-              : SumWidgetUIType.dev,
-        ),
+        //const SizedBox(height: 20),
+        //SumWidget(
+        //  currentMonth: _focusedDay.month,
+        //  monthIncome: _getMonthlyIncome().toInt(),
+        //  monthExpense: _getMonthlyExpense().toInt(),
+        //  weeklyTotal: _getWeeklyTotal().toInt(),
+        //  monthlyTotal: _getMonthlyBalance().toInt(),
+        //  uiType:
+        //      (widget.uiType ?? CalendarUIType.mobile) == CalendarUIType.mobile
+        //      ? SumWidgetUIType.mobile
+        //      : (widget.uiType ?? CalendarUIType.mobile) ==
+        //            CalendarUIType.window
+        //      ? SumWidgetUIType.window
+        //      : SumWidgetUIType.dev,
+        //),
       ],
     );
   }

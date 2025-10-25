@@ -14,12 +14,15 @@ class TransactionService {
     required DateTime date,
   }) async {
     try {
+      // 시간값을 제거하고 날짜만 저장 (00:00:00으로 설정)
+      final dateOnly = DateTime(date.year, date.month, date.day);
+
       final transaction = TransactionModel(
         type: type,
         amount: amount,
         category: category,
         description: description,
-        date: date,
+        date: dateOnly,
         createdAt: DateTime.now(),
         userId: userId,
       );
@@ -53,7 +56,11 @@ class TransactionService {
       if (amount != null) updates['amount'] = amount;
       if (category != null) updates['category'] = category;
       if (description != null) updates['description'] = description;
-      if (date != null) updates['date'] = Timestamp.fromDate(date);
+      if (date != null) {
+        // 시간값을 제거하고 날짜만 저장 (00:00:00으로 설정)
+        final dateOnly = DateTime(date.year, date.month, date.day);
+        updates['date'] = Timestamp.fromDate(dateOnly);
+      }
 
       if (updates.isNotEmpty) {
         await _firestore

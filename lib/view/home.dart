@@ -19,6 +19,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   DateTime _selectedDate = DateTime.now();
   int _currentIndex = 0;
+  int _rightPanelIndex = 0; // 윈도우 레이아웃 우측 패널 인덱스 (0: 거래내역, 1: 요약)
   int _refreshTrigger = 0;
 
   @override
@@ -296,7 +297,7 @@ class _HomePageState extends State<HomePage> {
   Widget _buildWindowScreenLayout(User? user) {
     return Row(
       children: [
-        // 좌측 절반 - 모바일 레이아웃
+        // 좌측 절반 - 캘린더 고정
         Expanded(
           flex: 1,
           child: Container(
@@ -305,17 +306,28 @@ class _HomePageState extends State<HomePage> {
                 right: BorderSide(color: Colors.grey.shade300, width: 1),
               ),
             ),
-            child: _buildLeftPanel(user, uiType: CalendarUIType.window),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: CalendarWidget(
+                initialSelectedDate: _selectedDate,
+                refreshTrigger: _refreshTrigger,
+                uiType: CalendarUIType.window,
+                onDateSelected: (date) {
+                  // 우측 패널이 요약 탭(index 1)일 때는 리빌드하지 않음
+                  if (_rightPanelIndex == 1) {
+                    _selectedDate = date;
+                  } else {
+                    setState(() {
+                      _selectedDate = date;
+                    });
+                  }
+                },
+              ),
+            ),
           ),
         ),
-        // 우측 절반 - 선택한 날짜의 거래 내역
-        Expanded(
-          flex: 1,
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            child: _buildRightPanel(user),
-          ),
-        ),
+        // 우측 절반 - 거래내역/요약 전환
+        Expanded(flex: 1, child: Container(child: _buildRightPanel(user))),
       ],
     );
   }
@@ -338,8 +350,6 @@ class _HomePageState extends State<HomePage> {
               Expanded(child: _buildTabButton(0, '캘린더', Icons.calendar_today)),
               const SizedBox(width: 8),
               Expanded(child: _buildTabButton(1, '거래내역', Icons.list)),
-              const SizedBox(width: 8),
-              Expanded(child: _buildTabButton(2, '요약', Icons.analytics)),
             ],
           ),
         ),
@@ -425,7 +435,135 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         );
-      case 2:
+      default:
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(children: [CalendarWidget()]),
+        );
+    }
+  }
+
+  // 우측 패널 - 거래내역/요약 전환
+  Widget _buildRightPanel(User? user) {
+    return Column(
+      children: [
+        // 탭 버튼들
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade50,
+            border: Border(
+              bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+            ),
+          ),
+          child: Row(
+            children: [
+              Expanded(child: _buildRightPanelTabButton(0, '거래내역', Icons.list)),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _buildRightPanelTabButton(1, '요약', Icons.analytics),
+              ),
+            ],
+          ),
+        ),
+        // 컨텐츠 영역
+        Expanded(child: _buildRightPanelContent(user)),
+      ],
+    );
+  }
+
+  // 우측 패널 탭 버튼
+  Widget _buildRightPanelTabButton(int index, String label, IconData icon) {
+    final isSelected = _rightPanelIndex == index;
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _rightPanelIndex = index;
+        });
+      },
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.blue : Colors.transparent,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 16,
+              color: isSelected ? Colors.white : Colors.grey,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 12,
+                color: isSelected ? Colors.white : Colors.grey,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // 우측 패널 컨텐츠
+  Widget _buildRightPanelContent(User? user) {
+    switch (_rightPanelIndex) {
+      case 0: // 거래내역
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 헤더
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.receipt_long, color: Colors.blue, size: 24),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${_selectedDate.year}년 ${_selectedDate.month}월 ${_selectedDate.day}일',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Spacer(),
+                  ElevatedButton.icon(
+                    onPressed: () => _showAddTransactionDialog(context),
+                    icon: const Icon(Icons.add, size: 16),
+                    label: const Text('거래 추가'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // 거래 내역 리스트
+            Expanded(
+              child: TransactionListWidget(
+                selectedDate: _selectedDate,
+                showDailyOnly: true,
+              ),
+            ),
+          ],
+        );
+      case 1: // 요약
         return Column(
           children: [
             Padding(
@@ -436,70 +574,59 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: TransactionListWidget(
                 selectedDate: _selectedDate,
-                showDailyOnly: true,
+                showDailyOnly: false, // 해당 월의 전체 거래내역 표시
               ),
             ),
           ],
         );
       default:
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(children: [CalendarWidget()]),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.receipt_long, color: Colors.blue, size: 24),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${_selectedDate.year}년 ${_selectedDate.month}월 ${_selectedDate.day}일',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Spacer(),
+                  ElevatedButton.icon(
+                    onPressed: () => _showAddTransactionDialog(context),
+                    icon: const Icon(Icons.add, size: 16),
+                    label: const Text('거래 추가'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: TransactionListWidget(
+                selectedDate: _selectedDate,
+                showDailyOnly: true,
+              ),
+            ),
+          ],
         );
     }
-  }
-
-  // 우측 패널 - 선택한 날짜의 거래 내역
-  Widget _buildRightPanel(User? user) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // 헤더
-        Container(
-          padding: const EdgeInsets.only(bottom: 16),
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(color: Colors.grey.shade300, width: 1),
-            ),
-          ),
-          child: Row(
-            children: [
-              Icon(Icons.receipt_long, color: Colors.blue, size: 24),
-              const SizedBox(width: 8),
-              Text(
-                '${_selectedDate.year}년 ${_selectedDate.month}월 ${_selectedDate.day}일',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Spacer(),
-              ElevatedButton.icon(
-                onPressed: () => _showAddTransactionDialog(context),
-                icon: const Icon(Icons.add, size: 16),
-                label: const Text('거래 추가'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        // 거래 내역 리스트
-        Expanded(
-          child: TransactionListWidget(
-            selectedDate: _selectedDate,
-            showDailyOnly: true,
-          ),
-        ),
-      ],
-    );
   }
 
   // 개발 모드용 모바일 레이아웃 (작은 텍스트 사용)
@@ -543,7 +670,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 16),
               TransactionListWidget(
                 selectedDate: _selectedDate,
-                showDailyOnly: true,
+                showDailyOnly: false, // 해당 월의 전체 거래내역 표시
               ),
             ],
           ),
@@ -596,7 +723,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 16),
               TransactionListWidget(
                 selectedDate: _selectedDate,
-                showDailyOnly: true,
+                showDailyOnly: false, // 해당 월의 전체 거래내역 표시
               ),
             ],
           ),

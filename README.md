@@ -1,7 +1,9 @@
-# financial_manage_app_project
-financial_manage_app_project</br>
+# Just_A_Account_Book
+
+
+Just_A_Account_Book</br>
 mini project for study
 
-Test Link: https://sourpringles.github.io/financial_manage_app_project/
+Test Link: ...
 
 this repository contains some copilot codes

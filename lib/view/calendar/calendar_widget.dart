@@ -1,4 +1,4 @@
-import 'package:financial_manage_app_project/view/calendar/sum_widget.dart';
+import 'package:just_a_account_book/view/calendar/sum_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';

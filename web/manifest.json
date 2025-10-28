@@ -1,6 +1,6 @@
 {
-    "name": "financial_manage_app_project",
-    "short_name": "financial_manage_app_project",
+    "name": "just_a_account_book",
+    "short_name": "just_a_account_book",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

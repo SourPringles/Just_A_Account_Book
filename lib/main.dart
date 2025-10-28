@@ -11,6 +11,9 @@ import 'view/auth/login.dart';
 import 'view/auth/signup.dart';
 import 'view/home.dart';
 import 'view/uivalue.dart';
+import 'services/theme_service.dart';
+import 'services/settings_service.dart';
+import 'view/settings/settings_page.dart';
 
 // 윈도우 화면 크기
 const Size windowScreenSize = Size(1280, 720);
@@ -25,6 +28,10 @@ void main() async {
   }
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // initialize services so saved preferences are loaded
+  await ThemeService.instance.init();
+  await SettingsService.instance.init();
 
   runApp(const MainApp());
 }
@@ -53,18 +60,26 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      // Builder to provide a BuildContext for UIValue.appTheme(context)
-      builder: (context) => MaterialApp(
-        title: 'Financial Management App',
-        theme: UIValue.appTheme(context),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const HomePage(),
-          '/login': (context) => const LoginPage(),
-          '/signup': (context) => const SignupPage(),
-        },
-      ),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: ThemeService.instance.themeMode,
+      builder: (context, mode, _) {
+        return Builder(
+          // Builder to provide a BuildContext for UIValue.appTheme(context)
+          builder: (ctx) => MaterialApp(
+            title: 'Financial Management App',
+            theme: UIValue.appTheme(ctx),
+            darkTheme: UIValue.darkTheme(ctx),
+            themeMode: mode,
+            initialRoute: '/',
+            routes: {
+              '/': (context) => const HomePage(),
+              '/login': (context) => const LoginPage(),
+              '/signup': (context) => const SignupPage(),
+              '/settings': (context) => const SettingsPage(),
+            },
+          ),
+        );
+      },
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'uivalue.dart';
 
 import '../services/auth_service.dart';
+import '../services/theme_service.dart';
 import 'auth/login.dart';
 import 'auth/auth.dart';
 import 'calendar/calendar_widget.dart';
@@ -37,6 +38,12 @@ class _HomePageState extends State<HomePage> {
                 IconButton(
                   icon: const Icon(Icons.settings),
                   onPressed: () => _showAccountInfoDialog(context, user.data),
+                ),
+                // 설정 페이지로 이동하는 버튼
+                IconButton(
+                  icon: const Icon(Icons.tune),
+                  tooltip: '설정',
+                  onPressed: () => Navigator.pushNamed(context, '/settings'),
                 ),
                 IconButton(
                   icon: const Icon(Icons.logout),
@@ -125,10 +132,10 @@ class _HomePageState extends State<HomePage> {
     return Container(
       padding: EdgeInsets.all(UIValue.smallGap),
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
+        color: Theme.of(context).colorScheme.surface,
         border: Border(
           bottom: BorderSide(
-            color: Colors.grey.shade300,
+            color: Theme.of(context).dividerColor,
             width: UIValue.borderWidthNormal,
           ),
         ),
@@ -171,7 +178,9 @@ class _HomePageState extends State<HomePage> {
           horizontal: UIValue.smallGap,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.transparent,
+          color: isSelected
+              ? Theme.of(context).colorScheme.primary
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
@@ -180,14 +189,30 @@ class _HomePageState extends State<HomePage> {
             Icon(
               icon,
               size: UIValue.iconSizeSmall,
-              color: isSelected ? Colors.white : Colors.grey,
+              color: isSelected
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : (() {
+                      final c = Theme.of(context).colorScheme.onSurface;
+                      final r = (c.r * 255.0).round() & 0xff;
+                      final g = (c.g * 255.0).round() & 0xff;
+                      final b = (c.b * 255.0).round() & 0xff;
+                      return Color.fromRGBO(r, g, b, 0.7);
+                    })(),
             ),
             SizedBox(width: UIValue.tinyGap),
             Text(
               label,
               style: UIValue.subtitleStyle(
                 context,
-                color: isSelected ? Colors.white : Colors.grey,
+                color: isSelected
+                    ? Theme.of(context).colorScheme.onPrimary
+                    : (() {
+                        final c = Theme.of(context).colorScheme.onSurface;
+                        final r = (c.r * 255.0).round() & 0xff;
+                        final g = (c.g * 255.0).round() & 0xff;
+                        final b = (c.b * 255.0).round() & 0xff;
+                        return Color.fromRGBO(r, g, b, 0.8);
+                      })(),
                 weight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
@@ -317,6 +342,66 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  // 다크/라이트/시스템 테마 선택 다이얼로그
+  void _showThemeDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        final current = ThemeService.instance.themeMode.value;
+        return AlertDialog(
+          title: const Text('테마 선택'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RadioListTile<ThemeMode>(
+                value: ThemeMode.system,
+                groupValue: current,
+                title: const Text('시스템 기본'),
+                onChanged: (v) async {
+                  if (v != null) {
+                    final nav = Navigator.of(ctx);
+                    await ThemeService.instance.setThemeMode(v);
+                    nav.pop();
+                  }
+                },
+              ),
+              RadioListTile<ThemeMode>(
+                value: ThemeMode.light,
+                groupValue: current,
+                title: const Text('라이트'),
+                onChanged: (v) async {
+                  if (v != null) {
+                    final nav = Navigator.of(ctx);
+                    await ThemeService.instance.setThemeMode(v);
+                    nav.pop();
+                  }
+                },
+              ),
+              RadioListTile<ThemeMode>(
+                value: ThemeMode.dark,
+                groupValue: current,
+                title: const Text('다크'),
+                onChanged: (v) async {
+                  if (v != null) {
+                    final nav = Navigator.of(ctx);
+                    await ThemeService.instance.setThemeMode(v);
+                    nav.pop();
+                  }
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('취소'),
+            ),
+          ],
         );
       },
     );

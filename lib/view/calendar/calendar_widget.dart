@@ -207,11 +207,14 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 
   // 기본 날짜 셀 디자인 생성 함수
-  Widget _buildDefaultCell(DateTime date) {
+  Widget _buildDefaultCell(BuildContext context, DateTime date) {
     final textStyles = _getTextStyles();
 
-    // 요일에 따른 날짜 색상 설정
-    Color dateTextColor = Colors.black;
+    // 다크 모드인지 확인
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    // 요일에 따른 날짜 색상 설정 (주말은 예외)
+    Color dateTextColor = isDark ? Colors.white : Colors.black;
     if (date.weekday == DateTime.sunday) {
       dateTextColor = Colors.red;
     } else if (date.weekday == DateTime.saturday) {
@@ -401,13 +404,13 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             calendarBuilders: CalendarBuilders(
               // 기본 날짜 셀 빌더
               defaultBuilder: (context, date, _) {
-                return _buildDefaultCell(date);
+                return _buildDefaultCell(context, date);
               },
               selectedBuilder: (context, date, _) {
                 return Stack(
                   children: [
                     // 기본 디자인 재사용
-                    _buildDefaultCell(date),
+                    _buildDefaultCell(context, date),
                     // 선택 테두리 오버레이
                     Positioned.fill(
                       child: Container(
@@ -432,7 +435,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                 return Stack(
                   children: [
                     // 기본 디자인 재사용 (볼드체 적용)
-                    _buildDefaultCell(date),
+                    _buildDefaultCell(context, date),
                     // 오늘 날짜 테두리 오버레이 (주황색)
                     Positioned.fill(
                       child: Container(

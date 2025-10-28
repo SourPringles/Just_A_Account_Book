@@ -189,13 +189,195 @@ class UIValue {
   // App-wide ThemeData builder that uses the UIValue textTheme
   static ThemeData appTheme(BuildContext context) {
     final colorScheme = ColorScheme.fromSwatch(primarySwatch: Colors.blue);
-    return ThemeData(
+    final base = ThemeData.light();
+    return base.copyWith(
       colorScheme: colorScheme,
       primaryColor: colorScheme.primary,
       textTheme: textTheme(context),
       appBarTheme: AppBarTheme(titleTextStyle: titleStyle(context)),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Colors.blue,
+      ),
+      // Buttons
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
+          padding: EdgeInsets.symmetric(
+            horizontal: defaultPadding,
+            vertical: buttonPadding(context),
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: colorScheme.primary,
+          textStyle: buttonStyle(context),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: colorScheme.primary,
+          side: BorderSide(color: colorScheme.primary),
+        ),
+      ),
+      // Inputs
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(
+            color: (() {
+              final c = colorScheme.onSurface;
+              final r = (c.r * 255.0).round() & 0xff;
+              final g = (c.g * 255.0).round() & 0xff;
+              final b = (c.b * 255.0).round() & 0xff;
+              return Color.fromRGBO(r, g, b, 0.12);
+            })(),
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(
+            color: (() {
+              final c = colorScheme.onSurface;
+              final r = (c.r * 255.0).round() & 0xff;
+              final g = (c.g * 255.0).round() & 0xff;
+              final b = (c.b * 255.0).round() & 0xff;
+              return Color.fromRGBO(r, g, b, 0.12);
+            })(),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: colorScheme.primary),
+        ),
+        labelStyle: labelStyle(context),
+      ),
+      // Cards/ListTiles
+      cardTheme: base.cardTheme.copyWith(
+        color: colorScheme.surface,
+        elevation: 1,
+        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 0),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+      listTileTheme: ListTileThemeData(
+        iconColor: colorScheme.onSurface,
+        textColor: colorScheme.onSurface,
+      ),
+      // Icon theme
+      iconTheme: IconThemeData(
+        color: colorScheme.onSurface,
+        size: iconSizeMedium,
+      ),
+      // Toggle buttons
+      toggleButtonsTheme: ToggleButtonsThemeData(
+        color: colorScheme.onSurface,
+        selectedColor: colorScheme.onPrimary,
+        fillColor: colorScheme.primary,
+        borderRadius: BorderRadius.circular(8),
+      ),
+    );
+  }
+
+  // Dark theme counterpart
+  static ThemeData darkTheme(BuildContext context) {
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: Colors.blue,
+      brightness: Brightness.dark,
+    );
+    final base = ThemeData.dark();
+    return base.copyWith(
+      colorScheme: colorScheme,
+      primaryColor: colorScheme.primary,
+      textTheme: textTheme(
+        context,
+      ).apply(bodyColor: Colors.white, displayColor: Colors.white),
+      appBarTheme: base.appBarTheme.copyWith(
+        titleTextStyle: titleStyle(context, color: Colors.white),
+      ),
+      floatingActionButtonTheme: base.floatingActionButtonTheme.copyWith(
+        backgroundColor: Colors.blue,
+      ),
+      scaffoldBackgroundColor: Colors.black,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
+          padding: EdgeInsets.symmetric(
+            horizontal: defaultPadding,
+            vertical: buttonPadding(context),
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: colorScheme.onPrimary,
+          textStyle: buttonStyle(context, color: colorScheme.onPrimary),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: colorScheme.onPrimary,
+          side: BorderSide(
+            color: (() {
+              final c = colorScheme.onPrimary;
+              final r = (c.r * 255.0).round() & 0xff;
+              final g = (c.g * 255.0).round() & 0xff;
+              final b = (c.b * 255.0).round() & 0xff;
+              return Color.fromRGBO(r, g, b, 0.12);
+            })(),
+          ),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(
+            color: (() {
+              final c = colorScheme.onSurface;
+              final r = (c.r * 255.0).round() & 0xff;
+              final g = (c.g * 255.0).round() & 0xff;
+              final b = (c.b * 255.0).round() & 0xff;
+              return Color.fromRGBO(r, g, b, 0.12);
+            })(),
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(
+            color: (() {
+              final c = colorScheme.onSurface;
+              final r = (c.r * 255.0).round() & 0xff;
+              final g = (c.g * 255.0).round() & 0xff;
+              final b = (c.b * 255.0).round() & 0xff;
+              return Color.fromRGBO(r, g, b, 0.12);
+            })(),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(color: colorScheme.primary),
+        ),
+        labelStyle: labelStyle(context, color: colorScheme.onSurface),
+      ),
+      cardTheme: base.cardTheme.copyWith(
+        color: colorScheme.surface,
+        elevation: 1,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      ),
+      listTileTheme: base.listTileTheme.copyWith(
+        iconColor: colorScheme.onSurface,
+        textColor: colorScheme.onSurface,
+      ),
+      iconTheme: base.iconTheme.copyWith(
+        color: colorScheme.onSurface,
+        size: iconSizeMedium,
+      ),
+      toggleButtonsTheme: ToggleButtonsThemeData(
+        color: colorScheme.onSurface,
+        selectedColor: colorScheme.onPrimary,
+        fillColor: colorScheme.primary,
+        borderRadius: BorderRadius.circular(8),
       ),
     );
   }

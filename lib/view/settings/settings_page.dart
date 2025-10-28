@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../services/theme_service.dart';
-import '../../services/settings_service.dart';
+// import '../../services/settings_service.dart';
 import '../uivalue.dart';
+import 'widgets/theme_section_widget.dart';
+// import 'widgets/language_section_widget.dart';
+// import 'widgets/currency_section_widget.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -11,24 +14,24 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  String _lang = SettingsService.instance.language.value;
-  String _currency = SettingsService.instance.currency.value;
+  // String _lang = SettingsService.instance.language.value;
+  // String _currency = SettingsService.instance.currency.value;
   ThemeMode _theme = ThemeService.instance.themeMode.value;
 
   @override
   void initState() {
     super.initState();
     // listen for external changes (keeps UI in sync)
-    SettingsService.instance.language.addListener(() {
-      setState(() {
-        _lang = SettingsService.instance.language.value;
-      });
-    });
-    SettingsService.instance.currency.addListener(() {
-      setState(() {
-        _currency = SettingsService.instance.currency.value;
-      });
-    });
+    // SettingsService.instance.language.addListener(() {
+    //   setState(() {
+    //     _lang = SettingsService.instance.language.value;
+    //   });
+    // });
+    // SettingsService.instance.currency.addListener(() {
+    //   setState(() {
+    //     _currency = SettingsService.instance.currency.value;
+    //   });
+    // });
     ThemeService.instance.themeMode.addListener(() {
       setState(() {
         _theme = ThemeService.instance.themeMode.value;
@@ -46,79 +49,32 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('테마', style: UIValue.titleStyle(context)),
-              RadioListTile<ThemeMode>(
-                title: const Text('시스템 기본'),
-                value: ThemeMode.system,
-                groupValue: _theme,
-                onChanged: (v) async {
-                  if (v != null) await ThemeService.instance.setThemeMode(v);
-                },
-              ),
-              RadioListTile<ThemeMode>(
-                title: const Text('라이트'),
-                value: ThemeMode.light,
-                groupValue: _theme,
-                onChanged: (v) async {
-                  if (v != null) await ThemeService.instance.setThemeMode(v);
-                },
-              ),
-              RadioListTile<ThemeMode>(
-                title: const Text('다크'),
-                value: ThemeMode.dark,
-                groupValue: _theme,
-                onChanged: (v) async {
-                  if (v != null) await ThemeService.instance.setThemeMode(v);
+              ThemeSectionWidget(
+                currentTheme: _theme,
+                onThemeChanged: (theme) async {
+                  await ThemeService.instance.setThemeMode(theme);
                 },
               ),
 
               const Divider(),
 
-              //Text('언어', style: UIValue.titleStyle(context)),
-              //RadioListTile<String>(
-              //  title: const Text('시스템 기본'),
-              //  value: 'system',
-              //  groupValue: _lang,
-              //  onChanged: (v) async {
-              //    if (v != null) await SettingsService.instance.setLanguage(v);
-              //  },
-              //),
-              //RadioListTile<String>(
-              //  title: const Text('한국어'),
-              //  value: 'ko',
-              //  groupValue: _lang,
-              //  onChanged: (v) async {
-              //    if (v != null) await SettingsService.instance.setLanguage(v);
-              //  },
-              //),
-              //RadioListTile<String>(
-              //  title: const Text('English'),
-              //  value: 'en',
-              //  groupValue: _lang,
-              //  onChanged: (v) async {
-              //    if (v != null) await SettingsService.instance.setLanguage(v);
-              //  },
-              //),
+              // 언어 설정 (주석 처리됨 - 필요시 활성화)
+              // LanguageSectionWidget(
+              //   currentLanguage: _lang,
+              //   onLanguageChanged: (lang) async {
+              //     await SettingsService.instance.setLanguage(lang);
+              //   },
+              // ),
               //
-              //const Divider(),
+              // const Divider(),
 
-              //Text('통화 단위', style: UIValue.titleStyle(context)),
-              //RadioListTile<String>(
-              //  title: const Text('KRW (₩)'),
-              //  value: 'KRW',
-              //  groupValue: _currency,
-              //  onChanged: (v) async {
-              //    if (v != null) await SettingsService.instance.setCurrency(v);
-              //  },
-              //),
-              //RadioListTile<String>(
-              //  title: const Text('USD ($)'),
-              //  value: 'USD',
-              //  groupValue: _currency,
-              //  onChanged: (v) async {
-              //    if (v != null) await SettingsService.instance.setCurrency(v);
-              //  },
-              //),
+              // 통화 설정 (주석 처리됨 - 필요시 활성화)
+              // CurrencySectionWidget(
+              //   currentCurrency: _currency,
+              //   onCurrencyChanged: (currency) async {
+              //     await SettingsService.instance.setCurrency(currency);
+              //   },
+              // ),
             ],
           ),
         ),

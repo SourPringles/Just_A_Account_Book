@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
+import '../uivalue.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Firebase App")),
       body: Container(
-        padding: const EdgeInsets.all(15),
+        padding: EdgeInsets.all(UIValue.mediumGap),
         child: Center(
           child: Form(
             key: _key,
@@ -26,11 +27,11 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 emailInput(),
-                const SizedBox(height: 15),
+                SizedBox(height: UIValue.mediumGap),
                 passwordInput(),
-                const SizedBox(height: 15),
+                SizedBox(height: UIValue.mediumGap),
                 loginButton(),
-                const SizedBox(height: 15),
+                SizedBox(height: UIValue.mediumGap),
                 TextButton(
                   onPressed: () => Navigator.pushNamed(context, '/signup'),
                   child: const Text("Sign Up"),
@@ -55,11 +56,11 @@ class _LoginPageState extends State<LoginPage> {
           return null;
         }
       },
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: OutlineInputBorder(),
         hintText: 'Input your email address.',
         labelText: 'Email Address',
-        labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        labelStyle: UIValue.labelStyle(context),
       ),
     );
   }
@@ -76,11 +77,11 @@ class _LoginPageState extends State<LoginPage> {
           return null;
         }
       },
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: OutlineInputBorder(),
         hintText: 'Input your password.',
         labelText: 'Password',
-        labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        labelStyle: UIValue.labelStyle(context),
       ),
     );
   }
@@ -113,8 +114,11 @@ class _LoginPageState extends State<LoginPage> {
         }
       },
       child: Container(
-        padding: const EdgeInsets.all(15),
-        child: const Text("Login", style: TextStyle(fontSize: 18)),
+        padding: EdgeInsets.all(UIValue.mediumGap),
+        child: Text(
+          "Login",
+          style: TextStyle(fontSize: UIValue.buttonTextSize(context)),
+        ),
       ),
     );
   }
@@ -136,8 +140,11 @@ class _LoginPageState extends State<LoginPage> {
         }
       },
       child: Container(
-        padding: const EdgeInsets.all(15),
-        child: const Text("temporary login", style: TextStyle(fontSize: 18)),
+        padding: EdgeInsets.all(UIValue.mediumGap),
+        child: Text(
+          "temporary login",
+          style: TextStyle(fontSize: UIValue.buttonTextSize(context)),
+        ),
       ),
     );
   }

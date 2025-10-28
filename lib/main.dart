@@ -10,6 +10,7 @@ import 'firebase_options.dart';
 import 'view/auth/login.dart';
 import 'view/auth/signup.dart';
 import 'view/home.dart';
+import 'view/uivalue.dart';
 
 // 윈도우 화면 크기
 const Size windowScreenSize = Size(1280, 720);
@@ -52,15 +53,18 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Financial Management App',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const HomePage(),
-        '/login': (context) => const LoginPage(),
-        '/signup': (context) => const SignupPage(),
-      },
+    return Builder(
+      // Builder to provide a BuildContext for UIValue.appTheme(context)
+      builder: (context) => MaterialApp(
+        title: 'Financial Management App',
+        theme: UIValue.appTheme(context),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const HomePage(),
+          '/login': (context) => const LoginPage(),
+          '/signup': (context) => const SignupPage(),
+        },
+      ),
     );
   }
 }

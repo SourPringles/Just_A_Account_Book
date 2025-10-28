@@ -1,5 +1,6 @@
 import 'package:just_a_account_book/view/calendar/sum_widget.dart';
 import 'package:flutter/material.dart';
+import '../uivalue.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
@@ -7,7 +8,7 @@ import '../../services/transaction_service.dart';
 import '../../models/transaction_model.dart';
 
 // UI 타입을 나타내는 enum
-enum CalendarUIType { mobile, window, dev }
+enum CalendarUIType { mobile, window }
 
 // 캘린더 텍스트 스타일 클래스
 class CalendarTextStyles {
@@ -121,7 +122,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         });
       }
     } catch (e) {
-      print('Error loading monthly data: $e');
+      debugPrint('Error loading monthly data: $e');
     }
   }
 
@@ -137,36 +138,37 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 
   // 월간 수입 합계 계산
-  double _getMonthlyIncome() {
-    double total = 0;
-    for (final dailyTotals in _dailyTotals.values) {
-      total += dailyTotals['income'] ?? 0;
-    }
-    return total;
-  }
-
-  // 월간 지출 합계 계산
-  double _getMonthlyExpense() {
-    double total = 0;
-    for (final dailyTotals in _dailyTotals.values) {
-      total += dailyTotals['expense'] ?? 0;
-    }
-    return total;
-  }
+  // 월간 수입/지출 합계 계산 함수들: 현재 사용되지 않아 주석 처리했습니다.
+  // double _getMonthlyIncome() {
+  //   double total = 0;
+  //   for (final dailyTotals in _dailyTotals.values) {
+  //     total += dailyTotals['income'] ?? 0;
+  //   }
+  //   return total;
+  // }
+  //
+  // // 월간 지출 합계 계산
+  // double _getMonthlyExpense() {
+  //   double total = 0;
+  //   for (final dailyTotals in _dailyTotals.values) {
+  //     total += dailyTotals['expense'] ?? 0;
+  //   }
+  //   return total;
+  // }
 
   // 월간 순액 계산 (수입 - 지출)
-  double _getMonthlyBalance() {
-    return _getMonthlyIncome() - _getMonthlyExpense();
-  }
+  // 월간 순액 계산 함수는 현재 사용되지 않아 주석 처리했습니다.
+  // double _getMonthlyBalance() {
+  //   return _getMonthlyIncome() - _getMonthlyExpense();
+  // }
 
   // 주간 합계 계산 (선택된 주의 합계)
   double _getWeeklyTotal() {
     if (_calendarFormat != CalendarFormat.week) return 0;
 
-    // 선택된 날짜가 포함된 주의 시작과 끝 계산
-    final startOfWeek = _selectedDay.subtract(
-      Duration(days: _selectedDay.weekday % 7),
-    );
+    // 페이지 전환으로 주가 바뀌면 focusedDay를 기준으로 합계를 계산하도록 변경
+    final baseDay = _focusedDay;
+    final startOfWeek = baseDay.subtract(Duration(days: baseDay.weekday % 7));
     double total = 0;
 
     for (int i = 0; i < 7; i++) {
@@ -191,15 +193,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           amountSize: 12.0,
           headerSize: 16.0,
           dayOfWeekSize: 14.0,
-          rowHeight: 90.0,
-        );
-      case CalendarUIType.dev:
-        return CalendarTextStyles(
-          dayNumberSize: 15.0,
-          amountSize: 10.0,
-          headerSize: 12.0,
-          dayOfWeekSize: 12.0,
-          rowHeight: 70.0,
+          rowHeight: 75.0,
         );
       case CalendarUIType.mobile:
         return CalendarTextStyles(
@@ -242,9 +236,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     }
 
     return Container(
-      margin: const EdgeInsets.all(3.0),
+      margin: EdgeInsets.all(UIValue.tinyGap),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300, width: 0.5),
+        border: Border.all(
+          color: Colors.grey.shade300,
+          width: UIValue.borderWidthThin,
+        ),
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Column(
@@ -266,8 +263,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           // 거래 금액 영역 (수입/지출)
           Expanded(
             child: Container(
-              margin: const EdgeInsets.all(2.0),
-              padding: const EdgeInsets.all(4.0),
+              margin: EdgeInsets.all(UIValue.tinyGap / 2),
+              padding: EdgeInsets.all(UIValue.tinyGap),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -306,221 +303,215 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   Widget build(BuildContext context) {
     final textStyles = _getTextStyles();
 
-    return Column(
-      children: [
-        TableCalendar(
-          locale: 'ko_KR',
-          firstDay: DateTime.utc(2020, 1, 1),
-          lastDay: DateTime.utc(2030, 12, 31),
-          focusedDay: _focusedDay,
-          calendarFormat: _calendarFormat,
-          availableCalendarFormats: const {
-            CalendarFormat.month: '월간',
-            CalendarFormat.week: '주간',
-          },
-          availableGestures: AvailableGestures.none,
-          selectedDayPredicate: (day) {
-            return isSameDay(_selectedDay, day);
-          },
-          onDaySelected: (selectedDay, focusedDay) {
-            setState(() {
-              _selectedDay = selectedDay;
-              _focusedDay = focusedDay; // update `_focusedDay` here as well
-            });
-            // 선택된 날짜를 부모 위젯에 알림
-            widget.onDateSelected?.call(selectedDay);
-          },
-          onFormatChanged: (format) {
-            if (mounted) {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // TableCalendar이 자신의 높이(rowHeight * rows + header 등)를 사용하도록 그대로 배치
+          TableCalendar(
+            locale: 'ko_KR',
+            firstDay: DateTime.utc(2020, 1, 1),
+            lastDay: DateTime.utc(2030, 12, 31),
+            focusedDay: _focusedDay,
+            calendarFormat: _calendarFormat,
+            availableCalendarFormats: const {
+              CalendarFormat.month: '월간',
+              CalendarFormat.week: '주간',
+            },
+            availableGestures: AvailableGestures.none,
+            selectedDayPredicate: (day) {
+              return isSameDay(_selectedDay, day);
+            },
+            onDaySelected: (selectedDay, focusedDay) {
               setState(() {
-                _calendarFormat = format;
+                _selectedDay = selectedDay;
+                _focusedDay = focusedDay; // update `_focusedDay` here as well
               });
-            }
-          },
-          onPageChanged: (focusedDay) {
-            if (mounted) {
-              setState(() {
-                _focusedDay = focusedDay;
-              });
-              // 월이 변경되면 새로운 거래 데이터 로드
-              _loadMonthlyData();
-            }
-          },
-          calendarStyle: CalendarStyle(
-            // 요일 헤더 스타일
-            outsideDaysVisible: false,
-            // 셀 크기 조정 - 높이를 증가시켜 텍스트 공간 확보
-            cellMargin: const EdgeInsets.all(2.0),
-            cellPadding: const EdgeInsets.all(4.0),
-            // 기본 텍스트 스타일
-            defaultTextStyle: TextStyle(fontSize: textStyles.dayNumberSize),
-            weekendTextStyle: TextStyle(
-              fontSize: textStyles.dayNumberSize,
-              color: Colors.red,
-            ),
-            // 셀의 최소 높이 설정
-            rowDecoration: const BoxDecoration(),
-          ),
-          rowHeight: textStyles.rowHeight, // UI 타입에 따른 행 높이
-          daysOfWeekStyle: DaysOfWeekStyle(
-            // 요일 헤더의 높이와 스타일 조정
-            weekdayStyle: TextStyle(
-              fontSize: textStyles.dayOfWeekSize,
-              fontWeight: FontWeight.w600,
-              color: Colors.black87,
-            ),
-            weekendStyle: TextStyle(
-              fontSize: textStyles.dayOfWeekSize,
-              fontWeight: FontWeight.w600,
-              color: Colors.red,
-            ),
-          ),
-          headerStyle: HeaderStyle(
-            formatButtonVisible: true,
-            titleCentered: true,
-            formatButtonShowsNext: false,
-            formatButtonDecoration: const BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.all(Radius.circular(12.0)),
-            ),
-            formatButtonTextStyle: TextStyle(
-              color: Colors.white,
-              fontSize: textStyles.headerSize - 2,
-            ),
-            leftChevronIcon: const Icon(Icons.chevron_left, color: Colors.blue),
-            rightChevronIcon: const Icon(
-              Icons.chevron_right,
-              color: Colors.blue,
-            ),
-          ),
-          calendarBuilders: CalendarBuilders(
-            // 기본 날짜 셀 빌더
-            defaultBuilder: (context, date, _) {
-              return _buildDefaultCell(date);
+              // 선택된 날짜를 부모 위젯에 알림
+              widget.onDateSelected?.call(selectedDay);
             },
-            selectedBuilder: (context, date, _) {
-              return Stack(
-                children: [
-                  // 기본 디자인 재사용
-                  _buildDefaultCell(date),
-                  // 선택 테두리 오버레이
-                  Positioned.fill(
-                    child: Container(
-                      margin: const EdgeInsets.all(2.0),
-                      decoration: BoxDecoration(
-                        //border: Border.all(color: Colors.black, width: 1.0),
-                        borderRadius: BorderRadius.circular(8.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 4.0,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
-            todayBuilder: (context, date, _) {
-              return Stack(
-                children: [
-                  // 기본 디자인 재사용 (볼드체 적용)
-                  _buildDefaultCell(date),
-                  // 오늘 날짜 테두리 오버레이 (주황색)
-                  Positioned.fill(
-                    child: Container(
-                      margin: const EdgeInsets.all(2.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.orange, width: 1.0),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
-            dowBuilder: (context, day) {
-              String text;
-              Color textColor = Colors.black;
-
-              switch (day.weekday) {
-                case DateTime.sunday:
-                  text = '일';
-                  textColor = Colors.red;
-                  break;
-                case DateTime.monday:
-                  text = '월';
-                  break;
-                case DateTime.tuesday:
-                  text = '화';
-                  break;
-                case DateTime.wednesday:
-                  text = '수';
-                  break;
-                case DateTime.thursday:
-                  text = '목';
-                  break;
-                case DateTime.friday:
-                  text = '금';
-                  break;
-                case DateTime.saturday:
-                  text = '토';
-                  textColor = Colors.blue;
-                  break;
-                default:
-                  text = '';
+            onFormatChanged: (format) {
+              if (mounted) {
+                setState(() {
+                  _calendarFormat = format;
+                });
               }
-
-              return Container(
-                height: 40,
-                alignment: Alignment.center,
-                child: Text(
-                  text,
-                  style: TextStyle(
-                    color: textColor,
-                    fontSize: textStyles.dayOfWeekSize,
-                    fontWeight: FontWeight.w600,
-                    height: 1.2,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              );
             },
-          ),
-        ),
-        const SizedBox(height: 16),
-        if (_calendarFormat == CalendarFormat.week)
-          CommonSumWidget(
-            val: _getWeeklyTotal().toInt(),
-            label: '주간 합계',
-            color: Colors.black,
-            fontSize:
-                (widget.uiType ?? CalendarUIType.mobile) ==
-                    CalendarUIType.window
-                ? 22.0
-                : (widget.uiType ?? CalendarUIType.mobile) == CalendarUIType.dev
-                ? 16.0
-                : 20.0,
-          ),
+            onPageChanged: (focusedDay) {
+              if (mounted) {
+                setState(() {
+                  _focusedDay = focusedDay;
+                });
+                // 월이 변경되면 새로운 거래 데이터 로드
+                _loadMonthlyData();
+              }
+            },
+            calendarStyle: CalendarStyle(
+              // 요일 헤더 스타일
+              outsideDaysVisible: false,
+              // 셀 크기 조정 - 높이를 증가시켜 텍스트 공간 확보
+              cellMargin: EdgeInsets.all(UIValue.tinyGap / 2),
+              cellPadding: EdgeInsets.all(UIValue.tinyGap),
+              // 기본 텍스트 스타일
+              defaultTextStyle: TextStyle(fontSize: textStyles.dayNumberSize),
+              weekendTextStyle: TextStyle(
+                fontSize: textStyles.dayNumberSize,
+                color: Colors.red,
+              ),
+              // 셀의 최소 높이 설정
+              rowDecoration: const BoxDecoration(),
+            ),
+            rowHeight: textStyles.rowHeight, // UI 타입에 따른 행 높이
+            daysOfWeekStyle: DaysOfWeekStyle(
+              // 요일 헤더의 높이와 스타일 조정
+              weekdayStyle: TextStyle(
+                fontSize: textStyles.dayOfWeekSize,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+              weekendStyle: TextStyle(
+                fontSize: textStyles.dayOfWeekSize,
+                fontWeight: FontWeight.w600,
+                color: Colors.red,
+              ),
+            ),
+            headerStyle: HeaderStyle(
+              formatButtonVisible: true,
+              titleCentered: true,
+              formatButtonShowsNext: false,
+              formatButtonDecoration: const BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+              ),
+              formatButtonTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: textStyles.headerSize - 2,
+              ),
+              leftChevronIcon: const Icon(
+                Icons.chevron_left,
+                color: Colors.blue,
+              ),
+              rightChevronIcon: const Icon(
+                Icons.chevron_right,
+                color: Colors.blue,
+              ),
+            ),
+            calendarBuilders: CalendarBuilders(
+              // 기본 날짜 셀 빌더
+              defaultBuilder: (context, date, _) {
+                return _buildDefaultCell(date);
+              },
+              selectedBuilder: (context, date, _) {
+                return Stack(
+                  children: [
+                    // 기본 디자인 재사용
+                    _buildDefaultCell(date),
+                    // 선택 테두리 오버레이
+                    Positioned.fill(
+                      child: Container(
+                        margin: EdgeInsets.all(UIValue.tinyGap / 2),
+                        decoration: BoxDecoration(
+                          //border: Border.all(color: Colors.black, width: 1.0),
+                          borderRadius: BorderRadius.circular(8.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color.fromRGBO(0, 0, 0, 0.1),
+                              blurRadius: 4.0,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+              todayBuilder: (context, date, _) {
+                return Stack(
+                  children: [
+                    // 기본 디자인 재사용 (볼드체 적용)
+                    _buildDefaultCell(date),
+                    // 오늘 날짜 테두리 오버레이 (주황색)
+                    Positioned.fill(
+                      child: Container(
+                        margin: EdgeInsets.all(UIValue.tinyGap / 2),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.orange,
+                            width: UIValue.borderWidthNormal,
+                          ),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+              dowBuilder: (context, day) {
+                String text;
+                Color textColor = Colors.black;
 
-        //const SizedBox(height: 20),
-        //SumWidget(
-        //  currentMonth: _focusedDay.month,
-        //  monthIncome: _getMonthlyIncome().toInt(),
-        //  monthExpense: _getMonthlyExpense().toInt(),
-        //  weeklyTotal: _getWeeklyTotal().toInt(),
-        //  monthlyTotal: _getMonthlyBalance().toInt(),
-        //  uiType:
-        //      (widget.uiType ?? CalendarUIType.mobile) == CalendarUIType.mobile
-        //      ? SumWidgetUIType.mobile
-        //      : (widget.uiType ?? CalendarUIType.mobile) ==
-        //            CalendarUIType.window
-        //      ? SumWidgetUIType.window
-        //      : SumWidgetUIType.dev,
-        //),
-      ],
+                switch (day.weekday) {
+                  case DateTime.sunday:
+                    text = '일';
+                    textColor = Colors.red;
+                    break;
+                  case DateTime.monday:
+                    text = '월';
+                    break;
+                  case DateTime.tuesday:
+                    text = '화';
+                    break;
+                  case DateTime.wednesday:
+                    text = '수';
+                    break;
+                  case DateTime.thursday:
+                    text = '목';
+                    break;
+                  case DateTime.friday:
+                    text = '금';
+                    break;
+                  case DateTime.saturday:
+                    text = '토';
+                    textColor = Colors.blue;
+                    break;
+                  default:
+                    text = '';
+                }
+
+                return Container(
+                  height: 40,
+                  alignment: Alignment.center,
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: textStyles.dayOfWeekSize,
+                      fontWeight: FontWeight.w600,
+                      height: 1.2,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(height: UIValue.largeGap),
+          if (_calendarFormat == CalendarFormat.week)
+            CommonSumWidget(
+              val: _getWeeklyTotal().toInt(),
+              label: '주간 합계',
+              color: Colors.black,
+              fontSize:
+                  (widget.uiType ?? CalendarUIType.mobile) ==
+                      CalendarUIType.window
+                  ? 22.0
+                  : 20.0,
+            ),
+        ],
+      ),
     );
   }
 }

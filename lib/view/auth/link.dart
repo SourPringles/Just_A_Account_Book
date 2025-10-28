@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../uivalue.dart';
 
 class LinkPage extends StatefulWidget {
   const LinkPage({super.key});
@@ -17,7 +18,7 @@ class _LinkPageState extends State<LinkPage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Firebase App")),
       body: Container(
-        padding: const EdgeInsets.all(15),
+        padding: EdgeInsets.all(UIValue.mediumGap),
         child: Center(
           child: Form(
             key: _key,
@@ -25,11 +26,11 @@ class _LinkPageState extends State<LinkPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 emailInput(),
-                const SizedBox(height: 15),
+                SizedBox(height: UIValue.mediumGap),
                 passwordInput(),
-                const SizedBox(height: 15),
+                SizedBox(height: UIValue.mediumGap),
                 submitButton(),
-                const SizedBox(height: 15),
+                SizedBox(height: UIValue.mediumGap),
               ],
             ),
           ),
@@ -49,11 +50,11 @@ class _LinkPageState extends State<LinkPage> {
           return null;
         }
       },
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: OutlineInputBorder(),
         hintText: 'Input your email address.',
         labelText: 'Email Address',
-        labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        labelStyle: UIValue.labelStyle(context),
       ),
     );
   }
@@ -70,11 +71,11 @@ class _LinkPageState extends State<LinkPage> {
           return null;
         }
       },
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: OutlineInputBorder(),
         hintText: 'Input your password.',
         labelText: 'Password',
-        labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        labelStyle: UIValue.labelStyle(context),
       ),
     );
   }
@@ -92,25 +93,29 @@ class _LinkPageState extends State<LinkPage> {
             await FirebaseAuth.instance.currentUser?.linkWithCredential(
               credential,
             );
+            if (!mounted) return;
             Navigator.pushNamed(context, "/");
           } on FirebaseAuthException catch (e) {
             if (e.code == 'weak-password') {
-              print('The password provided is too weak.');
+              debugPrint('The password provided is too weak.');
             } else if (e.code == 'email-already-in-use') {
-              print('The account already exists for that email.');
+              debugPrint('The account already exists for that email.');
             } else if (e.code == 'provider-already-linked') {
-              print('The provider has already been linked to the user.');
+              debugPrint('The provider has already been linked to the user.');
             } else if (e.code == 'invalid-credential') {
-              print('The provider\'s credential is not valid.');
+              debugPrint('The provider\'s credential is not valid.');
             }
           } catch (e) {
-            print(e.toString());
+            debugPrint(e.toString());
           }
         }
       },
       child: Container(
-        padding: const EdgeInsets.all(15),
-        child: const Text("Sign Up", style: TextStyle(fontSize: 18)),
+        padding: EdgeInsets.all(UIValue.mediumGap),
+        child: Text(
+          "Sign Up",
+          style: TextStyle(fontSize: UIValue.buttonTextSize(context)),
+        ),
       ),
     );
   }

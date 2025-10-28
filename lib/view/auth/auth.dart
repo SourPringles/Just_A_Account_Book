@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'link.dart';
+import '../uivalue.dart';
 
 class AuthWidget extends StatelessWidget {
   final User? user;
@@ -9,91 +10,39 @@ class AuthWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final titleFontSize = _getTitleFontSize(screenWidth);
-
     return Column(
       children: [
         Text(
           "Successfully logged in!",
-          style: TextStyle(
-            fontSize: titleFontSize,
-            fontWeight: FontWeight.bold,
-          ),
+          style: UIValue.titleStyle(context),
           textAlign: TextAlign.center,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        SizedBox(height: _getVerticalSpacing(screenWidth)),
+        SizedBox(height: UIValue.dynamicVerticalSpacing(context)),
         _buildUserInfo(context),
-        SizedBox(height: _getVerticalSpacing(screenWidth)),
+        SizedBox(height: UIValue.dynamicVerticalSpacing(context)),
         _buildActionButtons(context),
       ],
     );
   }
 
-  double _getTitleFontSize(double screenWidth) {
-    if (screenWidth < 350) {
-      return 16.0; // 매우 작은 화면
-    } else if (screenWidth < 400) {
-      return 18.0; // 작은 화면
-    } else if (screenWidth < 600) {
-      return 20.0; // 중간 화면
-    } else {
-      return 22.0; // 큰 화면
-    }
-  }
-
-  double _getLabelFontSize(double screenWidth) {
-    if (screenWidth < 350) {
-      return 14.0;
-    } else if (screenWidth < 400) {
-      return 15.0;
-    } else {
-      return 16.0;
-    }
-  }
-
-  double _getContentFontSize(double screenWidth) {
-    if (screenWidth < 350) {
-      return 10.0;
-    } else if (screenWidth < 400) {
-      return 11.0;
-    } else {
-      return 12.0;
-    }
-  }
-
-  double _getVerticalSpacing(double screenWidth) {
-    if (screenWidth < 400) {
-      return 12.0;
-    } else {
-      return 20.0;
-    }
-  }
-
   Widget _buildUserInfo(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final labelFontSize = _getLabelFontSize(screenWidth);
-    final contentFontSize = _getContentFontSize(screenWidth);
-    final smallSpacing = _getVerticalSpacing(screenWidth) * 0.4;
+    final smallSpacing = UIValue.smallVerticalSpacing(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           "Current User UID:",
-          style: TextStyle(
-            fontSize: labelFontSize,
-            fontWeight: FontWeight.w600,
-          ),
+          style: UIValue.labelStyle(context),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         SizedBox(height: smallSpacing),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(screenWidth < 400 ? 8.0 : 12.0),
+          padding: EdgeInsets.all(UIValue.isNarrow(context) ? 8.0 : 12.0),
           decoration: BoxDecoration(
             color: Colors.grey[100],
             borderRadius: BorderRadius.circular(8),
@@ -101,18 +50,17 @@ class AuthWidget extends StatelessWidget {
           ),
           child: SelectableText(
             user?.uid ?? "No UID available",
-            style: TextStyle(
-              fontSize: contentFontSize,
-              fontFamily: 'monospace',
-            ),
+            style: UIValue.contentStyle(
+              context,
+            ).copyWith(fontFamily: 'monospace'),
           ),
         ),
         SizedBox(height: smallSpacing),
         if (user?.isAnonymous == true)
           Text(
             "(Anonymous User)",
-            style: TextStyle(
-              fontSize: contentFontSize + 2,
+            style: UIValue.contentStyle(context).copyWith(
+              fontSize: UIValue.contentFontSize(context) + 2,
               color: Colors.orange,
               fontStyle: FontStyle.italic,
             ),
@@ -122,7 +70,9 @@ class AuthWidget extends StatelessWidget {
         if (user?.isAnonymous == false && user?.email != null)
           Text(
             "Email: ${user!.email}",
-            style: TextStyle(fontSize: contentFontSize + 2),
+            style: UIValue.contentStyle(
+              context,
+            ).copyWith(fontSize: UIValue.contentFontSize(context) + 2),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -131,11 +81,9 @@ class AuthWidget extends StatelessWidget {
   }
 
   Widget _buildActionButtons(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final buttonPadding = screenWidth < 400 ? 8.0 : 12.0;
-    final buttonSpacing = screenWidth < 400 ? 8.0 : 12.0;
-    final buttonTextSize = screenWidth < 400 ? 14.0 : 16.0;
-    final iconSize = screenWidth < 400 ? 18.0 : 24.0;
+    final buttonPadding = UIValue.buttonPadding(context);
+    final buttonSpacing = UIValue.buttonSpacing(context);
+    final iconSize = UIValue.isNarrow(context) ? 18.0 : UIValue.iconSizeLarge;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -156,7 +104,7 @@ class AuthWidget extends StatelessWidget {
             icon: Icon(Icons.link, size: iconSize),
             label: Text(
               "Link Account",
-              style: TextStyle(fontSize: buttonTextSize),
+              style: UIValue.buttonStyle(context),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -178,7 +126,7 @@ class AuthWidget extends StatelessWidget {
           icon: Icon(Icons.dashboard, size: iconSize),
           label: Text(
             "Dashboard",
-            style: TextStyle(fontSize: buttonTextSize),
+            style: UIValue.buttonStyle(context),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

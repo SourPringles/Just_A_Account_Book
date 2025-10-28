@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import '../models/user_profile.dart';
 
 class AuthService {
@@ -34,8 +35,8 @@ class AuthService {
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      print('Sign up error: ${e.code} - ${e.message}');
-      throw e;
+      debugPrint('Sign up error: ${e.code} - ${e.message}');
+      rethrow;
     }
   }
 
@@ -57,8 +58,8 @@ class AuthService {
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      print('Sign in error: ${e.code} - ${e.message}');
-      throw e;
+      debugPrint('Sign in error: ${e.code} - ${e.message}');
+      rethrow;
     }
   }
 
@@ -78,8 +79,8 @@ class AuthService {
 
       return userCredential;
     } on FirebaseAuthException catch (e) {
-      print('Anonymous sign in error: ${e.code} - ${e.message}');
-      throw e;
+      debugPrint('Anonymous sign in error: ${e.code} - ${e.message}');
+      rethrow;
     }
   }
 
@@ -108,7 +109,7 @@ class AuthService {
           .doc(uid)
           .set(userProfile.toMap(), SetOptions(merge: true));
     } catch (e) {
-      print('Error creating user profile: $e');
+      debugPrint('Error creating user profile: $e');
     }
   }
 
@@ -119,7 +120,7 @@ class AuthService {
         'lastLoginAt': Timestamp.fromDate(DateTime.now()),
       });
     } catch (e) {
-      print('Error updating last login time: $e');
+      debugPrint('Error updating last login time: $e');
     }
   }
 
@@ -135,7 +136,7 @@ class AuthService {
       }
       return null;
     } catch (e) {
-      print('Error getting user profile: $e');
+      debugPrint('Error getting user profile: $e');
       return null;
     }
   }
@@ -155,7 +156,7 @@ class AuthService {
         await _firestore.collection('users').doc(uid).update(updates);
       }
     } catch (e) {
-      print('Error updating user profile: $e');
+      debugPrint('Error updating user profile: $e');
     }
   }
 }

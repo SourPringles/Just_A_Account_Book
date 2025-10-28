@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../uivalue.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
@@ -110,7 +111,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('오류: $_error'),
-            const SizedBox(height: 16),
+            SizedBox(height: UIValue.largeGap),
             ElevatedButton(
               onPressed: _loadTransactions,
               child: const Text('다시 시도'),
@@ -129,11 +130,18 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.receipt_long, size: 64, color: Colors.grey[400]),
-            const SizedBox(height: 16),
+            Icon(
+              Icons.receipt_long,
+              size: UIValue.iconSizeXL,
+              color: Colors.grey[400],
+            ),
+            SizedBox(height: UIValue.largeGap),
             Text(
               widget.showDailyOnly ? '오늘 거래 내역이 없습니다' : '이번 달 거래 내역이 없습니다',
-              style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+              style: TextStyle(
+                fontSize: UIValue.subtitleFontSize(context),
+                color: Colors.grey[600],
+              ),
             ),
           ],
         ),
@@ -158,10 +166,18 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
     final icon = isIncome ? Icons.add_circle : Icons.remove_circle;
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: EdgeInsets.symmetric(
+        horizontal: UIValue.smallGap,
+        vertical: UIValue.tinyGap,
+      ),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: color.withOpacity(0.1),
+          backgroundColor: Color.fromRGBO(
+            (color.r * 255.0).round(),
+            (color.g * 255.0).round(),
+            (color.b * 255.0).round(),
+            0.1,
+          ),
           child: Icon(icon, color: color),
         ),
         title: Row(
@@ -169,15 +185,15 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
             Expanded(
               child: Text(
                 transaction.category,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+                style: UIValue.subtitleStyle(context, weight: FontWeight.bold),
               ),
             ),
             Text(
               '${isIncome ? '+' : '-'}₩${NumberFormat('#,###').format(transaction.amount)}',
-              style: TextStyle(
+              style: UIValue.subtitleStyle(
+                context,
                 color: color,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+                weight: FontWeight.bold,
               ),
             ),
           ],
@@ -186,13 +202,18 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (transaction.description.isNotEmpty) ...[
-              const SizedBox(height: 4),
-              Text(transaction.description),
+              SizedBox(height: UIValue.tinyGap),
+              Text(
+                transaction.description,
+                style: UIValue.contentStyle(context),
+              ),
             ],
-            const SizedBox(height: 4),
+            SizedBox(height: UIValue.tinyGap),
             Text(
               DateFormat('MM월 dd일').format(transaction.date),
-              style: TextStyle(color: Colors.grey[600], fontSize: 12),
+              style: UIValue.contentStyle(
+                context,
+              ).copyWith(color: Colors.grey[600]),
             ),
           ],
         ),
@@ -245,12 +266,12 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
 
   Widget _buildDetailRow(String label, String value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: EdgeInsets.symmetric(vertical: UIValue.tinyGap),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 60,
+            width: UIValue.transactionLabelWidth,
             child: Text(
               label,
               style: TextStyle(

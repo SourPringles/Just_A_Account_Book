@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
+import '../uivalue.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -19,7 +20,7 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Firebase App")),
       body: Container(
-        padding: const EdgeInsets.all(15),
+        padding: EdgeInsets.all(UIValue.mediumGap),
         child: Center(
           child: Form(
             key: _key,
@@ -27,13 +28,13 @@ class _SignupPageState extends State<SignupPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 nameInput(),
-                const SizedBox(height: 15),
+                SizedBox(height: UIValue.mediumGap),
                 emailInput(),
-                const SizedBox(height: 15),
+                SizedBox(height: UIValue.mediumGap),
                 passwordInput(),
-                const SizedBox(height: 15),
+                SizedBox(height: UIValue.mediumGap),
                 submitButton(),
-                const SizedBox(height: 15),
+                SizedBox(height: UIValue.mediumGap),
               ],
             ),
           ),
@@ -53,11 +54,11 @@ class _SignupPageState extends State<SignupPage> {
           return null;
         }
       },
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: OutlineInputBorder(),
         hintText: 'Input your name.',
         labelText: 'Name',
-        labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        labelStyle: UIValue.labelStyle(context),
       ),
     );
   }
@@ -72,11 +73,11 @@ class _SignupPageState extends State<SignupPage> {
           return null;
         }
       },
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: OutlineInputBorder(),
         hintText: 'Input your email address.',
         labelText: 'Email Address',
-        labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        labelStyle: UIValue.labelStyle(context),
       ),
     );
   }
@@ -93,11 +94,11 @@ class _SignupPageState extends State<SignupPage> {
           return null;
         }
       },
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         border: OutlineInputBorder(),
         hintText: 'Input your password.',
         labelText: 'Password',
-        labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        labelStyle: UIValue.labelStyle(context),
       ),
     );
   }
@@ -137,8 +138,11 @@ class _SignupPageState extends State<SignupPage> {
         }
       },
       child: Container(
-        padding: const EdgeInsets.all(15),
-        child: const Text("Sign Up", style: TextStyle(fontSize: 18)),
+        padding: EdgeInsets.all(UIValue.mediumGap),
+        child: Text(
+          "Sign Up",
+          style: TextStyle(fontSize: UIValue.buttonTextSize(context)),
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../uivalue.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import '../../services/transaction_service.dart';
@@ -22,9 +23,9 @@ class MonthlySummaryWidget extends StatelessWidget {
       ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Card(
+          return Card(
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(UIValue.defaultPadding),
               child: Center(child: CircularProgressIndicator()),
             ),
           );
@@ -33,7 +34,7 @@ class MonthlySummaryWidget extends StatelessWidget {
         if (snapshot.hasError) {
           return Card(
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(UIValue.defaultPadding),
               child: Text('오류가 발생했습니다: ${snapshot.error}'),
             ),
           );
@@ -48,7 +49,7 @@ class MonthlySummaryWidget extends StatelessWidget {
         return Card(
           elevation: 2,
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(UIValue.defaultPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -57,9 +58,9 @@ class MonthlySummaryWidget extends StatelessWidget {
                   children: [
                     Text(
                       DateFormat('yyyy년 MM월').format(month),
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                      style: UIValue.subtitleStyle(
+                        context,
+                        weight: FontWeight.bold,
                       ),
                     ),
                     Icon(
@@ -69,25 +70,33 @@ class MonthlySummaryWidget extends StatelessWidget {
                   ],
                 ),
                 const Divider(),
-                const SizedBox(height: 8),
+                SizedBox(height: UIValue.smallGap),
 
                 // 수입
-                _buildSummaryRow('수입', income, Colors.green, Icons.add_circle),
-                const SizedBox(height: 8),
+                _buildSummaryRow(
+                  context,
+                  '수입',
+                  income,
+                  Colors.green,
+                  Icons.add_circle,
+                ),
+                SizedBox(height: UIValue.smallGap),
 
                 // 지출
                 _buildSummaryRow(
+                  context,
                   '지출',
                   expense,
                   Colors.red,
                   Icons.remove_circle,
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: UIValue.smallGap),
 
                 const Divider(),
 
                 // 잔액
                 _buildSummaryRow(
+                  context,
                   '잔액',
                   balance,
                   balance >= 0 ? Colors.blue : Colors.orange,
@@ -103,6 +112,7 @@ class MonthlySummaryWidget extends StatelessWidget {
   }
 
   Widget _buildSummaryRow(
+    BuildContext context,
     String label,
     double amount,
     Color color,
@@ -111,13 +121,13 @@ class MonthlySummaryWidget extends StatelessWidget {
   }) {
     return Row(
       children: [
-        Icon(icon, color: color, size: 20),
-        const SizedBox(width: 8),
+        Icon(icon, color: color, size: UIValue.iconSizeMedium),
+        SizedBox(width: UIValue.smallGap),
         Text(
           label,
-          style: TextStyle(
-            fontSize: isBalance ? 16 : 14,
-            fontWeight: isBalance ? FontWeight.bold : FontWeight.normal,
+          style: UIValue.subtitleStyle(
+            context,
+            weight: isBalance ? FontWeight.bold : FontWeight.normal,
           ),
         ),
         const Spacer(),

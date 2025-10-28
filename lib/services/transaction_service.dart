@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import '../models/transaction_model.dart';
 
 class TransactionService {
@@ -35,8 +36,8 @@ class TransactionService {
 
       return docRef.id;
     } catch (e) {
-      print('Error adding transaction: $e');
-      throw e;
+      debugPrint('Error adding transaction: $e');
+      rethrow;
     }
   }
 
@@ -71,8 +72,8 @@ class TransactionService {
             .update(updates);
       }
     } catch (e) {
-      print('Error updating transaction: $e');
-      throw e;
+      debugPrint('Error updating transaction: $e');
+      rethrow;
     }
   }
 
@@ -89,8 +90,8 @@ class TransactionService {
           .doc(transactionId)
           .delete();
     } catch (e) {
-      print('Error deleting transaction: $e');
-      throw e;
+      debugPrint('Error deleting transaction: $e');
+      rethrow;
     }
   }
 
@@ -165,7 +166,7 @@ class TransactionService {
           .map((doc) => TransactionModel.fromFirestore(doc))
           .toList();
     } catch (e) {
-      print('Error getting monthly transactions: $e');
+      debugPrint('Error getting monthly transactions: $e');
       return [];
     }
   }
@@ -245,7 +246,7 @@ class TransactionService {
         'balance': totalIncome - totalExpense,
       };
     } catch (e) {
-      print('Error calculating monthly totals: $e');
+      debugPrint('Error calculating monthly totals: $e');
       return {'income': 0, 'expense': 0, 'balance': 0};
     }
   }
@@ -281,7 +282,7 @@ class TransactionService {
 
       return categoryTotals;
     } catch (e) {
-      print('Error getting category expenses: $e');
+      debugPrint('Error getting category expenses: $e');
       return {};
     }
   }

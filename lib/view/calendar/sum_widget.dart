@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../uivalue.dart';
 
 // UI 타입을 나타내는 enum (calendar_widget.dart와 동일)
 enum SumWidgetUIType { mobile, window, dev }
@@ -57,21 +58,21 @@ class SumWidget extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: UIValue.smallGap),
         CommonSumWidget(
           val: monthIncome,
           label: '수입',
           color: Colors.blue,
           fontSize: _getItemFontSize(),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: UIValue.smallGap),
         CommonSumWidget(
           val: monthExpense,
           label: '지출',
           color: Colors.red,
           fontSize: _getItemFontSize(),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: UIValue.smallGap),
         CommonSumWidget(
           val: monthlyTotal,
           label: '월간 합계',
@@ -110,7 +111,7 @@ class CommonSumWidget extends StatelessWidget {
         final cheonWon = absAmount / 1000;
         return '${cheonWon.toStringAsFixed(cheonWon % 1 == 0 ? 0 : 1)}천원';
       } else {
-        return '${absAmount}원';
+        return '$absAmount원';
       }
     }
 

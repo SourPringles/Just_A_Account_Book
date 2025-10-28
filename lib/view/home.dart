@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'uivalue.dart';
 
 import '../services/auth_service.dart';
 import 'auth/login.dart';
@@ -68,28 +69,42 @@ class _HomePageState extends State<HomePage> {
 
   // 좌측 패널 - 캘린더
   Widget _buildLeftPanel() {
+    // Column을 사용해 캘린더를 항상 위쪽에 고정(sticky)하도록 배치.
+    // 캘린더 아래로 확장 가능한 빈 공간을 둬서 창 크기가 변해도 최상단에 머물게 함.
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          right: BorderSide(color: Colors.grey.shade300, width: 1),
+          right: BorderSide(
+            color: Colors.grey.shade300,
+            width: UIValue.borderWidthNormal,
+          ),
         ),
       ),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: CalendarWidget(
-          initialSelectedDate: _selectedDate,
-          refreshTrigger: _refreshTrigger,
-          uiType: CalendarUIType.window,
-          onDateSelected: (date) {
-            // 우측 패널이 요약 탭일 때는 리빌드하지 않음
-            if (_rightPanelIndex == 1) {
-              _selectedDate = date;
-            } else {
-              setState(() {
-                _selectedDate = date;
-              });
-            }
-          },
+      child: Padding(
+        padding: EdgeInsets.all(UIValue.defaultPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // 캘린더를 최상단에 고정
+            CalendarWidget(
+              initialSelectedDate: _selectedDate,
+              refreshTrigger: _refreshTrigger,
+              uiType: CalendarUIType.window,
+              onDateSelected: (date) {
+                // 우측 패널이 요약 탭일 때는 리빌드하지 않음
+                if (_rightPanelIndex == 1) {
+                  _selectedDate = date;
+                } else {
+                  setState(() {
+                    _selectedDate = date;
+                  });
+                }
+              },
+            ),
+            // 아래에 남는 공간은 확장하여 캘린더가 항상 위에 머물도록 함.
+            SizedBox(height: UIValue.smallGap),
+            Expanded(child: Container()),
+          ],
         ),
       ),
     );
@@ -108,11 +123,14 @@ class _HomePageState extends State<HomePage> {
   // 우측 패널 탭 버튼들
   Widget _buildRightPanelTabs() {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: EdgeInsets.all(UIValue.smallGap),
       decoration: BoxDecoration(
         color: Colors.grey.shade50,
         border: Border(
-          bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+          bottom: BorderSide(
+            color: Colors.grey.shade300,
+            width: UIValue.borderWidthNormal,
+          ),
         ),
       ),
       child: Row(
@@ -120,7 +138,7 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: _buildTabButton(index: 0, label: '거래내역', icon: Icons.list),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: UIValue.smallGap),
           Expanded(
             child: _buildTabButton(
               index: 1,
@@ -148,7 +166,10 @@ class _HomePageState extends State<HomePage> {
       },
       borderRadius: BorderRadius.circular(8),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        padding: EdgeInsets.symmetric(
+          vertical: UIValue.smallGap,
+          horizontal: UIValue.smallGap,
+        ),
         decoration: BoxDecoration(
           color: isSelected ? Colors.blue : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
@@ -158,16 +179,16 @@ class _HomePageState extends State<HomePage> {
           children: [
             Icon(
               icon,
-              size: 16,
+              size: UIValue.iconSizeSmall,
               color: isSelected ? Colors.white : Colors.grey,
             ),
-            const SizedBox(width: 4),
+            SizedBox(width: UIValue.tinyGap),
             Text(
               label,
-              style: TextStyle(
-                fontSize: 12,
+              style: UIValue.subtitleStyle(
+                context,
                 color: isSelected ? Colors.white : Colors.grey,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                weight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),
           ],
@@ -207,29 +228,39 @@ class _HomePageState extends State<HomePage> {
   // 거래내역 헤더
   Widget _buildTransactionHeader() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(UIValue.defaultPadding),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: Colors.grey.shade300, width: 1),
+          bottom: BorderSide(
+            color: Colors.grey.shade300,
+            width: UIValue.borderWidthNormal,
+          ),
         ),
       ),
       child: Row(
         children: [
-          const Icon(Icons.receipt_long, color: Colors.blue, size: 24),
-          const SizedBox(width: 8),
+          Icon(
+            Icons.receipt_long,
+            color: Colors.blue,
+            size: UIValue.iconSizeXL / 2.666,
+          ),
+          SizedBox(width: UIValue.smallGap),
           Text(
             '${_selectedDate.year}년 ${_selectedDate.month}월 ${_selectedDate.day}일',
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: UIValue.titleStyle(context),
           ),
           const Spacer(),
           ElevatedButton.icon(
             onPressed: () => _showAddTransactionDialog(context),
-            icon: const Icon(Icons.add, size: 16),
+            icon: Icon(Icons.add, size: UIValue.iconSizeSmall),
             label: const Text('거래 추가'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.symmetric(
+                horizontal: UIValue.smallGap * 2,
+                vertical: UIValue.smallGap,
+              ),
             ),
           ),
         ],
@@ -242,10 +273,10 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(UIValue.defaultPadding),
           child: MonthlySummaryWidget(month: _selectedDate),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: UIValue.largeGap),
         Expanded(
           child: TransactionListWidget(
             selectedDate: _selectedDate,
@@ -266,19 +297,22 @@ class _HomePageState extends State<HomePage> {
             borderRadius: BorderRadius.circular(16),
           ),
           child: Container(
-            padding: const EdgeInsets.all(24),
-            constraints: const BoxConstraints(maxWidth: 400, maxHeight: 500),
+            padding: EdgeInsets.all(UIValue.dialogPadding),
+            constraints: BoxConstraints(
+              maxWidth: UIValue.dialogMaxWidth,
+              maxHeight: UIValue.dialogMaxHeight,
+            ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildDialogHeader(context),
                 const Divider(),
-                const SizedBox(height: 16),
+                SizedBox(height: UIValue.largeGap),
                 Flexible(
                   child: SingleChildScrollView(child: AuthWidget(user: user)),
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: UIValue.largeGap),
                 _buildDialogFooter(context),
               ],
             ),
@@ -292,10 +326,13 @@ class _HomePageState extends State<HomePage> {
   Widget _buildDialogHeader(BuildContext context) {
     return Stack(
       children: [
-        const Center(
+        Center(
           child: Text(
             "계정 정보",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: UIValue.titleFontSize(context),
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         Positioned(

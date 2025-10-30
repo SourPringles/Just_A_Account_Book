@@ -76,7 +76,7 @@ class SumWidget extends StatelessWidget {
         CommonSumWidget(
           val: monthlyTotal,
           label: '월간 합계',
-          color: Colors.black,
+          color: UIValue.textPrimaryColor(context),
           fontSize: _getItemFontSize(),
         ),
       ],
@@ -144,7 +144,10 @@ class CommonSumWidget extends StatelessWidget {
         children: [
           Text(
             label,
-            style: TextStyle(fontSize: fontSize, color: Colors.grey),
+            style: TextStyle(
+              fontSize: fontSize,
+              color: UIValue.mutedTextColor(context),
+            ),
           ),
           const Spacer(),
           Text(

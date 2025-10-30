@@ -18,6 +18,8 @@ class _SettingsPageState extends State<SettingsPage> {
   // String _currency = SettingsService.instance.currency.value;
   ThemeMode _theme = ThemeService.instance.themeMode.value;
 
+  late VoidCallback _themeListener;
+
   @override
   void initState() {
     super.initState();
@@ -32,11 +34,21 @@ class _SettingsPageState extends State<SettingsPage> {
     //     _currency = SettingsService.instance.currency.value;
     //   });
     // });
-    ThemeService.instance.themeMode.addListener(() {
+    _themeListener = () {
+      // Guard setState with mounted to avoid calling it after dispose.
+      if (!mounted) return;
       setState(() {
         _theme = ThemeService.instance.themeMode.value;
       });
-    });
+    };
+    ThemeService.instance.themeMode.addListener(_themeListener);
+  }
+
+  @override
+  void dispose() {
+    // Remove listener to avoid setState being called after this widget is disposed.
+    ThemeService.instance.themeMode.removeListener(_themeListener);
+    super.dispose();
   }
 
   @override

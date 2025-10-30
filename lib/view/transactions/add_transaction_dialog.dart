@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import '../../services/transaction_service.dart';
 import '../../models/transaction_model.dart';
+import '../dialog/dialog_header_widget.dart';
+import '../uivalue.dart';
 
 class AddTransactionDialog extends StatefulWidget {
   final DateTime? initialDate;
@@ -44,127 +46,158 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(
-        '${_selectedType == TransactionType.income ? '수입' : '지출'} 추가',
-      ),
-      content: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // 수입/지출 선택
-              SegmentedButton<TransactionType>(
-                segments: const [
-                  ButtonSegment(
-                    value: TransactionType.income,
-                    label: Text('수입'),
-                    icon: Icon(Icons.add_circle, color: Colors.green),
-                  ),
-                  ButtonSegment(
-                    value: TransactionType.expense,
-                    label: Text('지출'),
-                    icon: Icon(Icons.remove_circle, color: Colors.red),
-                  ),
-                ],
-                selected: {_selectedType},
-                onSelectionChanged: (Set<TransactionType> selection) {
-                  setState(() {
-                    _selectedType = selection.first;
-                    _selectedCategory = _categories[_selectedType]!.first;
-                  });
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // 금액 입력
-              TextFormField(
-                controller: _amountController,
-                decoration: const InputDecoration(
-                  labelText: '금액',
-                  prefixText: '₩ ',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return '금액을 입력하세요';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return '올바른 숫자를 입력하세요';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-
-              // 카테고리 선택
-              DropdownButtonFormField<String>(
-                value: _selectedCategory,
-                decoration: const InputDecoration(
-                  labelText: '카테고리',
-                  border: OutlineInputBorder(),
-                ),
-                items: _categories[_selectedType]!
-                    .map(
-                      (category) => DropdownMenuItem(
-                        value: category,
-                        child: Text(category),
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Container(
+        padding: EdgeInsets.all(UIValue.dialogPadding),
+        constraints: BoxConstraints(
+          maxWidth: UIValue.dialogMaxWidth,
+          maxHeight: UIValue.dialogMaxHeight,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DialogHeaderWidget(
+              title:
+                  '${_selectedType == TransactionType.income ? '수입' : '지출'} 추가',
+              onClose: () => Navigator.of(context).pop(),
+            ),
+            const Divider(),
+            SizedBox(height: UIValue.largeGap),
+            Flexible(
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // 수입/지출 선택
+                      SegmentedButton<TransactionType>(
+                        segments: const [
+                          ButtonSegment(
+                            value: TransactionType.income,
+                            label: Text('수입'),
+                            icon: Icon(Icons.add_circle, color: Colors.green),
+                          ),
+                          ButtonSegment(
+                            value: TransactionType.expense,
+                            label: Text('지출'),
+                            icon: Icon(Icons.remove_circle, color: Colors.red),
+                          ),
+                        ],
+                        selected: {_selectedType},
+                        onSelectionChanged: (Set<TransactionType> selection) {
+                          setState(() {
+                            _selectedType = selection.first;
+                            _selectedCategory =
+                                _categories[_selectedType]!.first;
+                          });
+                        },
                       ),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _selectedCategory = value!;
-                  });
-                },
-              ),
-              const SizedBox(height: 16),
+                      const SizedBox(height: 16),
 
-              // 설명 입력
-              TextFormField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(
-                  labelText: '설명 (선택사항)',
-                  border: OutlineInputBorder(),
-                ),
-                maxLines: 2,
-              ),
-              const SizedBox(height: 16),
+                      // 금액 입력
+                      TextFormField(
+                        controller: _amountController,
+                        decoration: const InputDecoration(
+                          labelText: '금액',
+                          prefixText: '₩ ',
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return '금액을 입력하세요';
+                          }
+                          if (double.tryParse(value) == null) {
+                            return '올바른 숫자를 입력하세요';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
 
-              // 날짜 선택
-              ListTile(
-                title: const Text('날짜'),
-                subtitle: Text(
-                  DateFormat('yyyy년 MM월 dd일').format(_selectedDate),
+                      // 카테고리 선택
+                      DropdownButtonFormField<String>(
+                        value: _selectedCategory,
+                        decoration: const InputDecoration(
+                          labelText: '카테고리',
+                          border: OutlineInputBorder(),
+                        ),
+                        items: _categories[_selectedType]!
+                            .map(
+                              (category) => DropdownMenuItem(
+                                value: category,
+                                child: Text(category),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedCategory = value!;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 설명 입력
+                      TextFormField(
+                        controller: _descriptionController,
+                        decoration: const InputDecoration(
+                          labelText: '설명 (선택사항)',
+                          border: OutlineInputBorder(),
+                        ),
+                        maxLines: 2,
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 날짜 선택
+                      ListTile(
+                        title: const Text('날짜'),
+                        subtitle: Text(
+                          DateFormat('yyyy년 MM월 dd일').format(_selectedDate),
+                        ),
+                        trailing: const Icon(Icons.calendar_today),
+                        onTap: () async {
+                          final DateTime? picked = await showDatePicker(
+                            context: context,
+                            initialDate: _selectedDate,
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime.now().add(
+                              const Duration(days: 365),
+                            ),
+                          );
+                          if (picked != null && picked != _selectedDate) {
+                            setState(() {
+                              _selectedDate = picked;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-                trailing: const Icon(Icons.calendar_today),
-                onTap: () async {
-                  final DateTime? picked = await showDatePicker(
-                    context: context,
-                    initialDate: _selectedDate,
-                    firstDate: DateTime(2020),
-                    lastDate: DateTime.now().add(const Duration(days: 365)),
-                  );
-                  if (picked != null && picked != _selectedDate) {
-                    setState(() {
-                      _selectedDate = picked;
-                    });
-                  }
-                },
               ),
-            ],
-          ),
+            ),
+            SizedBox(height: UIValue.largeGap),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: const Text('취소'),
+                ),
+                SizedBox(width: UIValue.smallGap),
+                ElevatedButton(
+                  onPressed: _saveTransaction,
+                  child: const Text('저장'),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('취소'),
-        ),
-        ElevatedButton(onPressed: _saveTransaction, child: const Text('저장')),
-      ],
     );
   }
 

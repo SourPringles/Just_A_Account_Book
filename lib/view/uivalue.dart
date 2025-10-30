@@ -96,7 +96,7 @@ class UIValue {
     return TextStyle(
       fontSize: titleFontSize(context),
       fontWeight: weight ?? FontWeight.bold,
-      color: color,
+      color: color ?? textPrimaryColor(context),
     );
   }
 
@@ -108,7 +108,7 @@ class UIValue {
     return TextStyle(
       fontSize: subtitleFontSize(context),
       fontWeight: weight ?? FontWeight.w600,
-      color: color,
+      color: color ?? textPrimaryColor(context),
     );
   }
 
@@ -120,7 +120,7 @@ class UIValue {
     return TextStyle(
       fontSize: labelFontSize(context),
       fontWeight: weight ?? FontWeight.w600,
-      color: color,
+      color: color ?? textPrimaryColor(context),
     );
   }
 
@@ -132,7 +132,7 @@ class UIValue {
     return TextStyle(
       fontSize: contentFontSize(context),
       fontWeight: weight ?? FontWeight.normal,
-      color: color,
+      color: color ?? textPrimaryColor(context),
     );
   }
 
@@ -144,7 +144,7 @@ class UIValue {
     return TextStyle(
       fontSize: buttonTextSize(context),
       fontWeight: weight ?? FontWeight.w600,
-      color: color,
+      color: color ?? textPrimaryColor(context),
     );
   }
 
@@ -157,9 +157,39 @@ class UIValue {
     return TextStyle(
       fontSize: isNarrow(context) ? 10.0 : 12.0,
       fontWeight: weight ?? FontWeight.normal,
-      color: color ?? Colors.grey[600],
+      color: color ?? mutedTextColor(context),
     );
   }
+
+  // Theme-aware text color helpers
+  static Color textPrimaryColor(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
+    return brightness == Brightness.dark ? Colors.white : Colors.black;
+  }
+
+  static Color mutedTextColor(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
+    return brightness == Brightness.dark
+        ? Colors.grey.shade300
+        : Colors.grey.shade600;
+  }
+
+  // Weekend specific colors
+  static Color saturdayTextColor(BuildContext context) => Colors.blue;
+  static Color sundayTextColor(BuildContext context) => Colors.red;
+
+  // Helper to pick weekday color (DateTime.weekday: Mon=1 .. Sun=7)
+  static Color weekdayTextColor(BuildContext context, int weekday) {
+    if (weekday == DateTime.saturday) return saturdayTextColor(context);
+    if (weekday == DateTime.sunday) return sundayTextColor(context);
+    return textPrimaryColor(context);
+  }
+
+  // Colors related to surfaces/primary backgrounds
+  static Color onPrimaryColor(BuildContext context) =>
+      Theme.of(context).colorScheme.onPrimary;
+  static Color onSurfaceColor(BuildContext context) =>
+      Theme.of(context).colorScheme.onSurface;
 
   static TextStyle errorStyle(
     BuildContext context, {

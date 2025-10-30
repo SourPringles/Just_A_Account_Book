@@ -9,7 +9,7 @@ import 'package:window_manager/window_manager.dart';
 import 'firebase_options.dart';
 import 'view/auth/login.dart';
 import 'view/auth/signup.dart';
-import 'view/home.dart';
+import 'view/home/home.dart';
 import 'view/uivalue.dart';
 import 'services/theme_service.dart';
 import 'services/settings_service.dart';

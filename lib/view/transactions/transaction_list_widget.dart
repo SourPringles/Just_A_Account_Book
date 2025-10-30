@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'dart:async';
 import '../../services/transaction_service.dart';
 import '../../models/transaction_model.dart';
+import '../dialog/dialog_header_widget.dart';
+import '../dialog/dialog_footer_widget.dart';
 
 class TransactionListWidget extends StatefulWidget {
   final DateTime selectedDate;
@@ -140,7 +142,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
               widget.showDailyOnly ? '오늘 거래 내역이 없습니다' : '이번 달 거래 내역이 없습니다',
               style: TextStyle(
                 fontSize: UIValue.subtitleFontSize(context),
-                color: Colors.grey[600],
+                color: UIValue.mutedTextColor(context),
               ),
             ),
           ],
@@ -213,7 +215,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
               DateFormat('MM월 dd일').format(transaction.date),
               style: UIValue.contentStyle(
                 context,
-              ).copyWith(color: Colors.grey[600]),
+              ).copyWith(color: UIValue.mutedTextColor(context)),
             ),
           ],
         ),
@@ -230,35 +232,43 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(transaction.category),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildDetailRow(
-                '구분',
-                transaction.type == TransactionType.income ? '수입' : '지출',
-              ),
-              _buildDetailRow(
-                '금액',
-                '₩${NumberFormat('#,###').format(transaction.amount)}',
-              ),
-              _buildDetailRow('카테고리', transaction.category),
-              if (transaction.description.isNotEmpty)
-                _buildDetailRow('설명', transaction.description),
-              _buildDetailRow(
-                '날짜',
-                DateFormat('yyyy년 MM월 dd일').format(transaction.date),
-              ),
-            ],
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('닫기'),
+          child: Container(
+            padding: EdgeInsets.all(UIValue.dialogPadding),
+            constraints: BoxConstraints(maxWidth: UIValue.dialogMaxWidth),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DialogHeaderWidget(
+                  title: transaction.category,
+                  onClose: () => Navigator.of(context).pop(),
+                ),
+                const Divider(),
+                SizedBox(height: UIValue.largeGap),
+                _buildDetailRow(
+                  '구분',
+                  transaction.type == TransactionType.income ? '수입' : '지출',
+                ),
+                _buildDetailRow(
+                  '금액',
+                  '₩${NumberFormat('#,###').format(transaction.amount)}',
+                ),
+                _buildDetailRow('카테고리', transaction.category),
+                if (transaction.description.isNotEmpty)
+                  _buildDetailRow('설명', transaction.description),
+                _buildDetailRow(
+                  '날짜',
+                  DateFormat('yyyy년 MM월 dd일').format(transaction.date),
+                ),
+                SizedBox(height: UIValue.largeGap),
+                DialogFooterWidget(onClose: () => Navigator.of(context).pop()),
+              ],
             ),
-          ],
+          ),
         );
       },
     );
@@ -276,7 +286,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
               label,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.grey[700],
+                color: UIValue.mutedTextColor(context),
               ),
             ),
           ),
@@ -294,42 +304,65 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('거래 내역 삭제'),
-          content: Text('${transaction.category} 거래 내역을 삭제하시겠습니까?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('취소'),
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(UIValue.dialogPadding),
+            constraints: BoxConstraints(maxWidth: UIValue.dialogMaxWidth),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                DialogHeaderWidget(
+                  title: '거래 내역 삭제',
+                  onClose: () => Navigator.of(context).pop(),
+                ),
+                const Divider(),
+                SizedBox(height: UIValue.largeGap),
+                Text('${transaction.category} 거래 내역을 삭제하시겠습니까?'),
+                SizedBox(height: UIValue.largeGap),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('취소'),
+                    ),
+                    SizedBox(width: UIValue.smallGap),
+                    TextButton(
+                      onPressed: () async {
+                        try {
+                          final user = FirebaseAuth.instance.currentUser;
+                          if (user != null && transaction.id != null) {
+                            await TransactionService.deleteTransaction(
+                              userId: user.uid,
+                              transactionId: transaction.id!,
+                            );
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('거래 내역이 삭제되었습니다')),
+                              );
+                            }
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            Navigator.of(context).pop();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('삭제 중 오류가 발생했습니다: $e')),
+                            );
+                          }
+                        }
+                      },
+                      child: Text('삭제', style: UIValue.errorStyle(context)),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: () async {
-                try {
-                  final user = FirebaseAuth.instance.currentUser;
-                  if (user != null && transaction.id != null) {
-                    await TransactionService.deleteTransaction(
-                      userId: user.uid,
-                      transactionId: transaction.id!,
-                    );
-                    if (context.mounted) {
-                      Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('거래 내역이 삭제되었습니다')),
-                      );
-                    }
-                  }
-                } catch (e) {
-                  if (context.mounted) {
-                    Navigator.of(context).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('삭제 중 오류가 발생했습니다: $e')),
-                    );
-                  }
-                }
-              },
-              child: const Text('삭제', style: TextStyle(color: Colors.red)),
-            ),
-          ],
+          ),
         );
       },
     );

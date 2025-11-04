@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../uivalue.dart';
+import '../uivalue/ui_layout.dart';
+import '../uivalue/ui_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import '../../services/transaction_service.dart';
@@ -25,7 +26,7 @@ class MonthlySummaryWidget extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Card(
             child: Padding(
-              padding: EdgeInsets.all(UIValue.defaultPadding),
+              padding: EdgeInsets.all(UILayout.defaultPadding),
               child: Center(child: CircularProgressIndicator()),
             ),
           );
@@ -34,7 +35,7 @@ class MonthlySummaryWidget extends StatelessWidget {
         if (snapshot.hasError) {
           return Card(
             child: Padding(
-              padding: EdgeInsets.all(UIValue.defaultPadding),
+              padding: EdgeInsets.all(UILayout.defaultPadding),
               child: Text('오류가 발생했습니다: ${snapshot.error}'),
             ),
           );
@@ -49,7 +50,7 @@ class MonthlySummaryWidget extends StatelessWidget {
         return Card(
           elevation: 2,
           child: Padding(
-            padding: EdgeInsets.all(UIValue.defaultPadding),
+            padding: EdgeInsets.all(UILayout.defaultPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -58,7 +59,7 @@ class MonthlySummaryWidget extends StatelessWidget {
                   children: [
                     Text(
                       DateFormat('yyyy년 MM월').format(month),
-                      style: UIValue.subtitleStyle(
+                      style: UIText.subtitleStyle(
                         context,
                         weight: FontWeight.bold,
                       ),
@@ -70,7 +71,7 @@ class MonthlySummaryWidget extends StatelessWidget {
                   ],
                 ),
                 const Divider(),
-                SizedBox(height: UIValue.smallGap),
+                SizedBox(height: UILayout.smallGap),
 
                 // 수입
                 _buildSummaryRow(
@@ -80,7 +81,7 @@ class MonthlySummaryWidget extends StatelessWidget {
                   Colors.green,
                   Icons.add_circle,
                 ),
-                SizedBox(height: UIValue.smallGap),
+                SizedBox(height: UILayout.smallGap),
 
                 // 지출
                 _buildSummaryRow(
@@ -90,7 +91,7 @@ class MonthlySummaryWidget extends StatelessWidget {
                   Colors.red,
                   Icons.remove_circle,
                 ),
-                SizedBox(height: UIValue.smallGap),
+                SizedBox(height: UILayout.smallGap),
 
                 const Divider(),
 
@@ -121,11 +122,11 @@ class MonthlySummaryWidget extends StatelessWidget {
   }) {
     return Row(
       children: [
-        Icon(icon, color: color, size: UIValue.iconSizeMedium),
-        SizedBox(width: UIValue.smallGap),
+        Icon(icon, color: color, size: UILayout.iconSizeMedium),
+        SizedBox(width: UILayout.smallGap),
         Text(
           label,
-          style: UIValue.subtitleStyle(
+          style: UIText.subtitleStyle(
             context,
             weight: isBalance ? FontWeight.bold : FontWeight.normal,
           ),

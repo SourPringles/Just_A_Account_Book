@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'link.dart';
-import '../uivalue.dart';
+import '../uivalue/ui_layout.dart';
+import '../uivalue/ui_text.dart';
 
 class AuthWidget extends StatelessWidget {
   final User? user;
@@ -14,35 +15,35 @@ class AuthWidget extends StatelessWidget {
       children: [
         Text(
           "Successfully logged in!",
-          style: UIValue.titleStyle(context),
+          style: UIText.titleStyle(context),
           textAlign: TextAlign.center,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        SizedBox(height: UIValue.dynamicVerticalSpacing(context)),
+        SizedBox(height: UILayout.dynamicVerticalSpacing(context)),
         _buildUserInfo(context),
-        SizedBox(height: UIValue.dynamicVerticalSpacing(context)),
+        SizedBox(height: UILayout.dynamicVerticalSpacing(context)),
         _buildActionButtons(context),
       ],
     );
   }
 
   Widget _buildUserInfo(BuildContext context) {
-    final smallSpacing = UIValue.smallVerticalSpacing(context);
+    final smallSpacing = UILayout.smallVerticalSpacing(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           "Current User UID:",
-          style: UIValue.labelStyle(context),
+          style: UIText.labelStyle(context),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         SizedBox(height: smallSpacing),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(UIValue.isNarrow(context) ? 8.0 : 12.0),
+          padding: EdgeInsets.all(UILayout.isNarrow(context) ? 8.0 : 12.0),
           decoration: BoxDecoration(
             color: Colors.grey[100],
             borderRadius: BorderRadius.circular(8),
@@ -50,7 +51,7 @@ class AuthWidget extends StatelessWidget {
           ),
           child: SelectableText(
             user?.uid ?? "No UID available",
-            style: UIValue.contentStyle(
+            style: UIText.contentStyle(
               context,
             ).copyWith(fontFamily: 'monospace'),
           ),
@@ -59,8 +60,8 @@ class AuthWidget extends StatelessWidget {
         if (user?.isAnonymous == true)
           Text(
             "(Anonymous User)",
-            style: UIValue.contentStyle(context).copyWith(
-              fontSize: UIValue.smallFontSize + 2,
+            style: UIText.contentStyle(context).copyWith(
+              fontSize: UIText.smallFontSize + 2,
               color: Colors.orange,
               fontStyle: FontStyle.italic,
             ),
@@ -70,9 +71,9 @@ class AuthWidget extends StatelessWidget {
         if (user?.isAnonymous == false && user?.email != null)
           Text(
             "Email: ${user!.email}",
-            style: UIValue.contentStyle(
+            style: UIText.contentStyle(
               context,
-            ).copyWith(fontSize: UIValue.smallFontSize + 2),
+            ).copyWith(fontSize: UIText.smallFontSize + 2),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -81,9 +82,9 @@ class AuthWidget extends StatelessWidget {
   }
 
   Widget _buildActionButtons(BuildContext context) {
-    final buttonPadding = UIValue.buttonPadding(context);
-    final buttonSpacing = UIValue.buttonSpacing(context);
-    final iconSize = UIValue.isNarrow(context) ? 18.0 : UIValue.iconSizeLarge;
+    final buttonPadding = UILayout.buttonPadding(context);
+    final buttonSpacing = UILayout.buttonSpacing(context);
+    final iconSize = UILayout.isNarrow(context) ? 18.0 : UILayout.iconSizeLarge;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -104,7 +105,7 @@ class AuthWidget extends StatelessWidget {
             icon: Icon(Icons.link, size: iconSize),
             label: Text(
               "Link Account",
-              style: UIValue.buttonStyle(context),
+              style: UIText.buttonStyle(context),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -126,7 +127,7 @@ class AuthWidget extends StatelessWidget {
           icon: Icon(Icons.dashboard, size: iconSize),
           label: Text(
             "Dashboard",
-            style: UIValue.buttonStyle(context),
+            style: UIText.buttonStyle(context),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

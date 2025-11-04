@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../uivalue.dart';
+import '../../uivalue/ui_layout.dart';
 import '../../transactions/transaction_list_widget.dart';
 import '../../transactions/monthly_summary_widget.dart';
 import 'right_panel_tabs_widget.dart';
@@ -112,13 +112,13 @@ class _RightPanelWidgetState extends State<RightPanelWidget> {
           key: ValueKey('summary_$monthKey'),
           children: [
             Padding(
-              padding: EdgeInsets.all(UIValue.defaultPadding),
+              padding: EdgeInsets.all(UILayout.defaultPadding),
               child: MonthlySummaryWidget(
                 key: ValueKey('monthly_summary_$monthKey'),
                 month: _lastMonth,
               ),
             ),
-            SizedBox(height: UIValue.largeGap),
+            SizedBox(height: UILayout.largeGap),
             Expanded(
               child: TransactionListWidget(
                 key: ValueKey('transaction_list_$monthKey'),

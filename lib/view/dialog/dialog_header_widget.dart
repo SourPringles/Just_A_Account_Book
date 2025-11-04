@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../uivalue.dart';
+import '../uivalue/ui_text.dart';
 
 class DialogHeaderWidget extends StatelessWidget {
   final String title;
@@ -19,7 +19,7 @@ class DialogHeaderWidget extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
-              fontSize: UIValue.largeFontSize,
+              fontSize: UIText.largeFontSize,
               fontWeight: FontWeight.bold,
             ),
           ),

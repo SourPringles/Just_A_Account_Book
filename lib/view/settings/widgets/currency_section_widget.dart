@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../uivalue.dart';
+import '../../uivalue/ui_text.dart';
 
 class CurrencySectionWidget extends StatelessWidget {
   final String currentCurrency;
@@ -16,7 +16,7 @@ class CurrencySectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('통화 단위', style: UIValue.titleStyle(context)),
+        Text('통화 단위', style: UIText.titleStyle(context)),
         RadioListTile<String>(
           title: const Text('KRW (₩)'),
           value: 'KRW',

@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../../services/transaction_service.dart';
 import '../../models/transaction_model.dart';
 import '../dialog/dialog_header_widget.dart';
-import '../uivalue.dart';
+import '../uivalue/ui_layout.dart';
 
 class AddTransactionDialog extends StatefulWidget {
   final DateTime? initialDate;
@@ -49,10 +49,10 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
-        padding: EdgeInsets.all(UIValue.dialogPadding),
+        padding: EdgeInsets.all(UILayout.dialogPadding),
         constraints: BoxConstraints(
-          maxWidth: UIValue.dialogMaxWidth,
-          maxHeight: UIValue.dialogMaxHeight,
+          maxWidth: UILayout.dialogMaxWidth,
+          maxHeight: UILayout.dialogMaxHeight,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -64,7 +64,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
               onClose: () => Navigator.of(context).pop(),
             ),
             const Divider(),
-            SizedBox(height: UIValue.largeGap),
+            SizedBox(height: UILayout.largeGap),
             Flexible(
               child: Form(
                 key: _formKey,
@@ -180,7 +180,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                 ),
               ),
             ),
-            SizedBox(height: UIValue.largeGap),
+            SizedBox(height: UILayout.largeGap),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -188,7 +188,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                   onPressed: () => Navigator.of(context).pop(),
                   child: const Text('취소'),
                 ),
-                SizedBox(width: UIValue.smallGap),
+                SizedBox(width: UILayout.smallGap),
                 ElevatedButton(
                   onPressed: _saveTransaction,
                   child: const Text('저장'),

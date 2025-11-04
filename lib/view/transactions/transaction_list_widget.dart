@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../uivalue.dart';
+import '../uivalue/ui_layout.dart';
+import '../uivalue/ui_colors.dart';
+import '../uivalue/ui_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
@@ -113,7 +115,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('오류: $_error'),
-            SizedBox(height: UIValue.largeGap),
+            SizedBox(height: UILayout.largeGap),
             ElevatedButton(
               onPressed: _loadTransactions,
               child: const Text('다시 시도'),
@@ -134,15 +136,15 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
           children: [
             Icon(
               Icons.receipt_long,
-              size: UIValue.iconSizeXL,
+              size: UILayout.iconSizeXL,
               color: Colors.grey[400],
             ),
-            SizedBox(height: UIValue.largeGap),
+            SizedBox(height: UILayout.largeGap),
             Text(
               widget.showDailyOnly ? '오늘 거래 내역이 없습니다' : '이번 달 거래 내역이 없습니다',
               style: TextStyle(
-                fontSize: UIValue.mediumFontSize,
-                color: UIValue.mutedTextColor(context),
+                fontSize: UIText.mediumFontSize,
+                color: UIColors.mutedTextColor(context),
               ),
             ),
           ],
@@ -169,8 +171,8 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
 
     return Card(
       margin: EdgeInsets.symmetric(
-        horizontal: UIValue.smallGap,
-        vertical: UIValue.tinyGap,
+        horizontal: UILayout.smallGap,
+        vertical: UILayout.tinyGap,
       ),
       child: ListTile(
         leading: CircleAvatar(
@@ -187,12 +189,12 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
             Expanded(
               child: Text(
                 transaction.category,
-                style: UIValue.subtitleStyle(context, weight: FontWeight.bold),
+                style: UIText.subtitleStyle(context, weight: FontWeight.bold),
               ),
             ),
             Text(
               '${isIncome ? '+' : '-'}₩${NumberFormat('#,###').format(transaction.amount)}',
-              style: UIValue.subtitleStyle(
+              style: UIText.subtitleStyle(
                 context,
                 color: color,
                 weight: FontWeight.bold,
@@ -204,18 +206,18 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (transaction.description.isNotEmpty) ...[
-              SizedBox(height: UIValue.tinyGap),
+              SizedBox(height: UILayout.tinyGap),
               Text(
                 transaction.description,
-                style: UIValue.contentStyle(context),
+                style: UIText.contentStyle(context),
               ),
             ],
-            SizedBox(height: UIValue.tinyGap),
+            SizedBox(height: UILayout.tinyGap),
             Text(
               DateFormat('MM월 dd일').format(transaction.date),
-              style: UIValue.contentStyle(
+              style: UIText.contentStyle(
                 context,
-              ).copyWith(color: UIValue.mutedTextColor(context)),
+              ).copyWith(color: UIColors.mutedTextColor(context)),
             ),
           ],
         ),
@@ -237,8 +239,8 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
             borderRadius: BorderRadius.circular(16),
           ),
           child: Container(
-            padding: EdgeInsets.all(UIValue.dialogPadding),
-            constraints: BoxConstraints(maxWidth: UIValue.dialogMaxWidth),
+            padding: EdgeInsets.all(UILayout.dialogPadding),
+            constraints: BoxConstraints(maxWidth: UILayout.dialogMaxWidth),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -248,7 +250,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
                   onClose: () => Navigator.of(context).pop(),
                 ),
                 const Divider(),
-                SizedBox(height: UIValue.largeGap),
+                SizedBox(height: UILayout.largeGap),
                 _buildDetailRow(
                   '구분',
                   transaction.type == TransactionType.income ? '수입' : '지출',
@@ -264,7 +266,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
                   '날짜',
                   DateFormat('yyyy년 MM월 dd일').format(transaction.date),
                 ),
-                SizedBox(height: UIValue.largeGap),
+                SizedBox(height: UILayout.largeGap),
                 DialogFooterWidget(onClose: () => Navigator.of(context).pop()),
               ],
             ),
@@ -276,17 +278,17 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
 
   Widget _buildDetailRow(String label, String value) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: UIValue.tinyGap),
+      padding: EdgeInsets.symmetric(vertical: UILayout.tinyGap),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: UIValue.transactionLabelWidth,
+            width: UILayout.transactionLabelWidth,
             child: Text(
               label,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: UIValue.mutedTextColor(context),
+                color: UIColors.mutedTextColor(context),
               ),
             ),
           ),
@@ -309,8 +311,8 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
             borderRadius: BorderRadius.circular(16),
           ),
           child: Container(
-            padding: EdgeInsets.all(UIValue.dialogPadding),
-            constraints: BoxConstraints(maxWidth: UIValue.dialogMaxWidth),
+            padding: EdgeInsets.all(UILayout.dialogPadding),
+            constraints: BoxConstraints(maxWidth: UILayout.dialogMaxWidth),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,9 +322,9 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
                   onClose: () => Navigator.of(context).pop(),
                 ),
                 const Divider(),
-                SizedBox(height: UIValue.largeGap),
+                SizedBox(height: UILayout.largeGap),
                 Text('${transaction.category} 거래 내역을 삭제하시겠습니까?'),
-                SizedBox(height: UIValue.largeGap),
+                SizedBox(height: UILayout.largeGap),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -330,7 +332,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
                       onPressed: () => Navigator.of(context).pop(),
                       child: const Text('취소'),
                     ),
-                    SizedBox(width: UIValue.smallGap),
+                    SizedBox(width: UILayout.smallGap),
                     TextButton(
                       onPressed: () async {
                         try {
@@ -356,7 +358,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
                           }
                         }
                       },
-                      child: Text('삭제', style: UIValue.errorStyle(context)),
+                      child: Text('삭제', style: UIText.errorStyle(context)),
                     ),
                   ],
                 ),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../uivalue.dart';
+import '../uivalue/ui_layout.dart';
+import '../uivalue/ui_text.dart';
 
 class LinkPage extends StatefulWidget {
   const LinkPage({super.key});
@@ -18,7 +19,7 @@ class _LinkPageState extends State<LinkPage> {
     return Scaffold(
       appBar: AppBar(title: const Text("Firebase App")),
       body: Container(
-        padding: EdgeInsets.all(UIValue.mediumGap),
+        padding: EdgeInsets.all(UILayout.mediumGap),
         child: Center(
           child: Form(
             key: _key,
@@ -26,11 +27,11 @@ class _LinkPageState extends State<LinkPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 emailInput(),
-                SizedBox(height: UIValue.mediumGap),
+                SizedBox(height: UILayout.mediumGap),
                 passwordInput(),
-                SizedBox(height: UIValue.mediumGap),
+                SizedBox(height: UILayout.mediumGap),
                 submitButton(),
-                SizedBox(height: UIValue.mediumGap),
+                SizedBox(height: UILayout.mediumGap),
               ],
             ),
           ),
@@ -54,7 +55,7 @@ class _LinkPageState extends State<LinkPage> {
         border: OutlineInputBorder(),
         hintText: 'Input your email address.',
         labelText: 'Email Address',
-        labelStyle: UIValue.labelStyle(context),
+        labelStyle: UIText.labelStyle(context),
       ),
     );
   }
@@ -75,7 +76,7 @@ class _LinkPageState extends State<LinkPage> {
         border: OutlineInputBorder(),
         hintText: 'Input your password.',
         labelText: 'Password',
-        labelStyle: UIValue.labelStyle(context),
+        labelStyle: UIText.labelStyle(context),
       ),
     );
   }
@@ -111,10 +112,10 @@ class _LinkPageState extends State<LinkPage> {
         }
       },
       child: Container(
-        padding: EdgeInsets.all(UIValue.mediumGap),
+        padding: EdgeInsets.all(UILayout.mediumGap),
         child: Text(
           "Sign Up",
-          style: TextStyle(fontSize: UIValue.mediumFontSize),
+          style: TextStyle(fontSize: UIText.mediumFontSize),
         ),
       ),
     );

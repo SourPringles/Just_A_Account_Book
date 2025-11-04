@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../uivalue.dart';
+import '../../uivalue/ui_layout.dart';
 import '../../calendar/calendar_widget.dart';
 
 class LeftPanelWidget extends StatelessWidget {
@@ -23,12 +23,12 @@ class LeftPanelWidget extends StatelessWidget {
         border: Border(
           right: BorderSide(
             color: Colors.grey.shade300,
-            width: UIValue.borderWidthNormal,
+            width: UILayout.borderWidthNormal,
           ),
         ),
       ),
       child: Padding(
-        padding: EdgeInsets.all(UIValue.defaultPadding),
+        padding: EdgeInsets.all(UILayout.defaultPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -38,7 +38,7 @@ class LeftPanelWidget extends StatelessWidget {
               uiType: CalendarUIType.window,
               onDateSelected: onDateSelected,
             ),
-            SizedBox(height: UIValue.smallGap),
+            SizedBox(height: UILayout.smallGap),
             Expanded(child: Container()),
           ],
         ),

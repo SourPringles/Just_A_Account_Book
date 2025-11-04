@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../services/theme_service.dart';
 // import '../../services/settings_service.dart';
-import '../uivalue.dart';
+import '../uivalue/ui_layout.dart';
 import 'widgets/theme_section_widget.dart';
 // import 'widgets/language_section_widget.dart';
 // import 'widgets/currency_section_widget.dart';
@@ -56,7 +56,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('설정')),
       body: Padding(
-        padding: EdgeInsets.all(UIValue.defaultPadding),
+        padding: EdgeInsets.all(UILayout.defaultPadding),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

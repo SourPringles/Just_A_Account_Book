@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../uivalue.dart';
+import '../../uivalue/ui_text.dart';
 
 class ThemeSectionWidget extends StatelessWidget {
   final ThemeMode currentTheme;
@@ -16,7 +16,7 @@ class ThemeSectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('테마', style: UIValue.titleStyle(context)),
+        Text('테마', style: UIText.titleStyle(context)),
         RadioListTile<ThemeMode>(
           title: const Text('시스템 기본'),
           value: ThemeMode.system,

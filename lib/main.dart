@@ -10,7 +10,7 @@ import 'firebase_options.dart';
 import 'view/auth/login.dart';
 import 'view/auth/signup.dart';
 import 'view/home/home.dart';
-import 'view/uivalue.dart';
+import 'view/uivalue/ui_colors.dart';
 import 'services/theme_service.dart';
 import 'services/settings_service.dart';
 import 'view/settings/settings_page.dart';
@@ -64,11 +64,11 @@ class MainApp extends StatelessWidget {
       valueListenable: ThemeService.instance.themeMode,
       builder: (context, mode, _) {
         return Builder(
-          // Builder to provide a BuildContext for UIValue.appTheme(context)
+          // Builder to provide a BuildContext for UIColors.appTheme(context)
           builder: (ctx) => MaterialApp(
             title: 'Financial Management App',
-            theme: UIValue.appTheme(ctx),
-            darkTheme: UIValue.darkTheme(ctx),
+            theme: UIColors.appTheme(ctx),
+            darkTheme: UIColors.darkTheme(ctx),
             themeMode: mode,
             initialRoute: '/',
             routes: {

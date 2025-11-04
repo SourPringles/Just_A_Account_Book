@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../uivalue.dart';
+import '../../uivalue/ui_layout.dart';
+import '../../uivalue/ui_text.dart';
 
 class RightPanelTabsWidget extends StatelessWidget {
   final int currentIndex;
@@ -14,13 +15,13 @@ class RightPanelTabsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(UIValue.smallGap),
+      padding: EdgeInsets.all(UILayout.smallGap),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         border: Border(
           bottom: BorderSide(
             color: Theme.of(context).dividerColor,
-            width: UIValue.borderWidthNormal,
+            width: UILayout.borderWidthNormal,
           ),
         ),
       ),
@@ -35,7 +36,7 @@ class RightPanelTabsWidget extends StatelessWidget {
               onTap: () => onTabSelected(0),
             ),
           ),
-          SizedBox(width: UIValue.smallGap),
+          SizedBox(width: UILayout.smallGap),
           Expanded(
             child: _TabButton(
               index: 1,
@@ -73,8 +74,8 @@ class _TabButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       child: Container(
         padding: EdgeInsets.symmetric(
-          vertical: UIValue.smallGap,
-          horizontal: UIValue.smallGap,
+          vertical: UILayout.smallGap,
+          horizontal: UILayout.smallGap,
         ),
         decoration: BoxDecoration(
           color: isSelected
@@ -87,7 +88,7 @@ class _TabButton extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: UIValue.iconSizeSmall,
+              size: UILayout.iconSizeSmall,
               color: isSelected
                   ? Theme.of(context).colorScheme.onPrimary
                   : (() {
@@ -98,10 +99,10 @@ class _TabButton extends StatelessWidget {
                       return Color.fromRGBO(r, g, b, 0.7);
                     })(),
             ),
-            SizedBox(width: UIValue.tinyGap),
+            SizedBox(width: UILayout.tinyGap),
             Text(
               label,
-              style: UIValue.subtitleStyle(
+              style: UIText.subtitleStyle(
                 context,
                 color: isSelected
                     ? Theme.of(context).colorScheme.onPrimary

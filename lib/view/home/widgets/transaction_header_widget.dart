@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../uivalue.dart';
+import '../../uivalue/ui_layout.dart';
+import '../../uivalue/ui_text.dart';
 
 class TransactionHeaderWidget extends StatelessWidget {
   final DateTime selectedDate;
@@ -14,12 +15,12 @@ class TransactionHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(UIValue.defaultPadding),
+      padding: EdgeInsets.all(UILayout.defaultPadding),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
             color: Colors.grey.shade300,
-            width: UIValue.borderWidthNormal,
+            width: UILayout.borderWidthNormal,
           ),
         ),
       ),
@@ -28,24 +29,24 @@ class TransactionHeaderWidget extends StatelessWidget {
           Icon(
             Icons.receipt_long,
             color: Colors.blue,
-            size: UIValue.iconSizeXL / 2.666,
+            size: UILayout.iconSizeXL / 2.666,
           ),
-          SizedBox(width: UIValue.smallGap),
+          SizedBox(width: UILayout.smallGap),
           Text(
             '${selectedDate.year}년 ${selectedDate.month}월 ${selectedDate.day}일',
-            style: UIValue.titleStyle(context),
+            style: UIText.titleStyle(context),
           ),
           const Spacer(),
           ElevatedButton.icon(
             onPressed: onAdd,
-            icon: Icon(Icons.add, size: UIValue.iconSizeSmall),
+            icon: Icon(Icons.add, size: UILayout.iconSizeSmall),
             label: const Text('거래 추가'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.blue,
               foregroundColor: Colors.white,
               padding: EdgeInsets.symmetric(
-                horizontal: UIValue.smallGap * 2,
-                vertical: UIValue.smallGap,
+                horizontal: UILayout.smallGap * 2,
+                vertical: UILayout.smallGap,
               ),
             ),
           ),

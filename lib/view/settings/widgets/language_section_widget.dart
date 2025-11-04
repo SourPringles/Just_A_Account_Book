@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../uivalue.dart';
+import '../../uivalue/ui_text.dart';
 
 class LanguageSectionWidget extends StatelessWidget {
   final String currentLanguage;
@@ -16,7 +16,7 @@ class LanguageSectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('언어', style: UIValue.titleStyle(context)),
+        Text('언어', style: UIText.titleStyle(context)),
         RadioListTile<String>(
           title: const Text('시스템 기본'),
           value: 'system',

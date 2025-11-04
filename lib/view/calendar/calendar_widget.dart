@@ -1,6 +1,7 @@
 import 'package:just_a_account_book/view/calendar/sum_widget.dart';
 import 'package:flutter/material.dart';
-import '../uivalue.dart';
+import '../uivalue/ui_layout.dart';
+import '../uivalue/ui_colors.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
@@ -210,14 +211,14 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   Widget _buildDefaultCell(BuildContext context, DateTime date) {
     final textStyles = _getTextStyles();
 
-    // 다크 모드는 UIValue.textPrimaryColor에서 처리
+    // 다크 모드는 UIColors.textPrimaryColor에서 처리
 
     // 요일에 따른 날짜 색상 설정 (주말은 예외)
-    Color dateTextColor = UIValue.textPrimaryColor(context);
+    Color dateTextColor = UIColors.textPrimaryColor(context);
     if (date.weekday == DateTime.sunday) {
-      dateTextColor = UIValue.sundayTextColor(context);
+      dateTextColor = UIColors.sundayTextColor(context);
     } else if (date.weekday == DateTime.saturday) {
-      dateTextColor = UIValue.saturdayTextColor(context);
+      dateTextColor = UIColors.saturdayTextColor(context);
     }
 
     // 해당 날짜의 거래 데이터 가져오기
@@ -238,11 +239,11 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     }
 
     return Container(
-      margin: EdgeInsets.all(UIValue.tinyGap),
+      margin: EdgeInsets.all(UILayout.tinyGap),
       decoration: BoxDecoration(
         border: Border.all(
           color: Colors.grey.shade300,
-          width: UIValue.borderWidthThin,
+          width: UILayout.borderWidthThin,
         ),
         borderRadius: BorderRadius.circular(8.0),
       ),
@@ -265,8 +266,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
           // 거래 금액 영역 (수입/지출)
           Expanded(
             child: Container(
-              margin: EdgeInsets.all(UIValue.tinyGap / 2),
-              padding: EdgeInsets.all(UIValue.tinyGap),
+              margin: EdgeInsets.all(UILayout.tinyGap / 2),
+              padding: EdgeInsets.all(UILayout.tinyGap),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -356,13 +357,13 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               // 요일 헤더 스타일
               outsideDaysVisible: false,
               // 셀 크기 조정 - 높이를 증가시켜 텍스트 공간 확보
-              cellMargin: EdgeInsets.all(UIValue.tinyGap / 2),
-              cellPadding: EdgeInsets.all(UIValue.tinyGap),
+              cellMargin: EdgeInsets.all(UILayout.tinyGap / 2),
+              cellPadding: EdgeInsets.all(UILayout.tinyGap),
               // 기본 텍스트 스타일
               defaultTextStyle: TextStyle(fontSize: textStyles.dayNumberSize),
               weekendTextStyle: TextStyle(
                 fontSize: textStyles.dayNumberSize,
-                color: UIValue.sundayTextColor(context),
+                color: UIColors.sundayTextColor(context),
               ),
               // 셀의 최소 높이 설정
               rowDecoration: const BoxDecoration(),
@@ -373,12 +374,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               weekdayStyle: TextStyle(
                 fontSize: textStyles.dayOfWeekSize,
                 fontWeight: FontWeight.w600,
-                color: UIValue.textPrimaryColor(context),
+                color: UIColors.textPrimaryColor(context),
               ),
               weekendStyle: TextStyle(
                 fontSize: textStyles.dayOfWeekSize,
                 fontWeight: FontWeight.w600,
-                color: UIValue.sundayTextColor(context),
+                color: UIColors.sundayTextColor(context),
               ),
             ),
             headerStyle: HeaderStyle(
@@ -390,7 +391,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                 borderRadius: BorderRadius.all(Radius.circular(12.0)),
               ),
               formatButtonTextStyle: TextStyle(
-                color: UIValue.onPrimaryColor(context),
+                color: UIColors.onPrimaryColor(context),
                 fontSize: textStyles.headerSize - 2,
               ),
               leftChevronIcon: const Icon(
@@ -415,7 +416,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                     // 선택 테두리 오버레이
                     Positioned.fill(
                       child: Container(
-                        margin: EdgeInsets.all(UIValue.tinyGap / 2),
+                        margin: EdgeInsets.all(UILayout.tinyGap / 2),
                         decoration: BoxDecoration(
                           //border: Border.all(color: Colors.black, width: 1.0),
                           borderRadius: BorderRadius.circular(8.0),
@@ -440,11 +441,11 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                     // 오늘 날짜 테두리 오버레이 (주황색)
                     Positioned.fill(
                       child: Container(
-                        margin: EdgeInsets.all(UIValue.tinyGap / 2),
+                        margin: EdgeInsets.all(UILayout.tinyGap / 2),
                         decoration: BoxDecoration(
                           border: Border.all(
                             color: Colors.orange,
-                            width: UIValue.borderWidthNormal,
+                            width: UILayout.borderWidthNormal,
                           ),
                           borderRadius: BorderRadius.circular(8.0),
                         ),
@@ -455,12 +456,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               },
               dowBuilder: (context, day) {
                 String text;
-                Color textColor = UIValue.textPrimaryColor(context);
+                Color textColor = UIColors.textPrimaryColor(context);
 
                 switch (day.weekday) {
                   case DateTime.sunday:
                     text = '일';
-                    textColor = UIValue.sundayTextColor(context);
+                    textColor = UIColors.sundayTextColor(context);
                     break;
                   case DateTime.monday:
                     text = '월';
@@ -479,7 +480,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                     break;
                   case DateTime.saturday:
                     text = '토';
-                    textColor = UIValue.saturdayTextColor(context);
+                    textColor = UIColors.saturdayTextColor(context);
                     break;
                   default:
                     text = '';
@@ -502,12 +503,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               },
             ),
           ),
-          SizedBox(height: UIValue.largeGap),
+          SizedBox(height: UILayout.largeGap),
           if (_calendarFormat == CalendarFormat.week)
             CommonSumWidget(
               val: _getWeeklyTotal().toInt(),
               label: '주간 합계',
-              color: UIValue.textPrimaryColor(context),
+              color: UIColors.textPrimaryColor(context),
               fontSize:
                   (widget.uiType ?? CalendarUIType.mobile) ==
                       CalendarUIType.window

@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../uivalue.dart';
+import '../uivalue/ui_layout.dart';
 
 import '../../services/auth_service.dart';
 import '../auth/login.dart';
@@ -101,10 +101,10 @@ class _HomePageState extends State<HomePage> {
             borderRadius: BorderRadius.circular(16),
           ),
           child: Container(
-            padding: EdgeInsets.all(UIValue.dialogPadding),
+            padding: EdgeInsets.all(UILayout.dialogPadding),
             constraints: BoxConstraints(
-              maxWidth: UIValue.dialogMaxWidth,
-              maxHeight: UIValue.dialogMaxHeight,
+              maxWidth: UILayout.dialogMaxWidth,
+              maxHeight: UILayout.dialogMaxHeight,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -115,11 +115,11 @@ class _HomePageState extends State<HomePage> {
                   onClose: () => Navigator.pop(context),
                 ),
                 const Divider(),
-                SizedBox(height: UIValue.largeGap),
+                SizedBox(height: UILayout.largeGap),
                 Flexible(
                   child: SingleChildScrollView(child: AuthWidget(user: user)),
                 ),
-                SizedBox(height: UIValue.largeGap),
+                SizedBox(height: UILayout.largeGap),
                 DialogFooterWidget(onClose: () => Navigator.pop(context)),
               ],
             ),

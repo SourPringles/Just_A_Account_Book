@@ -50,6 +50,10 @@ class MonthlySummaryWidget extends StatelessWidget {
 
         return Card(
           elevation: 2,
+          margin: EdgeInsets.symmetric(
+            horizontal: UILayout.smallGap,
+            vertical: UILayout.tinyGap,
+          ),
           child: Padding(
             padding: EdgeInsets.all(UILayout.defaultPadding),
             child: Column(

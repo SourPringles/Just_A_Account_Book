@@ -111,12 +111,9 @@ class _RightPanelWidgetState extends State<RightPanelWidget> {
         _cachedSummaryContent = Column(
           key: ValueKey('summary_$monthKey'),
           children: [
-            Padding(
-              padding: EdgeInsets.all(UILayout.defaultPadding),
-              child: MonthlySummaryWidget(
-                key: ValueKey('monthly_summary_$monthKey'),
-                month: _lastMonth,
-              ),
+            MonthlySummaryWidget(
+              key: ValueKey('monthly_summary_$monthKey'),
+              month: _lastMonth,
             ),
             SizedBox(height: UILayout.largeGap),
             Expanded(

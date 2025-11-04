@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'link.dart';
 import '../uivalue/ui_layout.dart';
 import '../uivalue/ui_text.dart';
+import '../uivalue/ui_colors.dart';
 
 class AuthWidget extends StatelessWidget {
   final User? user;
@@ -45,9 +46,9 @@ class AuthWidget extends StatelessWidget {
           width: double.infinity,
           padding: EdgeInsets.all(UILayout.isNarrow(context) ? 8.0 : 12.0),
           decoration: BoxDecoration(
-            color: Colors.grey[100],
+            color: UIColors.cardBackgroundLight,
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey[300]!),
+            border: Border.all(color: UIColors.borderColor),
           ),
           child: SelectableText(
             user?.uid ?? "No UID available",
@@ -62,7 +63,7 @@ class AuthWidget extends StatelessWidget {
             "(Anonymous User)",
             style: UIText.smallTextStyle(context).copyWith(
               fontSize: UIText.smallFontSize + 2,
-              color: Colors.orange,
+              color: UIColors.warningColor,
               fontStyle: FontStyle.italic,
             ),
             maxLines: 1,
@@ -98,8 +99,8 @@ class AuthWidget extends StatelessWidget {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
+              backgroundColor: UIColors.commonPositiveColor,
+              foregroundColor: UIColors.whiteColor,
               padding: EdgeInsets.symmetric(vertical: buttonPadding),
             ),
             icon: Icon(Icons.link, size: iconSize),
@@ -120,8 +121,8 @@ class AuthWidget extends StatelessWidget {
             );
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
+            backgroundColor: UIColors.incomeColor,
+            foregroundColor: UIColors.whiteColor,
             padding: EdgeInsets.symmetric(vertical: buttonPadding),
           ),
           icon: Icon(Icons.dashboard, size: iconSize),

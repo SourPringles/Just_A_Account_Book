@@ -137,7 +137,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
             Icon(
               Icons.receipt_long,
               size: UILayout.iconSizeXL,
-              color: Colors.grey[400],
+              color: UIColors.dividerColor,
             ),
             SizedBox(height: UILayout.largeGap),
             Text(
@@ -166,7 +166,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
     TransactionModel transaction,
   ) {
     final isIncome = transaction.type == TransactionType.income;
-    final color = isIncome ? Colors.blue : Colors.red;
+    final color = isIncome ? UIColors.incomeColor : UIColors.expenseColor;
     final icon = isIncome ? Icons.add_circle : Icons.remove_circle;
 
     return Card(
@@ -176,12 +176,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
       ),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Color.fromRGBO(
-            (color.r * 255.0).round(),
-            (color.g * 255.0).round(),
-            (color.b * 255.0).round(),
-            0.1,
-          ),
+          backgroundColor: color.withOpacity(0.1),
           child: Icon(icon, color: color),
         ),
         title: Row(

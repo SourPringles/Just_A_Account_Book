@@ -91,13 +91,7 @@ class _TabButton extends StatelessWidget {
               size: UILayout.iconSizeSmall,
               color: isSelected
                   ? Theme.of(context).colorScheme.onPrimary
-                  : (() {
-                      final c = Theme.of(context).colorScheme.onSurface;
-                      final r = (c.r * 255.0).round() & 0xff;
-                      final g = (c.g * 255.0).round() & 0xff;
-                      final b = (c.b * 255.0).round() & 0xff;
-                      return Color.fromRGBO(r, g, b, 0.7);
-                    })(),
+                  : Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
             ),
             SizedBox(width: UILayout.tinyGap),
             Text(
@@ -106,13 +100,7 @@ class _TabButton extends StatelessWidget {
                 context,
                 color: isSelected
                     ? Theme.of(context).colorScheme.onPrimary
-                    : (() {
-                        final c = Theme.of(context).colorScheme.onSurface;
-                        final r = (c.r * 255.0).round() & 0xff;
-                        final g = (c.g * 255.0).round() & 0xff;
-                        final b = (c.b * 255.0).round() & 0xff;
-                        return Color.fromRGBO(r, g, b, 0.8);
-                      })(),
+                    : Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
                 weight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),

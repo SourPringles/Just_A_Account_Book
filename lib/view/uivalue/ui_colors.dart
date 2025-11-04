@@ -6,8 +6,27 @@ class UIColors {
   // ========== 색상 정의 (Light/Dark 모드 분리) ==========
   
   // 공통 색상 (모드 무관)
-  static const Color commonButtonColor = Colors.blue; // 기본 버튼 색상
-  static const Color commonDeleteCancelColor = Colors.red; // 삭제/취소 버튼 색상
+  static const Color commonPositiveColor = Colors.blue; // 긍정적 요소 색상
+  static const Color commonNegativeColor = Colors.red; // 부정적 요소 색상
+  static const Color commonNeutralColor = Colors.black; // 중립적 요소 색상
+  static const Color commonExtraColor = Colors.grey; // 추가 중립적 요소 색상
+  
+  // 거래 관련 색상
+  static const Color incomeColor = commonPositiveColor; // 수입 색상
+  static const Color expenseColor = commonNegativeColor; // 지출 색상
+  static const Color balancePositiveColor = commonPositiveColor; // 잔액 양수
+  static const Color balanceNegativeColor = commonNegativeColor; // 잔액 음수
+  
+  // UI 요소 색상
+  static const Color borderColor = Color(0xFFE0E0E0); // 테두리 색상 (Grey shade 300)
+  static const Color dividerColor = Color(0xFFBDBDBD); // 구분선 색상 (Grey shade 400)
+  static const Color shadowColor = Color(0x1A000000); // 그림자 색상 (투명도 0.1)
+  static const Color todayBorderColor = Colors.orange; // 오늘 날짜 테두리
+  static const Color warningColor = Colors.orange; // 경고 색상
+  static const Color whiteColor = Colors.white; // 흰색
+  
+  // 배경 색상
+  static const Color cardBackgroundLight = Color(0xFFF5F5F5); // 카드 배경 (Grey shade 100)
   
   // Light 모드 색상
   static const Color lightWeekdayTextColor = Colors.black; // 평일 날짜 색상
@@ -71,10 +90,10 @@ class UIColors {
     return ThemeData(
       brightness: Brightness.light,
       colorScheme: ColorScheme.light(
-        primary: commonButtonColor,
-        secondary: commonButtonColor.withOpacity(0.8),
+        primary: commonPositiveColor,
+        secondary: commonPositiveColor.withOpacity(0.8),
         surface: lightBackgroundColor,
-        error: commonDeleteCancelColor,
+        error: commonNegativeColor,
       ),
       scaffoldBackgroundColor: lightBackgroundColor,
       useMaterial3: true,
@@ -108,10 +127,10 @@ class UIColors {
     return ThemeData(
       brightness: Brightness.dark,
       colorScheme: ColorScheme.dark(
-        primary: commonButtonColor,
-        secondary: commonButtonColor.withOpacity(0.8),
+        primary: commonPositiveColor,
+        secondary: commonPositiveColor.withOpacity(0.8),
         surface: darkBackgroundColor,
-        error: commonDeleteCancelColor,
+        error: commonNegativeColor,
       ),
       scaffoldBackgroundColor: darkBackgroundColor,
       useMaterial3: true,

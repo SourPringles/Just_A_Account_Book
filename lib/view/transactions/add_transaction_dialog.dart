@@ -5,6 +5,7 @@ import '../../services/transaction_service.dart';
 import '../../models/transaction_model.dart';
 import '../dialog/dialog_header_widget.dart';
 import '../uivalue/ui_layout.dart';
+import '../uivalue/ui_colors.dart';
 
 class AddTransactionDialog extends StatefulWidget {
   final DateTime? initialDate;
@@ -78,12 +79,12 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                           ButtonSegment(
                             value: TransactionType.income,
                             label: Text('수입'),
-                            icon: Icon(Icons.add_circle, color: Colors.green),
+                            icon: Icon(Icons.add_circle, color: UIColors.incomeColor),
                           ),
                           ButtonSegment(
                             value: TransactionType.expense,
                             label: Text('지출'),
-                            icon: Icon(Icons.remove_circle, color: Colors.red),
+                            icon: Icon(Icons.remove_circle, color: UIColors.expenseColor),
                           ),
                         ],
                         selected: {_selectedType},

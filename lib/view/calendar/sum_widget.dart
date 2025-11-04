@@ -63,14 +63,14 @@ class SumWidget extends StatelessWidget {
         CommonSumWidget(
           val: monthIncome,
           label: '수입',
-          color: Colors.blue,
+          color: UIColors.incomeColor,
           fontSize: _getItemFontSize(),
         ),
         SizedBox(height: UILayout.smallGap),
         CommonSumWidget(
           val: monthExpense,
           label: '지출',
-          color: Colors.red,
+          color: UIColors.expenseColor,
           fontSize: _getItemFontSize(),
         ),
         SizedBox(height: UILayout.smallGap),
@@ -133,7 +133,7 @@ class CommonSumWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 4.0),
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: UIColors.whiteColor,
         borderRadius: BorderRadius.circular(8.0),
         border: Border.all(color: color, width: 1),
         //boxShadow: [

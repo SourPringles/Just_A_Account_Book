@@ -198,9 +198,9 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
     return Container(
       margin: EdgeInsets.all(UILayout.tinyGap),
-      decoration: BoxDecoration(
+        decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.grey.shade300,
+          color: UIColors.borderColor,
           width: UILayout.borderWidthThin,
         ),
         borderRadius: BorderRadius.circular(8.0),
@@ -234,7 +234,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                     income > 0 ? '+${formatAmount(income)}' : '',
                     style: TextStyle(
                       fontSize: UIText.calendarAmount,
-                      color: Colors.blue,
+                      color: UIColors.incomeColor,
                       fontWeight: FontWeight.w500,
                     ),
                     maxLines: 1,
@@ -245,7 +245,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                     expense > 0 ? '-${formatAmount(expense)}' : '',
                     style: TextStyle(
                       fontSize: UIText.calendarAmount,
-                      color: Colors.red,
+                      color: UIColors.expenseColor,
                       fontWeight: FontWeight.w500,
                     ),
                     maxLines: 1,
@@ -347,7 +347,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                 borderRadius: BorderRadius.all(Radius.circular(12.0)),
               ),
               formatButtonTextStyle: TextStyle(
-                color: UIColors.onPrimaryColor(context),
+                color: UIColors.whiteColor,
                 fontSize: UIText.calendarHeader - 2,
               ),
               leftChevronIcon: const Icon(
@@ -374,11 +374,10 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                       child: Container(
                         margin: EdgeInsets.all(UILayout.tinyGap / 2),
                         decoration: BoxDecoration(
-                          //border: Border.all(color: Colors.black, width: 1.0),
                           borderRadius: BorderRadius.circular(8.0),
                           boxShadow: [
                             BoxShadow(
-                              color: Color.fromRGBO(0, 0, 0, 0.1),
+                              color: UIColors.shadowColor,
                               blurRadius: 4.0,
                               offset: const Offset(0, 2),
                             ),
@@ -400,7 +399,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                         margin: EdgeInsets.all(UILayout.tinyGap / 2),
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.orange,
+                            color: UIColors.todayBorderColor,
                             width: UILayout.borderWidthNormal,
                           ),
                           borderRadius: BorderRadius.circular(8.0),
@@ -465,7 +464,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               val: _getWeeklyTotal().toInt(),
               label: '주간 합계',
               color: UIColors.textPrimaryColor(context),
-              fontSize: 22.0,
+              fontSize: UIText.calendarSumFontSize,
             ),
         ],
       ),

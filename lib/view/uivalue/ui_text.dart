@@ -19,6 +19,11 @@ class UIText {
   static const double calendarHeader = mediumFontSize; // 캘린더 헤더
   static const double calendarDayOfWeek = mediumFontSize - 2; // 캘린더 요일
   static const double calendarRowHeight = 75.0; // 캘린더 행 높이
+  static const double calendarSumFontSize = 22.0; // 캘린더 합계 폰트 크기
+  
+  // 거래 관련 폰트 크기
+  static const double transactionAmountSize = 14.0; // 거래 금액 폰트 크기
+  static const double transactionBalanceSize = 16.0; // 거래 잔액 폰트 크기
 
   // ========== 폰트 패밀리 정의 ==========
   // 앱 전체에서 사용할 폰트를 여기서 수정 가능
@@ -110,7 +115,7 @@ class UIText {
     return TextStyle(
       fontSize: smallFontSize,
       fontWeight: weight ?? fontWeightMedium,
-      color: color ?? UIColors.commonDeleteCancelColor,
+      color: color ?? UIColors.commonNegativeColor,
       fontFamily: fontFamily.isEmpty ? null : fontFamily,
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../uivalue/ui_layout.dart';
+import '../../uivalue/ui_colors.dart';
 import '../../calendar/calendar_widget.dart';
 
 class LeftPanelWidget extends StatelessWidget {
@@ -22,7 +23,7 @@ class LeftPanelWidget extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           right: BorderSide(
-            color: Colors.grey.shade300,
+            color: UIColors.borderColor,
             width: UILayout.borderWidthNormal,
           ),
         ),

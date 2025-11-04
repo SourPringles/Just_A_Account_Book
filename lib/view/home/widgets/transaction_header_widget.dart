@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../uivalue/ui_layout.dart';
 import '../../uivalue/ui_text.dart';
+import '../../uivalue/ui_colors.dart';
 
 class TransactionHeaderWidget extends StatelessWidget {
   final DateTime selectedDate;
@@ -19,7 +20,7 @@ class TransactionHeaderWidget extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
-            color: Colors.grey.shade300,
+            color: UIColors.borderColor,
             width: UILayout.borderWidthNormal,
           ),
         ),
@@ -28,7 +29,7 @@ class TransactionHeaderWidget extends StatelessWidget {
         children: [
           Icon(
             Icons.receipt_long,
-            color: Colors.blue,
+            color: UIColors.commonPositiveColor,
             size: UILayout.iconSizeXL / 2.666,
           ),
           SizedBox(width: UILayout.smallGap),
@@ -42,8 +43,8 @@ class TransactionHeaderWidget extends StatelessWidget {
             icon: Icon(Icons.add, size: UILayout.iconSizeSmall),
             label: const Text('거래 추가'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              foregroundColor: Colors.white,
+              backgroundColor: UIColors.commonPositiveColor,
+              foregroundColor: UIColors.whiteColor,
               padding: EdgeInsets.symmetric(
                 horizontal: UILayout.smallGap * 2,
                 vertical: UILayout.smallGap,

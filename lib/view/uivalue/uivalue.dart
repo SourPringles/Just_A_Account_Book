@@ -7,7 +7,7 @@
 /// 사용 예시:
 /// import 'package:your_app/view/uivalue/uivalue.dart';
 /// 
-/// UIColors.commonButtonColor
+/// UIColors.commonPositiveColor
 /// UIText.mediumFontSize
 /// UILayout.mediumGap
 

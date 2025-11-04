@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../uivalue/ui_layout.dart';
 import '../uivalue/ui_text.dart';
+import '../uivalue/ui_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import '../../services/transaction_service.dart';
@@ -66,7 +67,7 @@ class MonthlySummaryWidget extends StatelessWidget {
                     ),
                     Icon(
                       balance >= 0 ? Icons.trending_up : Icons.trending_down,
-                      color: balance >= 0 ? Colors.green : Colors.red,
+                      color: balance >= 0 ? UIColors.incomeColor : UIColors.expenseColor,
                     ),
                   ],
                 ),
@@ -78,7 +79,7 @@ class MonthlySummaryWidget extends StatelessWidget {
                   context,
                   '수입',
                   income,
-                  Colors.green,
+                  UIColors.incomeColor,
                   Icons.add_circle,
                 ),
                 SizedBox(height: UILayout.smallGap),
@@ -88,7 +89,7 @@ class MonthlySummaryWidget extends StatelessWidget {
                   context,
                   '지출',
                   expense,
-                  Colors.red,
+                  UIColors.expenseColor,
                   Icons.remove_circle,
                 ),
                 SizedBox(height: UILayout.smallGap),
@@ -100,7 +101,7 @@ class MonthlySummaryWidget extends StatelessWidget {
                   context,
                   '잔액',
                   balance,
-                  balance >= 0 ? Colors.blue : Colors.orange,
+                  balance >= 0 ? UIColors.balancePositiveColor : UIColors.balanceNegativeColor,
                   balance >= 0 ? Icons.account_balance_wallet : Icons.warning,
                   isBalance: true,
                 ),
@@ -135,7 +136,7 @@ class MonthlySummaryWidget extends StatelessWidget {
         Text(
           '${amount >= 0 ? '+' : ''}₩${NumberFormat('#,###').format(amount.abs())}',
           style: TextStyle(
-            fontSize: isBalance ? 16 : 14,
+            fontSize: isBalance ? UIText.transactionBalanceSize : UIText.transactionAmountSize,
             fontWeight: isBalance ? FontWeight.bold : FontWeight.w500,
             color: color,
           ),

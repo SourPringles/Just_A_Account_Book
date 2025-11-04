@@ -72,13 +72,9 @@ class _HomePageState extends State<HomePage> {
             refreshTrigger: _refreshTrigger,
             rightPanelIndex: _rightPanelIndex,
             onDateSelected: (date) {
-              if (_rightPanelIndex == 1) {
+              setState(() {
                 _selectedDate = date;
-              } else {
-                setState(() {
-                  _selectedDate = date;
-                });
-              }
+              });
             },
           ),
         ),

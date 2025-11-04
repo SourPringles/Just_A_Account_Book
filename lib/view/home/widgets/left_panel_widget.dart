@@ -36,13 +36,7 @@ class LeftPanelWidget extends StatelessWidget {
               initialSelectedDate: selectedDate,
               refreshTrigger: refreshTrigger,
               uiType: CalendarUIType.window,
-              onDateSelected: (date) {
-                if (rightPanelIndex == 1) {
-                  onDateSelected(date);
-                } else {
-                  onDateSelected(date);
-                }
-              },
+              onDateSelected: onDateSelected,
             ),
             SizedBox(height: UIValue.smallGap),
             Expanded(child: Container()),

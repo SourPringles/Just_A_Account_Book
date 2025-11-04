@@ -348,6 +348,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                 });
                 // 월이 변경되면 새로운 거래 데이터 로드
                 _loadMonthlyData();
+                // 부모 위젯에 날짜 변경 알림 (우측 패널 업데이트를 위해)
+                widget.onDateSelected?.call(focusedDay);
               }
             },
             calendarStyle: CalendarStyle(

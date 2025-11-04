@@ -161,10 +161,26 @@ class UIValue {
     );
   }
 
+  // ========== 색상 정의 (Light/Dark 모드 분리) ==========
+  
+  // 공통 색상 (모드 무관)
+  static const Color commonButtonColor = Colors.blue; // 기본 버튼 색상
+  static const Color commonDeleteCancelColor = Colors.red; // 삭제/취소 버튼 색상
+  
+  // Light 모드 색상
+  static const Color lightWeekdayTextColor = Colors.black; // 평일 날짜 색상
+  static const Color lightDefaultTextColor = Colors.blue; // 별도 정의하지 않은 텍스트 색상
+  static const Color lightBackgroundColor = Colors.white; // 바탕화면 색상
+  
+  // Dark 모드 색상
+  static const Color darkWeekdayTextColor = Colors.white; // 평일 날짜 색상
+  static const Color darkDefaultTextColor = Colors.white; // 별도 정의하지 않은 텍스트 색상
+  static const Color darkBackgroundColor = Colors.black; // 바탕화면 색상
+
   // Theme-aware text color helpers
   static Color textPrimaryColor(BuildContext context) {
     final brightness = Theme.of(context).brightness;
-    return brightness == Brightness.dark ? Colors.white : Colors.black;
+    return brightness == Brightness.dark ? darkDefaultTextColor : lightDefaultTextColor;
   }
 
   static Color mutedTextColor(BuildContext context) {
@@ -172,6 +188,18 @@ class UIValue {
     return brightness == Brightness.dark
         ? Colors.grey.shade300
         : Colors.grey.shade600;
+  }
+
+  // 평일 날짜 색상
+  static Color weekdayDateTextColor(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
+    return brightness == Brightness.dark ? darkWeekdayTextColor : lightWeekdayTextColor;
+  }
+
+  // 바탕화면 색상
+  static Color backgroundColor(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
+    return brightness == Brightness.dark ? darkBackgroundColor : lightBackgroundColor;
   }
 
   // Weekend specific colors
@@ -182,7 +210,7 @@ class UIValue {
   static Color weekdayTextColor(BuildContext context, int weekday) {
     if (weekday == DateTime.saturday) return saturdayTextColor(context);
     if (weekday == DateTime.sunday) return sundayTextColor(context);
-    return textPrimaryColor(context);
+    return weekdayDateTextColor(context); // 평일은 새로 정의한 색상 사용
   }
 
   // Colors related to surfaces/primary backgrounds
@@ -223,10 +251,11 @@ class UIValue {
     return base.copyWith(
       colorScheme: colorScheme,
       primaryColor: colorScheme.primary,
+      scaffoldBackgroundColor: lightBackgroundColor, // Light 모드 배경색
       textTheme: textTheme(context),
       appBarTheme: AppBarTheme(titleTextStyle: titleStyle(context)),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: Colors.blue,
+        backgroundColor: commonButtonColor, // 공통 버튼 색상
       ),
       // Buttons
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -326,9 +355,9 @@ class UIValue {
         titleTextStyle: titleStyle(context, color: Colors.white),
       ),
       floatingActionButtonTheme: base.floatingActionButtonTheme.copyWith(
-        backgroundColor: Colors.blue,
+        backgroundColor: commonButtonColor, // 공통 버튼 색상
       ),
-      scaffoldBackgroundColor: Colors.black,
+      scaffoldBackgroundColor: darkBackgroundColor, // Dark 모드 배경색
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: colorScheme.primary,

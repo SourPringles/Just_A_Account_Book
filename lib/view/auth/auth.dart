@@ -60,7 +60,7 @@ class AuthWidget extends StatelessWidget {
           Text(
             "(Anonymous User)",
             style: UIValue.contentStyle(context).copyWith(
-              fontSize: UIValue.contentFontSize(context) + 2,
+              fontSize: UIValue.smallFontSize + 2,
               color: Colors.orange,
               fontStyle: FontStyle.italic,
             ),
@@ -72,7 +72,7 @@ class AuthWidget extends StatelessWidget {
             "Email: ${user!.email}",
             style: UIValue.contentStyle(
               context,
-            ).copyWith(fontSize: UIValue.contentFontSize(context) + 2),
+            ).copyWith(fontSize: UIValue.smallFontSize + 2),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),

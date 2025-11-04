@@ -114,7 +114,7 @@ class _LinkPageState extends State<LinkPage> {
         padding: EdgeInsets.all(UIValue.mediumGap),
         child: Text(
           "Sign Up",
-          style: TextStyle(fontSize: UIValue.buttonTextSize(context)),
+          style: TextStyle(fontSize: UIValue.mediumFontSize),
         ),
       ),
     );

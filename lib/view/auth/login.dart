@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.all(UIValue.mediumGap),
         child: Text(
           "Login",
-          style: TextStyle(fontSize: UIValue.buttonTextSize(context)),
+          style: TextStyle(fontSize: UIValue.mediumFontSize),
         ),
       ),
     );
@@ -143,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.all(UIValue.mediumGap),
         child: Text(
           "temporary login",
-          style: TextStyle(fontSize: UIValue.buttonTextSize(context)),
+          style: TextStyle(fontSize: UIValue.mediumFontSize),
         ),
       ),
     );

@@ -141,7 +141,7 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
             Text(
               widget.showDailyOnly ? '오늘 거래 내역이 없습니다' : '이번 달 거래 내역이 없습니다',
               style: TextStyle(
-                fontSize: UIValue.subtitleFontSize(context),
+                fontSize: UIValue.mediumFontSize,
                 color: UIValue.mutedTextColor(context),
               ),
             ),

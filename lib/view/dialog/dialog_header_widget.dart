@@ -19,7 +19,7 @@ class DialogHeaderWidget extends StatelessWidget {
           child: Text(
             title,
             style: TextStyle(
-              fontSize: UIValue.titleFontSize(context),
+              fontSize: UIValue.largeFontSize,
               fontWeight: FontWeight.bold,
             ),
           ),

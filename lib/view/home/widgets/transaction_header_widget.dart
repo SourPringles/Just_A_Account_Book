@@ -34,7 +34,7 @@ class TransactionHeaderWidget extends StatelessWidget {
           SizedBox(width: UILayout.smallGap),
           Text(
             '${selectedDate.year}년 ${selectedDate.month}월 ${selectedDate.day}일',
-            style: UIText.titleStyle(context),
+            style: UIText.largeTextStyle(context),
           ),
           const Spacer(),
           ElevatedButton.icon(

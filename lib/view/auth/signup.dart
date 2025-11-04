@@ -59,7 +59,7 @@ class _SignupPageState extends State<SignupPage> {
         border: OutlineInputBorder(),
         hintText: 'Input your name.',
         labelText: 'Name',
-        labelStyle: UIText.labelStyle(context),
+        labelStyle: UIText.mediumTextStyle(context),
       ),
     );
   }
@@ -78,7 +78,7 @@ class _SignupPageState extends State<SignupPage> {
         border: OutlineInputBorder(),
         hintText: 'Input your email address.',
         labelText: 'Email Address',
-        labelStyle: UIText.labelStyle(context),
+        labelStyle: UIText.mediumTextStyle(context),
       ),
     );
   }
@@ -99,7 +99,7 @@ class _SignupPageState extends State<SignupPage> {
         border: OutlineInputBorder(),
         hintText: 'Input your password.',
         labelText: 'Password',
-        labelStyle: UIText.labelStyle(context),
+        labelStyle: UIText.mediumTextStyle(context),
       ),
     );
   }

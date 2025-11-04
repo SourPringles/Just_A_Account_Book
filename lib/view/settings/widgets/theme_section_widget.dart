@@ -16,7 +16,7 @@ class ThemeSectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('테마', style: UIText.titleStyle(context)),
+        Text('테마', style: UIText.largeTextStyle(context)),
         RadioListTile<ThemeMode>(
           title: const Text('시스템 기본'),
           value: ThemeMode.system,

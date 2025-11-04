@@ -102,7 +102,7 @@ class _TabButton extends StatelessWidget {
             SizedBox(width: UILayout.tinyGap),
             Text(
               label,
-              style: UIText.subtitleStyle(
+              style: UIText.mediumTextStyle(
                 context,
                 color: isSelected
                     ? Theme.of(context).colorScheme.onPrimary

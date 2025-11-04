@@ -55,7 +55,7 @@ class _LinkPageState extends State<LinkPage> {
         border: OutlineInputBorder(),
         hintText: 'Input your email address.',
         labelText: 'Email Address',
-        labelStyle: UIText.labelStyle(context),
+        labelStyle: UIText.mediumTextStyle(context),
       ),
     );
   }
@@ -76,7 +76,7 @@ class _LinkPageState extends State<LinkPage> {
         border: OutlineInputBorder(),
         hintText: 'Input your password.',
         labelText: 'Password',
-        labelStyle: UIText.labelStyle(context),
+        labelStyle: UIText.mediumTextStyle(context),
       ),
     );
   }

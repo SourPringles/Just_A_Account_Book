@@ -16,7 +16,7 @@ class CurrencySectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('통화 단위', style: UIText.titleStyle(context)),
+        Text('통화 단위', style: UIText.largeTextStyle(context)),
         RadioListTile<String>(
           title: const Text('KRW (₩)'),
           value: 'KRW',

@@ -16,7 +16,7 @@ class LanguageSectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('언어', style: UIText.titleStyle(context)),
+        Text('언어', style: UIText.largeTextStyle(context)),
         RadioListTile<String>(
           title: const Text('시스템 기본'),
           value: 'system',

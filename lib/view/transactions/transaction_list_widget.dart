@@ -189,12 +189,12 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
             Expanded(
               child: Text(
                 transaction.category,
-                style: UIText.subtitleStyle(context, weight: FontWeight.bold),
+                style: UIText.mediumTextStyle(context, weight: FontWeight.bold),
               ),
             ),
             Text(
               '${isIncome ? '+' : '-'}₩${NumberFormat('#,###').format(transaction.amount)}',
-              style: UIText.subtitleStyle(
+              style: UIText.mediumTextStyle(
                 context,
                 color: color,
                 weight: FontWeight.bold,
@@ -209,13 +209,13 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
               SizedBox(height: UILayout.tinyGap),
               Text(
                 transaction.description,
-                style: UIText.contentStyle(context),
+                style: UIText.smallTextStyle(context),
               ),
             ],
             SizedBox(height: UILayout.tinyGap),
             Text(
               DateFormat('MM월 dd일').format(transaction.date),
-              style: UIText.contentStyle(
+              style: UIText.smallTextStyle(
                 context,
               ).copyWith(color: UIColors.mutedTextColor(context)),
             ),

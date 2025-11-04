@@ -59,7 +59,7 @@ class MonthlySummaryWidget extends StatelessWidget {
                   children: [
                     Text(
                       DateFormat('yyyy년 MM월').format(month),
-                      style: UIText.subtitleStyle(
+                      style: UIText.mediumTextStyle(
                         context,
                         weight: FontWeight.bold,
                       ),
@@ -126,7 +126,7 @@ class MonthlySummaryWidget extends StatelessWidget {
         SizedBox(width: UILayout.smallGap),
         Text(
           label,
-          style: UIText.subtitleStyle(
+          style: UIText.mediumTextStyle(
             context,
             weight: isBalance ? FontWeight.bold : FontWeight.normal,
           ),

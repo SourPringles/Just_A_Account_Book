@@ -79,39 +79,6 @@ class UIText {
     );
   }
 
-  // ========== 기존 호환성을 위한 별칭 메서드 ==========
-  // 기존 코드와의 호환성을 위해 유지 (추후 점진적으로 새로운 메서드로 교체)
-  
-  static TextStyle titleStyle(
-    BuildContext context, {
-    Color? color,
-    FontWeight? weight,
-  }) => largeTextStyle(context, color: color, weight: weight);
-
-  static TextStyle subtitleStyle(
-    BuildContext context, {
-    Color? color,
-    FontWeight? weight,
-  }) => mediumTextStyle(context, color: color, weight: weight);
-
-  static TextStyle labelStyle(
-    BuildContext context, {
-    Color? color,
-    FontWeight? weight,
-  }) => mediumTextStyle(context, color: color, weight: weight);
-
-  static TextStyle contentStyle(
-    BuildContext context, {
-    Color? color,
-    FontWeight? weight,
-  }) => smallTextStyle(context, color: color, weight: weight);
-
-  static TextStyle buttonStyle(
-    BuildContext context, {
-    Color? color,
-    FontWeight? weight,
-  }) => mediumTextStyle(context, color: color, weight: weight);
-
   // Caption 스타일 (작은 부가 정보)
   static TextStyle captionStyle(
     BuildContext context, {

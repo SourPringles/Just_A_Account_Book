@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
         border: OutlineInputBorder(),
         hintText: 'Input your email address.',
         labelText: 'Email Address',
-        labelStyle: UIText.labelStyle(context),
+        labelStyle: UIText.mediumTextStyle(context),
       ),
     );
   }
@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
         border: OutlineInputBorder(),
         hintText: 'Input your password.',
         labelText: 'Password',
-        labelStyle: UIText.labelStyle(context),
+        labelStyle: UIText.mediumTextStyle(context),
       ),
     );
   }

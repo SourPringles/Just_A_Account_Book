@@ -169,7 +169,7 @@ class UIValue {
   
   // Light 모드 색상
   static const Color lightWeekdayTextColor = Colors.black; // 평일 날짜 색상
-  static const Color lightDefaultTextColor = Colors.blue; // 별도 정의하지 않은 텍스트 색상
+  static const Color lightDefaultTextColor = Colors.black; // 별도 정의하지 않은 텍스트 색상
   static const Color lightBackgroundColor = Colors.white; // 바탕화면 색상
   
   // Dark 모드 색상

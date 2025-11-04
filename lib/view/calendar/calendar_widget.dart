@@ -2,6 +2,7 @@ import 'package:just_a_account_book/view/calendar/sum_widget.dart';
 import 'package:flutter/material.dart';
 import '../uivalue/ui_layout.dart';
 import '../uivalue/ui_colors.dart';
+import '../uivalue/ui_text.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
@@ -10,23 +11,6 @@ import '../../models/transaction_model.dart';
 
 // UI 타입을 나타내는 enum
 enum CalendarUIType { mobile, window }
-
-// 캘린더 텍스트 스타일 클래스
-class CalendarTextStyles {
-  final double dayNumberSize;
-  final double amountSize;
-  final double headerSize;
-  final double dayOfWeekSize;
-  final double rowHeight;
-
-  const CalendarTextStyles({
-    required this.dayNumberSize,
-    required this.amountSize,
-    required this.headerSize,
-    required this.dayOfWeekSize,
-    required this.rowHeight,
-  });
-}
 
 class CalendarWidget extends StatefulWidget {
   final DateTime? initialSelectedDate;
@@ -183,34 +167,8 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     return total;
   }
 
-  // UI 타입에 따른 텍스트 스타일 설정
-  CalendarTextStyles _getTextStyles() {
-    final uiType = widget.uiType ?? CalendarUIType.mobile; // null이면 모바일로 기본 설정
-
-    switch (uiType) {
-      case CalendarUIType.window:
-        return CalendarTextStyles(
-          dayNumberSize: 16.0,
-          amountSize: 12.0,
-          headerSize: 16.0,
-          dayOfWeekSize: 14.0,
-          rowHeight: 75.0,
-        );
-      case CalendarUIType.mobile:
-        return CalendarTextStyles(
-          dayNumberSize: 14.0,
-          amountSize: 10.0,
-          headerSize: 14.0,
-          dayOfWeekSize: 14.0,
-          rowHeight: 80.0,
-        );
-    }
-  }
-
   // 기본 날짜 셀 디자인 생성 함수
   Widget _buildDefaultCell(BuildContext context, DateTime date) {
-    final textStyles = _getTextStyles();
-
     // 다크 모드는 UIColors.textPrimaryColor에서 처리
 
     // 요일에 따른 날짜 색상 설정 (주말은 예외)
@@ -257,7 +215,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             child: Text(
               date.day.toString(),
               style: TextStyle(
-                fontSize: textStyles.dayNumberSize,
+                fontSize: UIText.calendarDayNumber,
                 fontWeight: FontWeight.w500,
                 color: dateTextColor,
               ),
@@ -275,7 +233,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   Text(
                     income > 0 ? '+${formatAmount(income)}' : '',
                     style: TextStyle(
-                      fontSize: textStyles.amountSize,
+                      fontSize: UIText.calendarAmount,
                       color: Colors.blue,
                       fontWeight: FontWeight.w500,
                     ),
@@ -286,7 +244,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   Text(
                     expense > 0 ? '-${formatAmount(expense)}' : '',
                     style: TextStyle(
-                      fontSize: textStyles.amountSize,
+                      fontSize: UIText.calendarAmount,
                       color: Colors.red,
                       fontWeight: FontWeight.w500,
                     ),
@@ -304,8 +262,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final textStyles = _getTextStyles();
-
     return Align(
       alignment: Alignment.topCenter,
       child: Column(
@@ -360,24 +316,24 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               cellMargin: EdgeInsets.all(UILayout.tinyGap / 2),
               cellPadding: EdgeInsets.all(UILayout.tinyGap),
               // 기본 텍스트 스타일
-              defaultTextStyle: TextStyle(fontSize: textStyles.dayNumberSize),
+              defaultTextStyle: TextStyle(fontSize: UIText.calendarDayNumber),
               weekendTextStyle: TextStyle(
-                fontSize: textStyles.dayNumberSize,
+                fontSize: UIText.calendarDayNumber,
                 color: UIColors.sundayTextColor(context),
               ),
               // 셀의 최소 높이 설정
               rowDecoration: const BoxDecoration(),
             ),
-            rowHeight: textStyles.rowHeight, // UI 타입에 따른 행 높이
+            rowHeight: UIText.calendarRowHeight,
             daysOfWeekStyle: DaysOfWeekStyle(
               // 요일 헤더의 높이와 스타일 조정
               weekdayStyle: TextStyle(
-                fontSize: textStyles.dayOfWeekSize,
+                fontSize: UIText.calendarDayOfWeek,
                 fontWeight: FontWeight.w600,
                 color: UIColors.textPrimaryColor(context),
               ),
               weekendStyle: TextStyle(
-                fontSize: textStyles.dayOfWeekSize,
+                fontSize: UIText.calendarDayOfWeek,
                 fontWeight: FontWeight.w600,
                 color: UIColors.sundayTextColor(context),
               ),
@@ -392,7 +348,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               ),
               formatButtonTextStyle: TextStyle(
                 color: UIColors.onPrimaryColor(context),
-                fontSize: textStyles.headerSize - 2,
+                fontSize: UIText.calendarHeader - 2,
               ),
               leftChevronIcon: const Icon(
                 Icons.chevron_left,
@@ -493,7 +449,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                     text,
                     style: TextStyle(
                       color: textColor,
-                      fontSize: textStyles.dayOfWeekSize,
+                      fontSize: UIText.calendarDayOfWeek,
                       fontWeight: FontWeight.w600,
                       height: 1.2,
                     ),
@@ -509,11 +465,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               val: _getWeeklyTotal().toInt(),
               label: '주간 합계',
               color: UIColors.textPrimaryColor(context),
-              fontSize:
-                  (widget.uiType ?? CalendarUIType.mobile) ==
-                      CalendarUIType.window
-                  ? 22.0
-                  : 20.0,
+              fontSize: 22.0,
             ),
         ],
       ),

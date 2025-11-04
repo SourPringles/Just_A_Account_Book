@@ -12,6 +12,14 @@ class UIText {
   static const double mediumFontSize = 16.0; // 중간 폰트 크기 (캘린더 연/월, 트랜잭션 위젯 제목 등)
   static const double largeFontSize = 20.0; // 큰 폰트 크기 (페이지 제목 등)
 
+  // ========== 캘린더 전용 폰트 크기 정의 ==========
+  
+  static const double calendarDayNumber = mediumFontSize; // 캘린더 날짜 숫자
+  static const double calendarAmount = smallFontSize; // 캘린더 금액
+  static const double calendarHeader = mediumFontSize; // 캘린더 헤더
+  static const double calendarDayOfWeek = mediumFontSize - 2; // 캘린더 요일
+  static const double calendarRowHeight = 75.0; // 캘린더 행 높이
+
   // ========== 폰트 패밀리 정의 ==========
   // 앱 전체에서 사용할 폰트를 여기서 수정 가능
   static const String fontFamily = ''; // 기본 시스템 폰트 사용 (수정 가능)

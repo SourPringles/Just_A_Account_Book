@@ -78,6 +78,28 @@ class UIColors {
       ),
       scaffoldBackgroundColor: lightBackgroundColor,
       useMaterial3: true,
+      // 모든 위젯에 디버그 테두리 추가
+      extensions: [
+        _DebugBorderTheme(),
+      ],
+      // Container 기본 장식
+      cardTheme: CardThemeData(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black, width: 1),
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black, width: 1),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black, width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black, width: 2),
+        ),
+      ),
     );
   }
 
@@ -93,6 +115,39 @@ class UIColors {
       ),
       scaffoldBackgroundColor: darkBackgroundColor,
       useMaterial3: true,
+      // 모든 위젯에 디버그 테두리 추가
+      extensions: [
+        _DebugBorderTheme(),
+      ],
+      // Container 기본 장식
+      cardTheme: CardThemeData(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(color: Colors.black, width: 1),
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black, width: 1),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black, width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black, width: 2),
+        ),
+      ),
     );
   }
+}
+
+class _DebugBorderTheme extends ThemeExtension<_DebugBorderTheme> {
+  @override
+  ThemeExtension<_DebugBorderTheme> copyWith() => this;
+
+  @override
+  ThemeExtension<_DebugBorderTheme> lerp(
+    ThemeExtension<_DebugBorderTheme>? other,
+    double t,
+  ) => this;
 }

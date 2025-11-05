@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import '../../services/theme_service.dart';
 // import '../../services/settings_service.dart';
 import '../uivalue/ui_layout.dart';
-import 'widgets/theme_section_widget.dart';
-// import 'widgets/language_section_widget.dart';
-// import 'widgets/currency_section_widget.dart';
+import 'widgets/settings_widget_theme_section.dart';
+// import 'widgets/settings_widget_language_section.dart';
+// import 'widgets/settings_widget_currency_section.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../uivalue/ui_layout.dart';
 import '../../uivalue/ui_colors.dart';
-import '../../calendar/calendar_widget.dart';
+import '../../calendar/calendar_page.dart';
 
 class LeftPanelWidget extends StatelessWidget {
   final DateTime selectedDate;
@@ -33,7 +33,7 @@ class LeftPanelWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CalendarWidget(
+            CalendarPage(
               initialSelectedDate: selectedDate,
               refreshTrigger: refreshTrigger,
               uiType: CalendarUIType.window,

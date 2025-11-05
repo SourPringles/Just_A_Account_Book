@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../uivalue/ui_layout.dart';
-import '../uivalue/ui_text.dart';
-import '../uivalue/ui_colors.dart';
+import '../../uivalue/ui_layout.dart';
+import '../../uivalue/ui_text.dart';
+import '../../uivalue/ui_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
-import '../../services/transaction_service.dart';
+import '../../../services/transaction_service.dart';
 
 class MonthlySummaryWidget extends StatelessWidget {
   final DateTime month;

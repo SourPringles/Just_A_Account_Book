@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../uivalue/ui_layout.dart';
-import '../../transactions/transaction_list_widget.dart';
-import '../../transactions/monthly_summary_widget.dart';
-import 'right_panel_tabs_widget.dart';
-import 'transaction_header_widget.dart';
+import '../../transactions/transactions_page.dart';
+import '../../transactions/widgets/transaction_widget_monthly_summary.dart';
+import 'home_widget_right_panel_tabs.dart';
+import 'home_widget_transaction_header.dart';
 import '../../transactions/add_transaction_dialog.dart';
 
 class RightPanelWidget extends StatefulWidget {
@@ -90,7 +90,7 @@ class _RightPanelWidgetState extends State<RightPanelWidget> {
               onAdd: () => _showAddTransactionDialog(context),
             ),
             Expanded(
-              child: TransactionListWidget(
+              child: TransactionsPage(
                 selectedDate: widget.selectedDate,
                 showDailyOnly: true,
               ),
@@ -117,7 +117,7 @@ class _RightPanelWidgetState extends State<RightPanelWidget> {
             ),
             SizedBox(height: UILayout.largeGap),
             Expanded(
-              child: TransactionListWidget(
+              child: TransactionsPage(
                 key: ValueKey('transaction_list_$monthKey'),
                 selectedDate: _lastMonth,
                 showDailyOnly: false,

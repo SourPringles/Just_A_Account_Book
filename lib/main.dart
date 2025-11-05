@@ -10,11 +10,11 @@ import 'package:window_manager/window_manager.dart';
 import 'firebase_options.dart';
 import 'view/auth/login.dart';
 import 'view/auth/signup.dart';
-import 'view/home/home.dart';
+import 'view/home/home_page.dart';
+import 'view/settings/settings_page.dart';
 import 'view/uivalue/ui_colors.dart';
 import 'services/theme_service.dart';
 import 'services/settings_service.dart';
-import 'view/settings/settings_page.dart';
 
 // 윈도우 화면 크기
 const Size windowScreenSize = Size(1280, 720);

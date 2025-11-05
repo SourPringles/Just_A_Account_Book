@@ -5,8 +5,8 @@ import '../uivalue/ui_layout.dart';
 import '../../services/auth_service.dart';
 import '../auth/login.dart';
 import '../auth/auth.dart';
-import 'widgets/left_panel_widget.dart';
-import 'widgets/right_panel_widget.dart';
+import 'widgets/home_widget_left_panel.dart';
+import 'widgets/home_widget_right_panel.dart';
 import '../dialog/dialog_header_widget.dart';
 import '../dialog/dialog_footer_widget.dart';
 

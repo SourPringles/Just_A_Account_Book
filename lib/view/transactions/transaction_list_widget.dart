@@ -9,6 +9,7 @@ import '../../services/transaction_service.dart';
 import '../../models/transaction_model.dart';
 import '../dialog/dialog_header_widget.dart';
 import '../dialog/dialog_footer_widget.dart';
+import 'add_transaction_dialog.dart';
 
 class TransactionListWidget extends StatefulWidget {
   final DateTime selectedDate;
@@ -262,7 +263,17 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
                   DateFormat('yyyy년 MM월 dd일').format(transaction.date),
                 ),
                 SizedBox(height: UILayout.largeGap),
-                DialogFooterWidget(onClose: () => Navigator.of(context).pop()),
+                DialogFooterWidget(
+                  onClose: () => Navigator.of(context).pop(),
+                  onEdit: () {
+                    Navigator.of(context).pop(); // 상세보기 닫기
+                    _showEditDialog(context, transaction); // 수정 다이얼로그 열기
+                  },
+                  onDelete: () {
+                    Navigator.of(context).pop(); // 상세보기 닫기
+                    _showDeleteConfirmation(context, transaction); // 삭제 확인 열기
+                  },
+                ),
               ],
             ),
           ),
@@ -292,6 +303,23 @@ class _TransactionListWidgetState extends State<TransactionListWidget> {
         ],
       ),
     );
+  }
+
+  void _showEditDialog(
+    BuildContext context,
+    TransactionModel transaction,
+  ) async {
+    final result = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AddTransactionDialog(transaction: transaction);
+      },
+    );
+
+    // 수정 성공 시 목록 새로고침
+    if (result == true) {
+      _loadTransactions();
+    }
   }
 
   void _showDeleteConfirmation(

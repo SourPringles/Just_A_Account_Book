@@ -9,8 +9,13 @@ import '../uivalue/ui_colors.dart';
 
 class AddTransactionDialog extends StatefulWidget {
   final DateTime? initialDate;
+  final TransactionModel? transaction; // 수정할 거래 (null이면 새로 추가)
 
-  const AddTransactionDialog({super.key, this.initialDate});
+  const AddTransactionDialog({
+    super.key,
+    this.initialDate,
+    this.transaction,
+  });
 
   @override
   State<AddTransactionDialog> createState() => _AddTransactionDialogState();
@@ -34,8 +39,20 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
   @override
   void initState() {
     super.initState();
-    _selectedDate = widget.initialDate ?? DateTime.now();
-    _selectedCategory = _categories[_selectedType]!.first;
+    
+    // 수정 모드인 경우 기존 데이터로 초기화
+    if (widget.transaction != null) {
+      final transaction = widget.transaction!;
+      _selectedType = transaction.type;
+      _selectedCategory = transaction.category;
+      _selectedDate = transaction.date;
+      _amountController.text = transaction.amount.toString();
+      _descriptionController.text = transaction.description;
+    } else {
+      // 새로 추가하는 경우
+      _selectedDate = widget.initialDate ?? DateTime.now();
+      _selectedCategory = _categories[_selectedType]!.first;
+    }
   }
 
   @override
@@ -60,8 +77,9 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DialogHeaderWidget(
-              title:
-                  '${_selectedType == TransactionType.income ? '수입' : '지출'} 추가',
+              title: widget.transaction != null
+                  ? '${_selectedType == TransactionType.income ? '수입' : '지출'} 수정'
+                  : '${_selectedType == TransactionType.income ? '수입' : '지출'} 추가',
               onClose: () => Navigator.of(context).pop(),
             ),
             const Divider(),
@@ -208,20 +226,45 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
       if (user == null) return;
 
       try {
-        await TransactionService.addTransaction(
-          userId: user.uid,
-          type: _selectedType,
-          amount: double.parse(_amountController.text),
-          category: _selectedCategory,
-          description: _descriptionController.text,
-          date: _selectedDate,
-        );
+        if (widget.transaction != null) {
+          // 수정 모드
+          final transactionId = widget.transaction!.id;
+          if (transactionId == null) {
+            throw Exception('거래 ID를 찾을 수 없습니다.');
+          }
+          
+          await TransactionService.updateTransaction(
+            userId: user.uid,
+            transactionId: transactionId,
+            type: _selectedType,
+            amount: double.parse(_amountController.text),
+            category: _selectedCategory,
+            description: _descriptionController.text,
+            date: _selectedDate,
+          );
+        } else {
+          // 추가 모드
+          await TransactionService.addTransaction(
+            userId: user.uid,
+            type: _selectedType,
+            amount: double.parse(_amountController.text),
+            category: _selectedCategory,
+            description: _descriptionController.text,
+            date: _selectedDate,
+          );
+        }
 
         if (mounted) {
           Navigator.of(context).pop(true); // true를 반환하여 성공을 알림
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('거래 내역이 저장되었습니다')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                widget.transaction != null
+                    ? '거래 내역이 수정되었습니다'
+                    : '거래 내역이 저장되었습니다',
+              ),
+            ),
+          );
         }
       } catch (e) {
         if (mounted) {

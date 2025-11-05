@@ -45,32 +45,30 @@ class TransactionService {
   static Future<void> updateTransaction({
     required String userId,
     required String transactionId,
-    TransactionType? type,
-    double? amount,
-    String? category,
-    String? description,
-    DateTime? date,
+    required TransactionType type,
+    required double amount,
+    required String category,
+    required String description,
+    required DateTime date,
   }) async {
     try {
-      Map<String, dynamic> updates = {};
-      if (type != null) updates['type'] = type.toString().split('.').last;
-      if (amount != null) updates['amount'] = amount;
-      if (category != null) updates['category'] = category;
-      if (description != null) updates['description'] = description;
-      if (date != null) {
-        // 시간값을 제거하고 날짜만 저장 (00:00:00으로 설정)
-        final dateOnly = DateTime(date.year, date.month, date.day);
-        updates['date'] = Timestamp.fromDate(dateOnly);
-      }
+      // 시간값을 제거하고 날짜만 저장 (00:00:00으로 설정)
+      final dateOnly = DateTime(date.year, date.month, date.day);
 
-      if (updates.isNotEmpty) {
-        await _firestore
-            .collection('users')
-            .doc(userId)
-            .collection('transactions')
-            .doc(transactionId)
-            .update(updates);
-      }
+      final updates = {
+        'type': type.toString().split('.').last,
+        'amount': amount,
+        'category': category,
+        'description': description,
+        'date': Timestamp.fromDate(dateOnly),
+      };
+
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('transactions')
+          .doc(transactionId)
+          .update(updates);
     } catch (e) {
       debugPrint('Error updating transaction: $e');
       rethrow;

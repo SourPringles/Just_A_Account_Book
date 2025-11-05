@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../../uivalue/ui_layout.dart';
 import '../../uivalue/ui_text.dart';
 import '../../uivalue/ui_colors.dart';
@@ -15,6 +16,8 @@ class TransactionHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Container(
       padding: EdgeInsets.all(UILayout.defaultPadding),
       decoration: BoxDecoration(
@@ -41,7 +44,7 @@ class TransactionHeaderWidget extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: onAdd,
             icon: Icon(Icons.add, size: UILayout.iconSizeSmall),
-            label: const Text('거래 추가'),
+            label: Text(l10n.addTransaction),
             style: ElevatedButton.styleFrom(
               backgroundColor: UIColors.commonPositiveColor,
               foregroundColor: UIColors.whiteColor,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../../../models/transaction_model.dart';
 import '../../../services/transaction_service.dart';
 import '../../uivalue/ui_layout.dart';
@@ -19,6 +20,8 @@ class TransactionWidgetDeleteDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
@@ -31,24 +34,24 @@ class TransactionWidgetDeleteDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             DialogHeaderWidget(
-              title: '거래 내역 삭제',
+              title: l10n.deleteTransaction,
               onClose: () => Navigator.of(context).pop(),
             ),
             const Divider(),
             SizedBox(height: UILayout.largeGap),
-            Text('${transaction.category} 거래 내역을 삭제하시겠습니까?'),
+            Text(l10n.deleteTransactionConfirm(transaction.category)),
             SizedBox(height: UILayout.largeGap),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('취소'),
+                  child: Text(l10n.cancel),
                 ),
                 SizedBox(width: UILayout.smallGap),
                 TextButton(
                   onPressed: () => _handleDelete(context),
-                  child: Text('삭제', style: UIText.errorStyle(context)),
+                  child: Text(l10n.delete, style: UIText.errorStyle(context)),
                 ),
               ],
             ),
@@ -59,6 +62,8 @@ class TransactionWidgetDeleteDialog extends StatelessWidget {
   }
 
   Future<void> _handleDelete(BuildContext context) async {
+    final l10n = AppLocalizations.of(context)!;
+    
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null && transaction.id != null) {
@@ -69,7 +74,7 @@ class TransactionWidgetDeleteDialog extends StatelessWidget {
         if (context.mounted) {
           Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('거래 내역이 삭제되었습니다')),
+            SnackBar(content: Text(l10n.successTransactionDeleted)),
           );
           onDeleted();
         }
@@ -78,7 +83,7 @@ class TransactionWidgetDeleteDialog extends StatelessWidget {
       if (context.mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('삭제 중 오류가 발생했습니다: $e')),
+          SnackBar(content: Text('${l10n.errorDeleting}: $e')),
         );
       }
     }

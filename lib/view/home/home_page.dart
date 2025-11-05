@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../uivalue/ui_layout.dart';
 
 import '../../services/auth_service.dart';
@@ -24,6 +25,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return StreamBuilder(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext con, AsyncSnapshot<User?> user) {
@@ -32,11 +35,11 @@ class _HomePageState extends State<HomePage> {
         } else {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('가계부'),
+              title: Text(l10n.appTitle),
               actions: [
                 IconButton(
                   icon: const Icon(Icons.refresh),
-                  tooltip: '새로고침',
+                  tooltip: l10n.refresh,
                   onPressed: () {
                     setState(() {
                       _refreshTrigger++;
@@ -50,16 +53,15 @@ class _HomePageState extends State<HomePage> {
                 // 설정 페이지로 이동하는 버튼
                 IconButton(
                   icon: const Icon(Icons.tune),
-                  tooltip: '설정',
+                  tooltip: l10n.settings,
                   onPressed: () => Navigator.pushNamed(context, '/settings'),
                 ),
                 IconButton(
                   icon: const Icon(Icons.logout),
                   onPressed: () async {
                     await AuthService.signOut();
-                    if (context.mounted) {
-                      Navigator.pushNamed(context, "/login");
-                    }
+                    // StreamBuilder가 자동으로 LoginPage를 표시하므로 
+                    // Navigator.pushNamed 호출 불필요
                   },
                 ),
               ],
@@ -103,6 +105,8 @@ class _HomePageState extends State<HomePage> {
 
   // 계정 정보 다이얼로그
   void _showAccountInfoDialog(BuildContext context, User? user) {
+    final l10n = AppLocalizations.of(context)!;
+    
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -121,7 +125,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 DialogHeaderWidget(
-                  title: '계정 정보',
+                  title: l10n.accountInfo,
                   onClose: () => Navigator.pop(context),
                 ),
                 const Divider(),

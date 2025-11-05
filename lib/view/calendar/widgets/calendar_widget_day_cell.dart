@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
+import '../../../utils/currency_formatter.dart';
 import '../../uivalue/ui_layout.dart';
 import '../../uivalue/ui_colors.dart';
 import '../../uivalue/ui_text.dart';
@@ -21,6 +23,8 @@ class CalendarDayCellWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     // 요일에 따른 날짜 색상 설정
     Color dateTextColor = UIColors.textPrimaryColor(context);
     if (date.weekday == DateTime.sunday) {
@@ -31,18 +35,6 @@ class CalendarDayCellWidget extends StatelessWidget {
 
     final income = dailyTotals['income'] ?? 0;
     final expense = dailyTotals['expense'] ?? 0;
-
-    // 금액을 간단한 형태로 포맷 (천원 단위)
-    String formatAmount(num amount) { // double에서 num으로 변경
-      if (amount == 0) return '';
-      if (amount >= 10000) {
-        return '${NumberFormat('#.#').format(amount / 10000)}만';
-      } else if (amount >= 1000) {
-        return '${(amount / 1000).toInt()}천';
-      } else {
-        return amount.toInt().toString();
-      }
-    }
 
     Widget cellContent = Container(
       margin: EdgeInsets.all(UILayout.tinyGap),
@@ -59,6 +51,9 @@ class CalendarDayCellWidget extends StatelessWidget {
           // 날짜 영역
           Container(
             height: 20,
+            padding: EdgeInsets.only(
+              left: UILayout.calendarCellDatePadding,
+            ),
             alignment: Alignment.topLeft,
             child: Text(
               date.day.toString(),
@@ -79,7 +74,7 @@ class CalendarDayCellWidget extends StatelessWidget {
                 children: [
                   // 수입 (파란색)
                   Text(
-                    income > 0 ? '+${formatAmount(income)}' : '',
+                    income > 0 ? '+${CurrencyFormatter.formatCompact(income, l10n)}' : '',
                     style: TextStyle(
                       fontSize: UIText.calendarAmount,
                       color: UIColors.incomeColor,
@@ -90,7 +85,7 @@ class CalendarDayCellWidget extends StatelessWidget {
                   ),
                   // 지출 (빨간색)
                   Text(
-                    expense > 0 ? '-${formatAmount(expense)}' : '',
+                    expense > 0 ? '-${CurrencyFormatter.formatCompact(expense, l10n)}' : '',
                     style: TextStyle(
                       fontSize: UIText.calendarAmount,
                       color: UIColors.expenseColor,

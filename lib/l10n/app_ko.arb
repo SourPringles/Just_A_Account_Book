@@ -1,0 +1,328 @@
+{
+    "@@locale": "ko",
+    "appTitle": "가계부",
+    "@appTitle": {
+        "description": "앱 제목"
+    },
+    "refresh": "새로고침",
+    "@refresh": {
+        "description": "새로고침 버튼"
+    },
+    "settings": "설정",
+    "@settings": {
+        "description": "설정 버튼"
+    },
+    "accountInfo": "계정 정보",
+    "@accountInfo": {
+        "description": "계정 정보 다이얼로그 제목"
+    },
+    "transactions": "거래내역",
+    "@transactions": {
+        "description": "거래내역 탭"
+    },
+    "summary": "요약",
+    "@summary": {
+        "description": "요약 탭"
+    },
+    "addTransaction": "거래 추가",
+    "@addTransaction": {
+        "description": "거래 추가 버튼"
+    },
+    "income": "수입",
+    "@income": {
+        "description": "수입"
+    },
+    "expense": "지출",
+    "@expense": {
+        "description": "지출"
+    },
+    "balance": "잔액",
+    "@balance": {
+        "description": "잔액"
+    },
+    "category": "카테고리",
+    "@category": {
+        "description": "카테고리"
+    },
+    "amount": "금액",
+    "@amount": {
+        "description": "금액"
+    },
+    "description": "설명 (선택사항)",
+    "@description": {
+        "description": "설명 입력 필드"
+    },
+    "date": "날짜",
+    "@date": {
+        "description": "날짜"
+    },
+    "save": "저장",
+    "@save": {
+        "description": "저장 버튼"
+    },
+    "cancel": "취소",
+    "@cancel": {
+        "description": "취소 버튼"
+    },
+    "delete": "삭제",
+    "@delete": {
+        "description": "삭제 버튼"
+    },
+    "edit": "수정",
+    "@edit": {
+        "description": "수정 버튼"
+    },
+    "close": "닫기",
+    "@close": {
+        "description": "닫기 버튼"
+    },
+    "addIncome": "수입 추가",
+    "@addIncome": {
+        "description": "수입 추가"
+    },
+    "addExpense": "지출 추가",
+    "@addExpense": {
+        "description": "지출 추가"
+    },
+    "editIncome": "수입 수정",
+    "@editIncome": {
+        "description": "수입 수정"
+    },
+    "editExpense": "지출 수정",
+    "@editExpense": {
+        "description": "지출 수정"
+    },
+    "deleteConfirmTitle": "거래 삭제",
+    "@deleteConfirmTitle": {
+        "description": "삭제 확인 제목"
+    },
+    "deleteConfirmMessage": "이 거래 내역을 삭제하시겠습니까?",
+    "@deleteConfirmMessage": {
+        "description": "삭제 확인 메시지"
+    },
+    "transactionDeleted": "거래 내역이 삭제되었습니다",
+    "@transactionDeleted": {
+        "description": "삭제 완료 메시지"
+    },
+    "transactionSaved": "거래 내역이 저장되었습니다",
+    "@transactionSaved": {
+        "description": "저장 완료 메시지"
+    },
+    "transactionUpdated": "거래 내역이 수정되었습니다",
+    "@transactionUpdated": {
+        "description": "수정 완료 메시지"
+    },
+    "errorOccurred": "오류가 발생했습니다",
+    "@errorOccurred": {
+        "description": "오류 메시지"
+    },
+    "errorSaving": "저장 중 오류가 발생했습니다",
+    "@errorSaving": {
+        "description": "저장 오류 메시지"
+    },
+    "pleaseEnterAmount": "금액을 입력하세요",
+    "@pleaseEnterAmount": {
+        "description": "금액 입력 요청"
+    },
+    "pleaseEnterValidNumber": "올바른 정수를 입력하세요",
+    "@pleaseEnterValidNumber": {
+        "description": "유효한 숫자 입력 요청"
+    },
+    "noTransactionsToday": "오늘 거래 내역이 없습니다",
+    "@noTransactionsToday": {
+        "description": "오늘 거래 없음"
+    },
+    "noTransactionsThisMonth": "이번 달 거래 내역이 없습니다",
+    "@noTransactionsThisMonth": {
+        "description": "이번 달 거래 없음"
+    },
+    "loginRequired": "로그인이 필요합니다",
+    "@loginRequired": {
+        "description": "로그인 필요 메시지"
+    },
+    "retry": "다시 시도",
+    "@retry": {
+        "description": "다시 시도 버튼"
+    },
+    "weeklySummary": "주간 합계",
+    "@weeklySummary": {
+        "description": "주간 합계"
+    },
+    "language": "언어",
+    "@language": {
+        "description": "언어 설정"
+    },
+    "korean": "한국어",
+    "@korean": {
+        "description": "한국어"
+    },
+    "english": "English",
+    "@english": {
+        "description": "영어"
+    },
+    "categorySalary": "급여",
+    "@categorySalary": {
+        "description": "카테고리: 급여"
+    },
+    "categorySideJob": "부업",
+    "@categorySideJob": {
+        "description": "카테고리: 부업"
+    },
+    "categoryInvestment": "투자수익",
+    "@categoryInvestment": {
+        "description": "카테고리: 투자수익"
+    },
+    "categoryOtherIncome": "기타수입",
+    "@categoryOtherIncome": {
+        "description": "카테고리: 기타수입"
+    },
+    "categoryFood": "식비",
+    "@categoryFood": {
+        "description": "카테고리: 식비"
+    },
+    "categoryTransport": "교통비",
+    "@categoryTransport": {
+        "description": "카테고리: 교통비"
+    },
+    "categoryShopping": "쇼핑",
+    "@categoryShopping": {
+        "description": "카테고리: 쇼핑"
+    },
+    "categoryCulture": "문화생활",
+    "@categoryCulture": {
+        "description": "카테고리: 문화생활"
+    },
+    "categoryMedical": "의료비",
+    "@categoryMedical": {
+        "description": "카테고리: 의료비"
+    },
+    "categoryOtherExpense": "기타지출",
+    "@categoryOtherExpense": {
+        "description": "카테고리: 기타지출"
+    },
+    "type": "구분",
+    "@type": {
+        "description": "거래 유형"
+    },
+    "validationAmount": "금액을 입력하세요",
+    "@validationAmount": {
+        "description": "금액 유효성 검사 메시지"
+    },
+    "validationInteger": "올바른 정수를 입력하세요",
+    "@validationInteger": {
+        "description": "정수 유효성 검사 메시지"
+    },
+    "errorTransactionIdNotFound": "거래 ID를 찾을 수 없습니다",
+    "@errorTransactionIdNotFound": {
+        "description": "거래 ID 오류 메시지"
+    },
+    "successTransactionUpdated": "거래 내역이 수정되었습니다",
+    "@successTransactionUpdated": {
+        "description": "거래 수정 성공 메시지"
+    },
+    "successTransactionSaved": "거래 내역이 저장되었습니다",
+    "@successTransactionSaved": {
+        "description": "거래 저장 성공 메시지"
+    },
+    "deleteTransaction": "거래 내역 삭제",
+    "@deleteTransaction": {
+        "description": "거래 삭제 다이얼로그 제목"
+    },
+    "deleteTransactionConfirm": "{category} 거래 내역을 삭제하시겠습니까?",
+    "@deleteTransactionConfirm": {
+        "description": "거래 삭제 확인 메시지",
+        "placeholders": {
+            "category": {
+                "type": "String"
+            }
+        }
+    },
+    "successTransactionDeleted": "거래 내역이 삭제되었습니다",
+    "@successTransactionDeleted": {
+        "description": "거래 삭제 성공 메시지"
+    },
+    "errorDeleting": "삭제 중 오류가 발생했습니다",
+    "@errorDeleting": {
+        "description": "삭제 오류 메시지"
+    },
+    "calendarMonthly": "월간",
+    "@calendarMonthly": {
+        "description": "캘린더 월간 보기"
+    },
+    "calendarWeekly": "주간",
+    "@calendarWeekly": {
+        "description": "캘린더 주간 보기"
+    },
+    "sunday": "일",
+    "@sunday": {
+        "description": "일요일"
+    },
+    "monday": "월",
+    "@monday": {
+        "description": "월요일"
+    },
+    "tuesday": "화",
+    "@tuesday": {
+        "description": "화요일"
+    },
+    "wednesday": "수",
+    "@wednesday": {
+        "description": "수요일"
+    },
+    "thursday": "목",
+    "@thursday": {
+        "description": "목요일"
+    },
+    "friday": "금",
+    "@friday": {
+        "description": "금요일"
+    },
+    "saturday": "토",
+    "@saturday": {
+        "description": "토요일"
+    },
+    "weeklyTotal": "주간 합계",
+    "@weeklyTotal": {
+        "description": "주간 합계"
+    },
+    "theme": "테마",
+    "@theme": {
+        "description": "테마 설정"
+    },
+    "themeSystem": "시스템 기본",
+    "@themeSystem": {
+        "description": "시스템 기본 테마"
+    },
+    "themeLight": "라이트",
+    "@themeLight": {
+        "description": "라이트 테마"
+    },
+    "themeDark": "다크",
+    "@themeDark": {
+        "description": "다크 테마"
+    },
+    "currencyWon": "원",
+    "@currencyWon": {
+        "description": "화폐 단위: 원"
+    },
+    "currencyThousand": "천",
+    "@currencyThousand": {
+        "description": "천 단위"
+    },
+    "currencyTenThousand": "만",
+    "@currencyTenThousand": {
+        "description": "만 단위"
+    },
+    "currencyUnit": "통화 단위",
+    "@currencyUnit": {
+        "description": "통화 단위 설정"
+    },
+    "currencyKRW": "대한민국 원 (₩)",
+    "@currencyKRW": {
+        "description": "한국 원화"
+    },
+    "currencyUSD": "미국 달러 ($)",
+    "@currencyUSD": {
+        "description": "미국 달러"
+    }
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../../uivalue/ui_layout.dart';
 import '../../uivalue/ui_text.dart';
 
@@ -14,6 +15,8 @@ class RightPanelTabsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Container(
       padding: EdgeInsets.all(UILayout.smallGap),
       decoration: BoxDecoration(
@@ -30,7 +33,7 @@ class RightPanelTabsWidget extends StatelessWidget {
           Expanded(
             child: _TabButton(
               index: 0,
-              label: '거래내역',
+              label: l10n.transactions,
               icon: Icons.list,
               isSelected: currentIndex == 0,
               onTap: () => onTabSelected(0),
@@ -40,7 +43,7 @@ class RightPanelTabsWidget extends StatelessWidget {
           Expanded(
             child: _TabButton(
               index: 1,
-              label: '요약',
+              label: l10n.summary,
               icon: Icons.analytics,
               isSelected: currentIndex == 1,
               onTap: () => onTabSelected(1),

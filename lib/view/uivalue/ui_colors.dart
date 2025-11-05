@@ -31,12 +31,14 @@ class UIColors {
   // Light 모드 색상
   static const Color lightWeekdayTextColor = Colors.black; // 평일 날짜 색상
   static const Color lightDefaultTextColor = Colors.black; // 별도 정의하지 않은 텍스트 색상
+  static const Color lightDefaultColor = Colors.black; // 별도 정의하지 않은 기본 색상
   static const Color lightBackgroundColor = Colors.white; // 바탕화면 색상
   
   // Dark 모드 색상
   static const Color darkWeekdayTextColor = Colors.white; // 평일 날짜 색상
   static const Color darkDefaultTextColor = Colors.white; // 별도 정의하지 않은 텍스트 색상
-  static const Color darkBackgroundColor = Colors.black; // 바탕화면 색상
+  static const Color darkDefaultColor = Colors.white; // 별도 정의하지 않은 기본 색상
+  static const Color darkBackgroundColor = Color(0xFF1C1D1F); // 바탕화면 색상
 
   // ========== Theme-aware 색상 헬퍼 메서드 ==========
   
@@ -94,6 +96,7 @@ class UIColors {
         secondary: commonPositiveColor.withOpacity(0.8),
         surface: lightBackgroundColor,
         error: commonNegativeColor,
+        outline: lightDefaultColor, // 테두리 색상
       ),
       scaffoldBackgroundColor: lightBackgroundColor,
       useMaterial3: true,
@@ -104,19 +107,19 @@ class UIColors {
       // Container 기본 장식
       cardTheme: CardThemeData(
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.black, width: 1),
+          side: BorderSide(color: lightDefaultColor, width: 1), // Light 모드: 검은색
           borderRadius: BorderRadius.circular(4),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black, width: 1),
+          borderSide: BorderSide(color: lightDefaultColor, width: 1),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black, width: 1),
+          borderSide: BorderSide(color: lightDefaultColor, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black, width: 2),
+          borderSide: BorderSide(color: lightDefaultColor, width: 2),
         ),
       ),
     );
@@ -131,6 +134,7 @@ class UIColors {
         secondary: commonPositiveColor.withOpacity(0.8),
         surface: darkBackgroundColor,
         error: commonNegativeColor,
+        outline: darkDefaultColor, // 테두리 색상
       ),
       scaffoldBackgroundColor: darkBackgroundColor,
       useMaterial3: true,
@@ -141,19 +145,19 @@ class UIColors {
       // Container 기본 장식
       cardTheme: CardThemeData(
         shape: RoundedRectangleBorder(
-          side: BorderSide(color: Colors.black, width: 1),
+          side: BorderSide(color: darkDefaultColor, width: 1), // Dark 모드: 흰색
           borderRadius: BorderRadius.circular(4),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black, width: 1),
+          borderSide: BorderSide(color: darkDefaultColor, width: 1),
         ),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black, width: 1),
+          borderSide: BorderSide(color: darkDefaultColor, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black, width: 2),
+          borderSide: BorderSide(color: darkDefaultColor, width: 2),
         ),
       ),
     );

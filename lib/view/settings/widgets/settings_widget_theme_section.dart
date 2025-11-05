@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../../uivalue/ui_text.dart';
 
 class ThemeSectionWidget extends StatelessWidget {
@@ -13,12 +14,14 @@ class ThemeSectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('테마', style: UIText.largeTextStyle(context)),
+        Text(l10n.theme, style: UIText.largeTextStyle(context)),
         RadioListTile<ThemeMode>(
-          title: const Text('시스템 기본'),
+          title: Text(l10n.themeSystem),
           value: ThemeMode.system,
           groupValue: currentTheme,
           onChanged: (v) {
@@ -26,7 +29,7 @@ class ThemeSectionWidget extends StatelessWidget {
           },
         ),
         RadioListTile<ThemeMode>(
-          title: const Text('라이트'),
+          title: Text(l10n.themeLight),
           value: ThemeMode.light,
           groupValue: currentTheme,
           onChanged: (v) {
@@ -34,7 +37,7 @@ class ThemeSectionWidget extends StatelessWidget {
           },
         ),
         RadioListTile<ThemeMode>(
-          title: const Text('다크'),
+          title: Text(l10n.themeDark),
           value: ThemeMode.dark,
           groupValue: currentTheme,
           onChanged: (v) {

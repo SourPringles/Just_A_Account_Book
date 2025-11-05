@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../../../models/transaction_model.dart';
+import '../../../services/settings_service.dart';
 import '../../uivalue/ui_layout.dart';
 import '../../uivalue/ui_colors.dart';
 import '../../dialog/dialog_header_widget.dart';
@@ -21,6 +23,9 @@ class TransactionWidgetDetailDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final currencySymbol = SettingsService.instance.currencySymbol.value;
+    
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
@@ -39,18 +44,21 @@ class TransactionWidgetDetailDialog extends StatelessWidget {
             const Divider(),
             SizedBox(height: UILayout.largeGap),
             _buildDetailRow(
-              '구분',
-              transaction.type == TransactionType.income ? '수입' : '지출',
+              context,
+              l10n.type,
+              transaction.type == TransactionType.income ? l10n.income : l10n.expense,
             ),
             _buildDetailRow(
-              '금액',
-              '₩${NumberFormat('#,###').format(transaction.amount)}',
+              context,
+              l10n.amount,
+              '$currencySymbol${NumberFormat('#,###').format(transaction.amount)}',
             ),
-            _buildDetailRow('카테고리', transaction.category),
+            _buildDetailRow(context, l10n.category, transaction.category),
             if (transaction.description.isNotEmpty)
-              _buildDetailRow('설명', transaction.description),
+              _buildDetailRow(context, l10n.description, transaction.description),
             _buildDetailRow(
-              '날짜',
+              context,
+              l10n.date,
               DateFormat('yyyy년 MM월 dd일').format(transaction.date),
             ),
             SizedBox(height: UILayout.largeGap),
@@ -71,27 +79,25 @@ class TransactionWidgetDetailDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
-    return Builder(
-      builder: (context) => Padding(
-        padding: EdgeInsets.symmetric(vertical: UILayout.tinyGap),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              width: UILayout.transactionLabelWidth,
-              child: Text(
-                label,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: UIColors.mutedTextColor(context),
-                ),
+  Widget _buildDetailRow(BuildContext context, String label, String value) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: UILayout.tinyGap),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: UILayout.transactionLabelWidth,
+            child: Text(
+              label,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: UIColors.mutedTextColor(context),
               ),
             ),
-            const Text(': '),
-            Expanded(child: Text(value)),
-          ],
-        ),
+          ),
+          const Text(': '),
+          Expanded(child: Text(value)),
+        ],
       ),
     );
   }

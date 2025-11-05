@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../../uivalue/ui_layout.dart';
 import '../../uivalue/ui_colors.dart';
 import '../../uivalue/ui_text.dart';
@@ -37,19 +38,22 @@ class CalendarGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context);
+    
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TableCalendar(
-          locale: 'ko_KR',
+          locale: locale.toString(),
           firstDay: DateTime.utc(2020, 1, 1),
           lastDay: DateTime.utc(2030, 12, 31),
           focusedDay: focusedDay,
           calendarFormat: calendarFormat,
-          availableCalendarFormats: const {
-            CalendarFormat.month: '월간',
-            CalendarFormat.week: '주간',
+          availableCalendarFormats: {
+            CalendarFormat.month: l10n.calendarMonthly,
+            CalendarFormat.week: l10n.calendarWeekly,
           },
           availableGestures: AvailableGestures.none,
           selectedDayPredicate: (day) => isSameDay(selectedDay, day),
@@ -123,31 +127,32 @@ class CalendarGridWidget extends StatelessWidget {
               );
             },
             dowBuilder: (context, day) {
+              final l10n = AppLocalizations.of(context)!;
               String text;
               Color textColor = UIColors.textPrimaryColor(context);
 
               switch (day.weekday) {
                 case DateTime.sunday:
-                  text = '일';
+                  text = l10n.sunday;
                   textColor = UIColors.sundayTextColor(context);
                   break;
                 case DateTime.monday:
-                  text = '월';
+                  text = l10n.monday;
                   break;
                 case DateTime.tuesday:
-                  text = '화';
+                  text = l10n.tuesday;
                   break;
                 case DateTime.wednesday:
-                  text = '수';
+                  text = l10n.wednesday;
                   break;
                 case DateTime.thursday:
-                  text = '목';
+                  text = l10n.thursday;
                   break;
                 case DateTime.friday:
-                  text = '금';
+                  text = l10n.friday;
                   break;
                 case DateTime.saturday:
-                  text = '토';
+                  text = l10n.saturday;
                   textColor = UIColors.saturdayTextColor(context);
                   break;
                 default:
@@ -175,7 +180,7 @@ class CalendarGridWidget extends StatelessWidget {
         if (calendarFormat == CalendarFormat.week)
           CalendarSummaryWidget(
             val: weeklyTotal.toInt(),
-            label: '주간 합계',
+            label: l10n.weeklyTotal,
             color: UIColors.textPrimaryColor(context),
             fontSize: UIText.calendarSumFontSize,
           ),

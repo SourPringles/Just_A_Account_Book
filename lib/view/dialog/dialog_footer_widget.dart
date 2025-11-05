@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../uivalue/ui_layout.dart';
 import '../uivalue/ui_colors.dart';
 
@@ -16,6 +17,8 @@ class DialogFooterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -24,7 +27,7 @@ class DialogFooterWidget extends StatelessWidget {
           TextButton(
             onPressed: onDelete,
             child: Text(
-              '삭제',
+              l10n.delete,
               style: TextStyle(color: UIColors.commonNegativeColor),
             ),
           )
@@ -38,13 +41,13 @@ class DialogFooterWidget extends StatelessWidget {
             if (onEdit != null) ...[
               TextButton(
                 onPressed: onEdit,
-                child: const Text('수정'),
+                child: Text(l10n.edit),
               ),
               SizedBox(width: UILayout.smallGap),
             ],
             TextButton(
               onPressed: onClose,
-              child: const Text('닫기'),
+              child: Text(l10n.close),
             ),
           ],
         ),

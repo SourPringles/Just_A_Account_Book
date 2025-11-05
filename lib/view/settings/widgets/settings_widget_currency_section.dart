@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../../uivalue/ui_text.dart';
 
 class CurrencySectionWidget extends StatelessWidget {
@@ -13,12 +14,14 @@ class CurrencySectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('통화 단위', style: UIText.largeTextStyle(context)),
+        Text(l10n.currencyUnit, style: UIText.largeTextStyle(context)),
         RadioListTile<String>(
-          title: const Text('KRW (₩)'),
+          title: Text(l10n.currencyKRW),
           value: 'KRW',
           groupValue: currentCurrency,
           onChanged: (v) {
@@ -26,7 +29,7 @@ class CurrencySectionWidget extends StatelessWidget {
           },
         ),
         RadioListTile<String>(
-          title: const Text('USD (\$)'),
+          title: Text(l10n.currencyUSD),
           value: 'USD',
           groupValue: currentCurrency,
           onChanged: (v) {

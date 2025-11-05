@@ -20,6 +20,9 @@ class UILayout {
   static const double largeGap = 16.0; // 기존 코드에서 16으로 쓰인 값
   static const double xlargeGap = 20.0;
 
+  // ========== 캘린더 관련 ==========
+  static const double calendarCellDatePadding = 4.0; // 캘린더 셀 날짜 여백
+
   // ========== 기본 내부 여백 ==========
   static const double defaultPadding = 16.0;
 

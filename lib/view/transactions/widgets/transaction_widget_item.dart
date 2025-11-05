@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../models/transaction_model.dart';
+import '../../../services/settings_service.dart';
 import '../../uivalue/ui_layout.dart';
 import '../../uivalue/ui_colors.dart';
 import '../../uivalue/ui_text.dart';
@@ -23,6 +24,7 @@ class TransactionWidgetItem extends StatelessWidget {
     final isIncome = transaction.type == TransactionType.income;
     final color = isIncome ? UIColors.incomeColor : UIColors.expenseColor;
     final icon = isIncome ? Icons.add_circle : Icons.remove_circle;
+    final currencySymbol = SettingsService.instance.currencySymbol.value;
 
     return Card(
       margin: EdgeInsets.symmetric(
@@ -43,7 +45,7 @@ class TransactionWidgetItem extends StatelessWidget {
               ),
             ),
             Text(
-              '${isIncome ? '+' : '-'}₩${NumberFormat('#,###').format(transaction.amount)}',
+              '${isIncome ? '+' : '-'}$currencySymbol${NumberFormat('#,###').format(transaction.amount)}',
               style: UIText.mediumTextStyle(
                 context,
                 color: color,

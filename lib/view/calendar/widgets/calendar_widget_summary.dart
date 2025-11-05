@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
+import '../../../utils/currency_formatter.dart';
 import '../../uivalue/ui_colors.dart';
 
 /// 합계를 표시하는 공통 위젯
@@ -18,30 +20,17 @@ class CalendarSummaryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 금액을 포맷팅하는 함수
-    String formatCurrency(int amount) {
-      final absAmount = amount.abs();
-      if (absAmount >= 10000) {
-        final manWon = absAmount / 10000;
-        return '${manWon.toStringAsFixed(manWon % 1 == 0 ? 0 : 1)}만원';
-      } else if (absAmount >= 1000) {
-        final cheonWon = absAmount / 1000;
-        return '${cheonWon.toStringAsFixed(cheonWon % 1 == 0 ? 0 : 1)}천원';
-      } else {
-        return '$absAmount원';
-      }
-    }
-
+    final l10n = AppLocalizations.of(context)!;
     final amount = val;
 
     // 수입/지출에 따른 부호와 색상 결정
     String getPrefix() {
-      if (label == '지출') return '-';
-      if (label == '수입') return '+';
+      if (label == l10n.expense) return '-';
+      if (label == l10n.income) return '+';
       return amount >= 0 ? '+' : '-';
     }
 
-    final formattedAmount = formatCurrency(amount);
+    final formattedAmount = CurrencyFormatter.formatWithUnit(amount, l10n);
     final prefix = getPrefix();
 
     return Container(

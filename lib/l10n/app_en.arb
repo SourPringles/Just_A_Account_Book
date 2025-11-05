@@ -1,0 +1,328 @@
+{
+    "@@locale": "en",
+    "appTitle": "Account Book",
+    "@appTitle": {
+        "description": "App title"
+    },
+    "refresh": "Refresh",
+    "@refresh": {
+        "description": "Refresh button"
+    },
+    "settings": "Settings",
+    "@settings": {
+        "description": "Settings button"
+    },
+    "accountInfo": "Account Information",
+    "@accountInfo": {
+        "description": "Account info dialog title"
+    },
+    "transactions": "Transactions",
+    "@transactions": {
+        "description": "Transactions tab"
+    },
+    "summary": "Summary",
+    "@summary": {
+        "description": "Summary tab"
+    },
+    "addTransaction": "Add Transaction",
+    "@addTransaction": {
+        "description": "Add transaction button"
+    },
+    "income": "Income",
+    "@income": {
+        "description": "Income"
+    },
+    "expense": "Expense",
+    "@expense": {
+        "description": "Expense"
+    },
+    "balance": "Balance",
+    "@balance": {
+        "description": "Balance"
+    },
+    "category": "Category",
+    "@category": {
+        "description": "Category"
+    },
+    "amount": "Amount",
+    "@amount": {
+        "description": "Amount"
+    },
+    "description": "Description (Optional)",
+    "@description": {
+        "description": "Description input field"
+    },
+    "date": "Date",
+    "@date": {
+        "description": "Date"
+    },
+    "save": "Save",
+    "@save": {
+        "description": "Save button"
+    },
+    "cancel": "Cancel",
+    "@cancel": {
+        "description": "Cancel button"
+    },
+    "delete": "Delete",
+    "@delete": {
+        "description": "Delete button"
+    },
+    "edit": "Edit",
+    "@edit": {
+        "description": "Edit button"
+    },
+    "close": "Close",
+    "@close": {
+        "description": "Close button"
+    },
+    "addIncome": "Add Income",
+    "@addIncome": {
+        "description": "Add income"
+    },
+    "addExpense": "Add Expense",
+    "@addExpense": {
+        "description": "Add expense"
+    },
+    "editIncome": "Edit Income",
+    "@editIncome": {
+        "description": "Edit income"
+    },
+    "editExpense": "Edit Expense",
+    "@editExpense": {
+        "description": "Edit expense"
+    },
+    "deleteConfirmTitle": "Delete Transaction",
+    "@deleteConfirmTitle": {
+        "description": "Delete confirmation title"
+    },
+    "deleteConfirmMessage": "Are you sure you want to delete this transaction?",
+    "@deleteConfirmMessage": {
+        "description": "Delete confirmation message"
+    },
+    "transactionDeleted": "Transaction deleted",
+    "@transactionDeleted": {
+        "description": "Deletion success message"
+    },
+    "transactionSaved": "Transaction saved",
+    "@transactionSaved": {
+        "description": "Save success message"
+    },
+    "transactionUpdated": "Transaction updated",
+    "@transactionUpdated": {
+        "description": "Update success message"
+    },
+    "errorOccurred": "An error occurred",
+    "@errorOccurred": {
+        "description": "Error message"
+    },
+    "errorSaving": "Error occurred while saving",
+    "@errorSaving": {
+        "description": "Save error message"
+    },
+    "pleaseEnterAmount": "Please enter amount",
+    "@pleaseEnterAmount": {
+        "description": "Amount input request"
+    },
+    "pleaseEnterValidNumber": "Please enter a valid integer",
+    "@pleaseEnterValidNumber": {
+        "description": "Valid number input request"
+    },
+    "noTransactionsToday": "No transactions today",
+    "@noTransactionsToday": {
+        "description": "No transactions today"
+    },
+    "noTransactionsThisMonth": "No transactions this month",
+    "@noTransactionsThisMonth": {
+        "description": "No transactions this month"
+    },
+    "loginRequired": "Login required",
+    "@loginRequired": {
+        "description": "Login required message"
+    },
+    "retry": "Retry",
+    "@retry": {
+        "description": "Retry button"
+    },
+    "weeklySummary": "Weekly Summary",
+    "@weeklySummary": {
+        "description": "Weekly summary"
+    },
+    "language": "Language",
+    "@language": {
+        "description": "Language setting"
+    },
+    "korean": "한국어",
+    "@korean": {
+        "description": "Korean"
+    },
+    "english": "English",
+    "@english": {
+        "description": "English"
+    },
+    "categorySalary": "Salary",
+    "@categorySalary": {
+        "description": "Category: Salary"
+    },
+    "categorySideJob": "Side Job",
+    "@categorySideJob": {
+        "description": "Category: Side Job"
+    },
+    "categoryInvestment": "Investment",
+    "@categoryInvestment": {
+        "description": "Category: Investment"
+    },
+    "categoryOtherIncome": "Other Income",
+    "@categoryOtherIncome": {
+        "description": "Category: Other Income"
+    },
+    "categoryFood": "Food",
+    "@categoryFood": {
+        "description": "Category: Food"
+    },
+    "categoryTransport": "Transport",
+    "@categoryTransport": {
+        "description": "Category: Transport"
+    },
+    "categoryShopping": "Shopping",
+    "@categoryShopping": {
+        "description": "Category: Shopping"
+    },
+    "categoryCulture": "Culture",
+    "@categoryCulture": {
+        "description": "Category: Culture"
+    },
+    "categoryMedical": "Medical",
+    "@categoryMedical": {
+        "description": "Category: Medical"
+    },
+    "categoryOtherExpense": "Other Expense",
+    "@categoryOtherExpense": {
+        "description": "Category: Other Expense"
+    },
+    "type": "Type",
+    "@type": {
+        "description": "Transaction type"
+    },
+    "validationAmount": "Please enter amount",
+    "@validationAmount": {
+        "description": "Amount validation message"
+    },
+    "validationInteger": "Please enter a valid integer",
+    "@validationInteger": {
+        "description": "Integer validation message"
+    },
+    "errorTransactionIdNotFound": "Transaction ID not found",
+    "@errorTransactionIdNotFound": {
+        "description": "Transaction ID error message"
+    },
+    "successTransactionUpdated": "Transaction updated",
+    "@successTransactionUpdated": {
+        "description": "Transaction update success message"
+    },
+    "successTransactionSaved": "Transaction saved",
+    "@successTransactionSaved": {
+        "description": "Transaction save success message"
+    },
+    "deleteTransaction": "Delete Transaction",
+    "@deleteTransaction": {
+        "description": "Delete transaction dialog title"
+    },
+    "deleteTransactionConfirm": "Are you sure you want to delete {category} transaction?",
+    "@deleteTransactionConfirm": {
+        "description": "Delete transaction confirmation message",
+        "placeholders": {
+            "category": {
+                "type": "String"
+            }
+        }
+    },
+    "successTransactionDeleted": "Transaction deleted",
+    "@successTransactionDeleted": {
+        "description": "Transaction delete success message"
+    },
+    "errorDeleting": "Error occurred while deleting",
+    "@errorDeleting": {
+        "description": "Delete error message"
+    },
+    "calendarMonthly": "Monthly",
+    "@calendarMonthly": {
+        "description": "Calendar monthly view"
+    },
+    "calendarWeekly": "Weekly",
+    "@calendarWeekly": {
+        "description": "Calendar weekly view"
+    },
+    "sunday": "Sun",
+    "@sunday": {
+        "description": "Sunday"
+    },
+    "monday": "Mon",
+    "@monday": {
+        "description": "Monday"
+    },
+    "tuesday": "Tue",
+    "@tuesday": {
+        "description": "Tuesday"
+    },
+    "wednesday": "Wed",
+    "@wednesday": {
+        "description": "Wednesday"
+    },
+    "thursday": "Thu",
+    "@thursday": {
+        "description": "Thursday"
+    },
+    "friday": "Fri",
+    "@friday": {
+        "description": "Friday"
+    },
+    "saturday": "Sat",
+    "@saturday": {
+        "description": "Saturday"
+    },
+    "weeklyTotal": "Weekly Total",
+    "@weeklyTotal": {
+        "description": "Weekly total"
+    },
+    "theme": "Theme",
+    "@theme": {
+        "description": "Theme setting"
+    },
+    "themeSystem": "System Default",
+    "@themeSystem": {
+        "description": "System default theme"
+    },
+    "themeLight": "Light",
+    "@themeLight": {
+        "description": "Light theme"
+    },
+    "themeDark": "Dark",
+    "@themeDark": {
+        "description": "Dark theme"
+    },
+    "currencyWon": "",
+    "@currencyWon": {
+        "description": "Currency unit: won (empty for English)"
+    },
+    "currencyThousand": "K",
+    "@currencyThousand": {
+        "description": "Thousand unit"
+    },
+    "currencyTenThousand": "K",
+    "@currencyTenThousand": {
+        "description": "Thousand unit (same as thousand for English)"
+    },
+    "currencyUnit": "Currency Unit",
+    "@currencyUnit": {
+        "description": "Currency unit setting"
+    },
+    "currencyKRW": "Korean Won (₩)",
+    "@currencyKRW": {
+        "description": "Korean Won"
+    },
+    "currencyUSD": "US Dollar ($)",
+    "@currencyUSD": {
+        "description": "US Dollar"
+    }
+}

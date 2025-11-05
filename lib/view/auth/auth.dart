@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
 import 'link.dart';
 import '../uivalue/ui_layout.dart';
 import '../uivalue/ui_text.dart';
 import '../uivalue/ui_colors.dart';
+import 'widgets/auth_widget_user_info_card.dart';
 
 class AuthWidget extends StatelessWidget {
   final User? user;
@@ -12,77 +14,66 @@ class AuthWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          "Successfully logged in!",
-          style: UIText.largeTextStyle(context),
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        SizedBox(height: UILayout.dynamicVerticalSpacing(context)),
-        _buildUserInfo(context),
-        SizedBox(height: UILayout.dynamicVerticalSpacing(context)),
-        _buildActionButtons(context),
-      ],
-    );
-  }
-
-  Widget _buildUserInfo(BuildContext context) {
-    final smallSpacing = UILayout.smallVerticalSpacing(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Current User UID:",
+    final l10n = AppLocalizations.of(context)!;
+    
+    if (user == null) {
+      return Center(
+        child: Text(
+          l10n.noUserLoggedIn,
           style: UIText.mediumTextStyle(context),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
         ),
-        SizedBox(height: smallSpacing),
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(UILayout.isNarrow(context) ? 8.0 : 12.0),
-          decoration: BoxDecoration(
-            color: UIColors.cardBackgroundLight,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: UIColors.borderColor),
-          ),
-          child: SelectableText(
-            user?.uid ?? "No UID available",
-            style: UIText.smallTextStyle(
-              context,
-            ).copyWith(fontFamily: 'monospace'),
-          ),
-        ),
-        SizedBox(height: smallSpacing),
-        if (user?.isAnonymous == true)
-          Text(
-            "(Anonymous User)",
-            style: UIText.smallTextStyle(context).copyWith(
-              fontSize: UIText.smallFontSize + 2,
-              color: UIColors.warningColor,
-              fontStyle: FontStyle.italic,
+      );
+    }
+
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(UILayout.defaultPadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // 성공 메시지
+          Card(
+            elevation: 0,
+            color: UIColors.incomeColor.withOpacity(0.1),
+            child: Padding(
+              padding: EdgeInsets.all(UILayout.defaultPadding),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: UIColors.incomeColor,
+                    size: UILayout.iconSizeLarge,
+                  ),
+                  SizedBox(width: UILayout.smallGap),
+                  Expanded(
+                    child: Text(
+                      l10n.successfullyLoggedIn,
+                      style: UIText.largeTextStyle(
+                        context,
+                        weight: FontWeight.bold,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
-        if (user?.isAnonymous == false && user?.email != null)
-          Text(
-            "Email: ${user!.email}",
-            style: UIText.smallTextStyle(
-              context,
-            ).copyWith(fontSize: UIText.smallFontSize + 2),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-      ],
+          SizedBox(height: UILayout.largeGap),
+          
+          // 사용자 정보 카드
+          AuthWidgetUserInfoCard(user: user!),
+          SizedBox(height: UILayout.largeGap),
+          
+          // 액션 버튼들
+          _buildActionButtons(context),
+        ],
+      ),
     );
   }
 
   Widget _buildActionButtons(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final buttonPadding = UILayout.buttonPadding(context);
     final buttonSpacing = UILayout.buttonSpacing(context);
     final iconSize = UILayout.isNarrow(context) ? 18.0 : UILayout.iconSizeLarge;
@@ -90,7 +81,8 @@ class AuthWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (user?.isAnonymous == true) ...[
+        // 익명 사용자인 경우 계정 연결 버튼 표시
+        if (user!.isAnonymous) ...[
           ElevatedButton.icon(
             onPressed: () {
               Navigator.push(
@@ -105,7 +97,7 @@ class AuthWidget extends StatelessWidget {
             ),
             icon: Icon(Icons.link, size: iconSize),
             label: Text(
-              "Link Account",
+              l10n.linkAccount,
               style: UIText.mediumTextStyle(context),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -113,11 +105,12 @@ class AuthWidget extends StatelessWidget {
           ),
           SizedBox(height: buttonSpacing),
         ],
+        
+        // 대시보드 버튼
         ElevatedButton.icon(
           onPressed: () {
-            // 추가 기능을 위한 플레이스홀더
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Feature coming soon!")),
+              SnackBar(content: Text(l10n.featureComingSoon)),
             );
           },
           style: ElevatedButton.styleFrom(
@@ -127,7 +120,7 @@ class AuthWidget extends StatelessWidget {
           ),
           icon: Icon(Icons.dashboard, size: iconSize),
           label: Text(
-            "Dashboard",
+            l10n.dashboard,
             style: UIText.mediumTextStyle(context),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

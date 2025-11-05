@@ -1,7 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../uivalue/ui_layout.dart';
 import '../uivalue/ui_text.dart';
+import '../uivalue/ui_colors.dart';
+import 'widgets/auth_widget_email_input.dart';
+import 'widgets/auth_widget_password_input.dart';
 
 class LinkPage extends StatefulWidget {
   const LinkPage({super.key});
@@ -11,28 +15,75 @@ class LinkPage extends StatefulWidget {
 }
 
 class _LinkPageState extends State<LinkPage> {
-  final _key = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwdController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _pwdController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
-      appBar: AppBar(title: const Text("Firebase App")),
+      appBar: AppBar(
+        title: Text(l10n.appTitle),
+        centerTitle: true,
+      ),
       body: Container(
-        padding: EdgeInsets.all(UILayout.mediumGap),
+        padding: EdgeInsets.all(UILayout.defaultPadding),
         child: Center(
-          child: Form(
-            key: _key,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                emailInput(),
-                SizedBox(height: UILayout.mediumGap),
-                passwordInput(),
-                SizedBox(height: UILayout.mediumGap),
-                submitButton(),
-                SizedBox(height: UILayout.mediumGap),
-              ],
+          child: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 500),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // 로고 또는 타이틀
+                    Icon(
+                      Icons.link,
+                      size: 80,
+                      color: UIColors.incomeColor,
+                    ),
+                    SizedBox(height: UILayout.smallGap),
+                    Text(
+                      l10n.linkAccount,
+                      style: UIText.largeTextStyle(context, weight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: UILayout.smallGap),
+                    Text(
+                      l10n.linkAccountDescription,
+                      style: UIText.smallTextStyle(context),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: UILayout.largeGap),
+                    
+                    // 이메일 입력
+                    AuthWidgetEmailInput(
+                      controller: _emailController,
+                      autofocus: true,
+                    ),
+                    SizedBox(height: UILayout.mediumGap),
+                    
+                    // 비밀번호 입력
+                    AuthWidgetPasswordInput(
+                      controller: _pwdController,
+                    ),
+                    SizedBox(height: UILayout.largeGap),
+                    
+                    // 링크 버튼
+                    _buildLinkButton(),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -40,84 +91,80 @@ class _LinkPageState extends State<LinkPage> {
     );
   }
 
-  TextFormField emailInput() {
-    return TextFormField(
-      controller: _emailController,
-      autofocus: true,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return 'The input is empty.';
-        } else {
-          return null;
-        }
-      },
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: 'Input your email address.',
-        labelText: 'Email Address',
-        labelStyle: UIText.mediumTextStyle(context),
+  }
+
+  Widget _buildLinkButton() {
+    final l10n = AppLocalizations.of(context)!;
+    
+    return ElevatedButton.icon(
+      onPressed: _handleLinkAccount,
+      icon: const Icon(Icons.link),
+      label: Text(
+        l10n.linkAccount,
+        style: UIText.mediumTextStyle(context),
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: UIColors.incomeColor,
+        foregroundColor: UIColors.whiteColor,
+        padding: EdgeInsets.symmetric(vertical: UILayout.buttonPadding(context)),
       ),
     );
   }
 
-  TextFormField passwordInput() {
-    return TextFormField(
-      controller: _pwdController,
-      obscureText: true,
-      autofocus: true,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return 'The input is empty.';
-        } else {
-          return null;
+  Future<void> _handleLinkAccount() async {
+    if (_formKey.currentState!.validate()) {
+      final l10n = AppLocalizations.of(context)!;
+      
+      try {
+        final credential = EmailAuthProvider.credential(
+          email: _emailController.text.trim(),
+          password: _pwdController.text,
+        );
+        
+        await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
+        
+        if (!mounted) return;
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.accountLinkedSuccess),
+            backgroundColor: UIColors.incomeColor,
+          ),
+        );
+        
+        Navigator.pushReplacementNamed(context, "/");
+      } on FirebaseAuthException catch (e) {
+        if (!mounted) return;
+        
+        String message = l10n.errorOccurredAuth;
+        if (e.code == 'weak-password') {
+          message = l10n.errorWeakPassword;
+        } else if (e.code == 'email-already-in-use') {
+          message = l10n.errorEmailInUse;
+        } else if (e.code == 'provider-already-linked') {
+          message = l10n.errorProviderLinked;
+        } else if (e.code == 'invalid-credential') {
+          message = l10n.errorInvalidCredential;
+        } else if (e.code == 'credential-already-in-use') {
+          message = l10n.errorCredentialInUse;
         }
-      },
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: 'Input your password.',
-        labelText: 'Password',
-        labelStyle: UIText.mediumTextStyle(context),
-      ),
-    );
-  }
-
-  ElevatedButton submitButton() {
-    return ElevatedButton(
-      onPressed: () async {
-        if (_key.currentState!.validate()) {
-          // 여기에 작성
-          try {
-            final credential = EmailAuthProvider.credential(
-              email: _emailController.text,
-              password: _pwdController.text,
-            );
-            await FirebaseAuth.instance.currentUser?.linkWithCredential(
-              credential,
-            );
-            if (!mounted) return;
-            Navigator.pushNamed(context, "/");
-          } on FirebaseAuthException catch (e) {
-            if (e.code == 'weak-password') {
-              debugPrint('The password provided is too weak.');
-            } else if (e.code == 'email-already-in-use') {
-              debugPrint('The account already exists for that email.');
-            } else if (e.code == 'provider-already-linked') {
-              debugPrint('The provider has already been linked to the user.');
-            } else if (e.code == 'invalid-credential') {
-              debugPrint('The provider\'s credential is not valid.');
-            }
-          } catch (e) {
-            debugPrint(e.toString());
-          }
-        }
-      },
-      child: Container(
-        padding: EdgeInsets.all(UILayout.mediumGap),
-        child: Text(
-          "Sign Up",
-          style: TextStyle(fontSize: UIText.mediumFontSize),
-        ),
-      ),
-    );
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: UIColors.expenseColor,
+          ),
+        );
+      } catch (e) {
+        if (!mounted) return;
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${AppLocalizations.of(context)!.errorOccurred}: ${e.toString()}'),
+            backgroundColor: UIColors.expenseColor,
+          ),
+        );
+      }
+    }
   }
 }

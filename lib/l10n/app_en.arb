@@ -324,5 +324,145 @@
     "currencyUSD": "US Dollar ($)",
     "@currencyUSD": {
         "description": "US Dollar"
+    },
+    "login": "Login",
+    "@login": {
+        "description": "Login"
+    },
+    "signup": "Sign Up",
+    "@signup": {
+        "description": "Sign Up"
+    },
+    "email": "Email",
+    "@email": {
+        "description": "Email"
+    },
+    "password": "Password",
+    "@password": {
+        "description": "Password"
+    },
+    "name": "Name",
+    "@name": {
+        "description": "Name"
+    },
+    "welcomeBack": "Welcome Back",
+    "@welcomeBack": {
+        "description": "Login welcome message"
+    },
+    "createAccount": "Create Account",
+    "@createAccount": {
+        "description": "Sign up title"
+    },
+    "linkAccount": "Link Account",
+    "@linkAccount": {
+        "description": "Link Account"
+    },
+    "continueAsGuest": "Continue as Guest",
+    "@continueAsGuest": {
+        "description": "Guest login"
+    },
+    "dontHaveAccount": "Don't have an account?",
+    "@dontHaveAccount": {
+        "description": "No account message"
+    },
+    "alreadyHaveAccount": "Already have an account?",
+    "@alreadyHaveAccount": {
+        "description": "Have account message"
+    },
+    "enterEmail": "Enter your email address",
+    "@enterEmail": {
+        "description": "Email input hint"
+    },
+    "enterPassword": "Enter your password",
+    "@enterPassword": {
+        "description": "Password input hint"
+    },
+    "enterName": "Enter your name",
+    "@enterName": {
+        "description": "Name input hint"
+    },
+    "validationEmail": "Please enter a valid email address",
+    "@validationEmail": {
+        "description": "Email validation"
+    },
+    "validationPassword": "Password must be at least 6 characters",
+    "@validationPassword": {
+        "description": "Password validation"
+    },
+    "validationName": "Please enter your name",
+    "@validationName": {
+        "description": "Name validation"
+    },
+    "validationEmpty": "The input is empty",
+    "@validationEmpty": {
+        "description": "Empty input error"
+    },
+    "successfullyLoggedIn": "Successfully logged in!",
+    "@successfullyLoggedIn": {
+        "description": "Login success message"
+    },
+    "currentUserUID": "Current User UID",
+    "@currentUserUID": {
+        "description": "User UID label"
+    },
+    "anonymousUser": "Anonymous User",
+    "@anonymousUser": {
+        "description": "Anonymous User"
+    },
+    "dashboard": "Dashboard",
+    "@dashboard": {
+        "description": "Dashboard"
+    },
+    "featureComingSoon": "Feature coming soon!",
+    "@featureComingSoon": {
+        "description": "Coming soon message"
+    },
+    "linkAccountDescription": "Link your anonymous account with email and password",
+    "@linkAccountDescription": {
+        "description": "Link account description"
+    },
+    "accountLinkedSuccess": "Account linked successfully!",
+    "@accountLinkedSuccess": {
+        "description": "Account link success"
+    },
+    "errorOccurredAuth": "An error occurred",
+    "@errorOccurredAuth": {
+        "description": "Auth error"
+    },
+    "errorUserNotFound": "No user found for that email",
+    "@errorUserNotFound": {
+        "description": "User not found error"
+    },
+    "errorWrongPassword": "Wrong password provided",
+    "@errorWrongPassword": {
+        "description": "Wrong password error"
+    },
+    "errorInvalidEmail": "Invalid email address",
+    "@errorInvalidEmail": {
+        "description": "Invalid email error"
+    },
+    "errorWeakPassword": "The password provided is too weak",
+    "@errorWeakPassword": {
+        "description": "Weak password error"
+    },
+    "errorEmailInUse": "The account already exists for that email",
+    "@errorEmailInUse": {
+        "description": "Email in use error"
+    },
+    "errorProviderLinked": "The provider has already been linked to the user",
+    "@errorProviderLinked": {
+        "description": "Provider already linked error"
+    },
+    "errorInvalidCredential": "The provider's credential is not valid",
+    "@errorInvalidCredential": {
+        "description": "Invalid credential"
+    },
+    "errorCredentialInUse": "This credential is already associated with a different user account",
+    "@errorCredentialInUse": {
+        "description": "Credential in use"
+    },
+    "noUserLoggedIn": "No user logged in",
+    "@noUserLoggedIn": {
+        "description": "No user logged in message"
     }
 }

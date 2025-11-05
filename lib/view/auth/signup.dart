@@ -1,8 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../../services/auth_service.dart';
 import '../uivalue/ui_layout.dart';
 import '../uivalue/ui_text.dart';
+import '../uivalue/ui_colors.dart';
+import 'widgets/auth_widget_email_input.dart';
+import 'widgets/auth_widget_password_input.dart';
+import 'widgets/auth_widget_name_input.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -12,31 +17,81 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final _key = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pwdController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _pwdController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
-      appBar: AppBar(title: const Text("Firebase App")),
+      appBar: AppBar(
+        title: Text(l10n.appTitle),
+        centerTitle: true,
+      ),
       body: Container(
-        padding: EdgeInsets.all(UILayout.mediumGap),
+        padding: EdgeInsets.all(UILayout.defaultPadding),
         child: Center(
-          child: Form(
-            key: _key,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                nameInput(),
-                SizedBox(height: UILayout.mediumGap),
-                emailInput(),
-                SizedBox(height: UILayout.mediumGap),
-                passwordInput(),
-                SizedBox(height: UILayout.mediumGap),
-                submitButton(),
-                SizedBox(height: UILayout.mediumGap),
-              ],
+          child: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 500),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // 로고 또는 타이틀
+                    Icon(
+                      Icons.account_balance_wallet,
+                      size: 80,
+                      color: UIColors.incomeColor,
+                    ),
+                    SizedBox(height: UILayout.smallGap),
+                    Text(
+                      l10n.createAccount,
+                      style: UIText.largeTextStyle(context, weight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: UILayout.largeGap),
+                    
+                    // 이름 입력
+                    AuthWidgetNameInput(
+                      controller: _nameController,
+                      autofocus: true,
+                    ),
+                    SizedBox(height: UILayout.mediumGap),
+                    
+                    // 이메일 입력
+                    AuthWidgetEmailInput(
+                      controller: _emailController,
+                    ),
+                    SizedBox(height: UILayout.mediumGap),
+                    
+                    // 비밀번호 입력
+                    AuthWidgetPasswordInput(
+                      controller: _pwdController,
+                    ),
+                    SizedBox(height: UILayout.largeGap),
+                    
+                    // 회원가입 버튼
+                    _buildSignUpButton(),
+                    SizedBox(height: UILayout.mediumGap),
+                    
+                    // 로그인 버튼
+                    _buildLoginButton(),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -44,107 +99,91 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  TextFormField nameInput() {
-    return TextFormField(
-      controller: _nameController,
-      autofocus: true,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return 'The input is empty.';
-        } else {
-          return null;
-        }
-      },
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: 'Input your name.',
-        labelText: 'Name',
-        labelStyle: UIText.mediumTextStyle(context),
+  }
+
+  Widget _buildSignUpButton() {
+    final l10n = AppLocalizations.of(context)!;
+    
+    return ElevatedButton.icon(
+      onPressed: _handleSignUp,
+      icon: const Icon(Icons.person_add),
+      label: Text(
+        l10n.signup,
+        style: UIText.mediumTextStyle(context),
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: UIColors.incomeColor,
+        foregroundColor: UIColors.whiteColor,
+        padding: EdgeInsets.symmetric(vertical: UILayout.buttonPadding(context)),
       ),
     );
   }
 
-  TextFormField emailInput() {
-    return TextFormField(
-      controller: _emailController,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return 'The input is empty.';
-        } else {
-          return null;
-        }
-      },
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: 'Input your email address.',
-        labelText: 'Email Address',
-        labelStyle: UIText.mediumTextStyle(context),
+  Widget _buildLoginButton() {
+    final l10n = AppLocalizations.of(context)!;
+    
+    return TextButton(
+      onPressed: () => Navigator.pop(context),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "${l10n.alreadyHaveAccount} ",
+            style: UIText.smallTextStyle(context),
+          ),
+          Text(
+            l10n.login,
+            style: UIText.smallTextStyle(context).copyWith(
+              fontWeight: FontWeight.bold,
+              color: UIColors.incomeColor,
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  TextFormField passwordInput() {
-    return TextFormField(
-      controller: _pwdController,
-      obscureText: true,
-      autofocus: true,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return 'The input is empty.';
-        } else {
-          return null;
+  Future<void> _handleSignUp() async {
+    if (_formKey.currentState!.validate()) {
+      final l10n = AppLocalizations.of(context)!;
+      
+      try {
+        await AuthService.signUpWithEmailPassword(
+          email: _emailController.text.trim(),
+          password: _pwdController.text,
+          name: _nameController.text.trim(),
+        );
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, "/");
         }
-      },
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: 'Input your password.',
-        labelText: 'Password',
-        labelStyle: UIText.mediumTextStyle(context),
-      ),
-    );
-  }
-
-  ElevatedButton submitButton() {
-    return ElevatedButton(
-      onPressed: () async {
-        if (_key.currentState!.validate()) {
-          try {
-            await AuthService.signUpWithEmailPassword(
-              email: _emailController.text,
-              password: _pwdController.text,
-              name: _nameController.text,
-            );
-            if (mounted) {
-              Navigator.pushNamed(context, "/");
-            }
-          } on FirebaseAuthException catch (e) {
-            String message = 'An error occurred';
-            if (e.code == 'weak-password') {
-              message = 'The password provided is too weak.';
-            } else if (e.code == 'email-already-in-use') {
-              message = 'The account already exists for that email.';
-            }
-            if (mounted) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(message)));
-            }
-          } catch (e) {
-            if (mounted) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
-            }
-          }
+      } on FirebaseAuthException catch (e) {
+        if (!mounted) return;
+        
+        String message = l10n.errorOccurredAuth;
+        if (e.code == 'weak-password') {
+          message = l10n.errorWeakPassword;
+        } else if (e.code == 'email-already-in-use') {
+          message = l10n.errorEmailInUse;
+        } else if (e.code == 'invalid-email') {
+          message = l10n.errorInvalidEmail;
         }
-      },
-      child: Container(
-        padding: EdgeInsets.all(UILayout.mediumGap),
-        child: Text(
-          "Sign Up",
-          style: TextStyle(fontSize: UIText.mediumFontSize),
-        ),
-      ),
-    );
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: UIColors.expenseColor,
+          ),
+        );
+      } catch (e) {
+        if (!mounted) return;
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${AppLocalizations.of(context)!.errorOccurred}: ${e.toString()}'),
+            backgroundColor: UIColors.expenseColor,
+          ),
+        );
+      }
+    }
   }
 }

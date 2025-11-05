@@ -15,11 +15,13 @@ import 'add_transaction_dialog.dart';
 class TransactionsPage extends StatefulWidget {
   final DateTime selectedDate;
   final bool showDailyOnly;
+  final VoidCallback? onTransactionChanged; // 트랜잭션 변경 시 콜백
 
   const TransactionsPage({
     super.key,
     required this.selectedDate,
     this.showDailyOnly = false,
+    this.onTransactionChanged,
   });
 
   @override
@@ -27,7 +29,6 @@ class TransactionsPage extends StatefulWidget {
 }
 
 class _TransactionsPageState extends State<TransactionsPage> {
-  StreamSubscription<List<TransactionModel>>? _subscription;
   List<TransactionModel> _transactions = [];
   bool _isLoading = true;
   String? _error;
@@ -47,60 +48,51 @@ class _TransactionsPageState extends State<TransactionsPage> {
     }
   }
 
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
-  }
-
-  void _loadTransactions() {
+  Future<void> _loadTransactions() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      setState(() {
-        _error = '로그인이 필요합니다';
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _error = '로그인이 필요합니다';
+          _isLoading = false;
+        });
+      }
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-      _error = null;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+        _error = null;
+      });
+    }
 
-    _subscription?.cancel();
-
-    Future.microtask(() {
-      final stream = widget.showDailyOnly
-          ? TransactionService.getDailyTransactions(
+    try {
+      final transactions = widget.showDailyOnly
+          ? await TransactionService.getDailyTransactionsFuture(
               userId: user.uid,
               date: widget.selectedDate,
             )
-          : TransactionService.getMonthlyTransactions(
+          : await TransactionService.getMonthlyTransactionsFuture(
               userId: user.uid,
               month: widget.selectedDate,
             );
 
-      _subscription = stream.listen(
-        (transactions) {
-          if (mounted) {
-            setState(() {
-              _transactions = transactions;
-              _isLoading = false;
-              _error = null;
-            });
-          }
-        },
-        onError: (error) {
-          if (mounted) {
-            setState(() {
-              _error = error.toString();
-              _isLoading = false;
-            });
-          }
-        },
-      );
-    });
+      if (mounted) {
+        setState(() {
+          _transactions = transactions;
+          _isLoading = false;
+          _error = null;
+        });
+      }
+    } catch (error) {
+      if (mounted) {
+        setState(() {
+          _error = error.toString();
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -195,6 +187,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
     if (result == true) {
       _loadTransactions();
+      widget.onTransactionChanged?.call(); // 부모에게 알림
     }
   }
 
@@ -207,7 +200,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
       builder: (BuildContext context) {
         return TransactionWidgetDeleteDialog(
           transaction: transaction,
-          onDeleted: _loadTransactions,
+          onDeleted: () {
+            _loadTransactions();
+            widget.onTransactionChanged?.call(); // 부모에게 알림
+          },
         );
       },
     );

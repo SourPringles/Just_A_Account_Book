@@ -46,7 +46,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
       _selectedType = transaction.type;
       _selectedCategory = transaction.category;
       _selectedDate = transaction.date;
-      _amountController.text = transaction.amount.toString();
+      _amountController.text = transaction.amount.toString(); // int는 자동으로 깔끔하게 표시됨
       _descriptionController.text = transaction.description;
     } else {
       // 새로 추가하는 경우
@@ -129,8 +129,8 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                           if (value == null || value.isEmpty) {
                             return '금액을 입력하세요';
                           }
-                          if (double.tryParse(value) == null) {
-                            return '올바른 숫자를 입력하세요';
+                          if (int.tryParse(value) == null) { // double에서 int로 변경
+                            return '올바른 정수를 입력하세요';
                           }
                           return null;
                         },
@@ -237,7 +237,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
             userId: user.uid,
             transactionId: transactionId,
             type: _selectedType,
-            amount: double.parse(_amountController.text),
+            amount: int.parse(_amountController.text), // double에서 int로 변경
             category: _selectedCategory,
             description: _descriptionController.text,
             date: _selectedDate,
@@ -247,7 +247,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
           await TransactionService.addTransaction(
             userId: user.uid,
             type: _selectedType,
-            amount: double.parse(_amountController.text),
+            amount: int.parse(_amountController.text), // double에서 int로 변경
             category: _selectedCategory,
             description: _descriptionController.text,
             date: _selectedDate,

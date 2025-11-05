@@ -35,6 +35,15 @@ class _HomePageState extends State<HomePage> {
               title: const Text('가계부'),
               actions: [
                 IconButton(
+                  icon: const Icon(Icons.refresh),
+                  tooltip: '새로고침',
+                  onPressed: () {
+                    setState(() {
+                      _refreshTrigger++;
+                    });
+                  },
+                ),
+                IconButton(
                   icon: const Icon(Icons.settings),
                   onPressed: () => _showAccountInfoDialog(context, user.data),
                 ),
@@ -81,6 +90,7 @@ class _HomePageState extends State<HomePage> {
         // 우측 - 거래내역/요약
         Expanded(
           child: RightPanelWidget(
+            key: ValueKey(_refreshTrigger), // 새로고침 트리거
             selectedDate: _selectedDate,
             initialIndex: _rightPanelIndex,
             onIndexChanged: (i) => setState(() => _rightPanelIndex = i),

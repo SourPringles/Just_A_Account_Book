@@ -9,7 +9,7 @@ class TransactionService {
   static Future<String> addTransaction({
     required String userId,
     required TransactionType type,
-    required double amount,
+    required int amount, // double에서 int로 변경
     required String category,
     required String description,
     required DateTime date,
@@ -46,7 +46,7 @@ class TransactionService {
     required String userId,
     required String transactionId,
     required TransactionType type,
-    required double amount,
+    required int amount, // double에서 int로 변경
     required String category,
     required String description,
     required DateTime date,
@@ -109,6 +109,9 @@ class TransactionService {
         .where('date', isLessThanOrEqualTo: Timestamp.fromDate(endOfMonth))
         .orderBy('date', descending: true)
         .snapshots()
+        .handleError((error) {
+          debugPrint('Stream error in getMonthlyTransactions: $error');
+        })
         .map(
           (snapshot) => snapshot.docs
               .map((doc) => TransactionModel.fromFirestore(doc))
@@ -132,6 +135,9 @@ class TransactionService {
         .where('date', isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
         .orderBy('date', descending: true)
         .snapshots()
+        .handleError((error) {
+          debugPrint('Stream error in getDailyTransactions: $error');
+        })
         .map(
           (snapshot) => snapshot.docs
               .map((doc) => TransactionModel.fromFirestore(doc))
@@ -169,6 +175,36 @@ class TransactionService {
     }
   }
 
+  // 특정 날짜의 거래 내역 가져오기 (Future 버전)
+  static Future<List<TransactionModel>> getDailyTransactionsFuture({
+    required String userId,
+    required DateTime date,
+  }) async {
+    try {
+      final startOfDay = DateTime(date.year, date.month, date.day);
+      final endOfDay = DateTime(date.year, date.month, date.day, 23, 59, 59);
+
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('transactions')
+          .where(
+            'date',
+            isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay),
+          )
+          .where('date', isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
+          .orderBy('date', descending: true)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => TransactionModel.fromFirestore(doc))
+          .toList();
+    } catch (e) {
+      debugPrint('Error getting daily transactions: $e');
+      return [];
+    }
+  }
+
   // 특정 카테고리의 거래 내역 가져오기
   static Stream<List<TransactionModel>> getTransactionsByCategory({
     required String userId,
@@ -199,6 +235,9 @@ class TransactionService {
     return query
         .orderBy('date', descending: true)
         .snapshots()
+        .handleError((error) {
+          debugPrint('Stream error in getTransactionsByCategory: $error');
+        })
         .map(
           (snapshot) => snapshot.docs
               .map((doc) => TransactionModel.fromFirestore(doc))

@@ -120,7 +120,7 @@ class MonthlySummaryWidget extends StatelessWidget {
   Widget _buildSummaryRow(
     BuildContext context,
     String label,
-    double amount,
+    num amount, // double에서 num으로 변경 (int와 double 모두 지원)
     Color color,
     IconData icon, {
     bool isBalance = false,

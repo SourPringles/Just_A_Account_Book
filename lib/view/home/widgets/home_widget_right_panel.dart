@@ -41,6 +41,12 @@ class _RightPanelWidgetState extends State<RightPanelWidget> {
   void didUpdateWidget(RightPanelWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
     
+    // key가 변경되면 (새로고침 트리거) 캐시 무효화
+    if (widget.key != oldWidget.key) {
+      _cachedSummaryContent = null;
+      _cachedMonthKey = null;
+    }
+    
     // 요약 탭(index 1)일 때는 월이 변경된 경우만 업데이트
     if (_panelIndex == 1) {
       final newMonth = DateTime(widget.selectedDate.year, widget.selectedDate.month);
@@ -93,6 +99,7 @@ class _RightPanelWidgetState extends State<RightPanelWidget> {
               child: TransactionsPage(
                 selectedDate: widget.selectedDate,
                 showDailyOnly: true,
+                onTransactionChanged: widget.onTransactionAdded, // 트랜잭션 변경 시 전체 새로고침
               ),
             ),
           ],
@@ -121,6 +128,7 @@ class _RightPanelWidgetState extends State<RightPanelWidget> {
                 key: ValueKey('transaction_list_$monthKey'),
                 selectedDate: _lastMonth,
                 showDailyOnly: false,
+                onTransactionChanged: widget.onTransactionAdded, // 트랜잭션 변경 시 전체 새로고침
               ),
             ),
           ],

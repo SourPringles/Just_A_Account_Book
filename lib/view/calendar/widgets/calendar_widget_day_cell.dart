@@ -33,7 +33,7 @@ class CalendarDayCellWidget extends StatelessWidget {
     final expense = dailyTotals['expense'] ?? 0;
 
     // 금액을 간단한 형태로 포맷 (천원 단위)
-    String formatAmount(double amount) {
+    String formatAmount(num amount) { // double에서 num으로 변경
       if (amount == 0) return '';
       if (amount >= 10000) {
         return '${NumberFormat('#.#').format(amount / 10000)}만';

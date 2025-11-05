@@ -37,6 +37,20 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  // Firebase threading 경고 무시 (Windows 플랫폼 이슈)
+  if (!kIsWeb && Platform.isWindows) {
+    FlutterError.onError = (FlutterErrorDetails details) {
+      // Firestore 스레드 경고는 무시
+      if (details.exception.toString().contains('platform thread') ||
+          details.exception.toString().contains('firebase_firestore')) {
+        debugPrint('Firestore threading warning (known Windows issue): ${details.exception}');
+        return;
+      }
+      // 다른 에러는 정상 처리
+      FlutterError.presentError(details);
+    };
+  }
+
   // initialize services so saved preferences are loaded
   await ThemeService.instance.init();
   await SettingsService.instance.init();

@@ -5,7 +5,7 @@ enum TransactionType { income, expense }
 class TransactionModel {
   final String? id;
   final TransactionType type;
-  final double amount;
+  final int amount; // double에서 int로 변경
   final String category;
   final String description;
   final DateTime date;
@@ -31,7 +31,7 @@ class TransactionModel {
       type: TransactionType.values.firstWhere(
         (e) => e.toString().split('.').last == data['type'],
       ),
-      amount: (data['amount'] as num).toDouble(),
+      amount: (data['amount'] as num).toInt(), // toDouble에서 toInt로 변경
       category: data['category'] ?? '',
       description: data['description'] ?? '',
       date: (data['date'] as Timestamp).toDate(),
@@ -57,7 +57,7 @@ class TransactionModel {
   TransactionModel copyWith({
     String? id,
     TransactionType? type,
-    double? amount,
+    int? amount, // double에서 int로 변경
     String? category,
     String? description,
     DateTime? date,

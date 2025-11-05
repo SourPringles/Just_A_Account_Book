@@ -9,10 +9,7 @@ import '../../uivalue/ui_colors.dart';
 class AuthWidgetUserInfoCard extends StatelessWidget {
   final User user;
 
-  const AuthWidgetUserInfoCard({
-    super.key,
-    required this.user,
-  });
+  const AuthWidgetUserInfoCard({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +42,7 @@ class AuthWidgetUserInfoCard extends StatelessWidget {
           ),
         ),
         SizedBox(height: smallSpacing),
-        
+
         // 익명 사용자 표시
         if (user.isAnonymous)
           _buildInfoChip(
@@ -54,7 +51,7 @@ class AuthWidgetUserInfoCard extends StatelessWidget {
             label: l10n.anonymousUser,
             color: UIColors.warningColor,
           ),
-        
+
         // 이메일 표시
         if (!user.isAnonymous && user.email != null)
           _buildInfoChip(
@@ -91,7 +88,9 @@ class AuthWidgetUserInfoCard extends StatelessWidget {
               style: UIText.smallTextStyle(context).copyWith(
                 fontSize: UIText.smallFontSize + 2,
                 color: color,
-                fontStyle: user.isAnonymous ? FontStyle.italic : FontStyle.normal,
+                fontStyle: user.isAnonymous
+                    ? FontStyle.italic
+                    : FontStyle.normal,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

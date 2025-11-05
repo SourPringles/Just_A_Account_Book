@@ -18,7 +18,7 @@ class MonthlySummaryWidget extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context);
     final user = FirebaseAuth.instance.currentUser;
-    
+
     if (user == null) {
       return const SizedBox.shrink();
     }
@@ -54,7 +54,7 @@ class MonthlySummaryWidget extends StatelessWidget {
         final balance = totals['balance'] ?? 0;
 
         // 날짜 포맷 (언어별)
-        final dateFormat = locale.languageCode == 'ko' 
+        final dateFormat = locale.languageCode == 'ko'
             ? DateFormat('yyyy년 MM월', locale.toString())
             : DateFormat('MMM yyyy', locale.toString());
 
@@ -81,7 +81,9 @@ class MonthlySummaryWidget extends StatelessWidget {
                     ),
                     Icon(
                       balance >= 0 ? Icons.trending_up : Icons.trending_down,
-                      color: balance >= 0 ? UIColors.incomeColor : UIColors.expenseColor,
+                      color: balance >= 0
+                          ? UIColors.incomeColor
+                          : UIColors.expenseColor,
                     ),
                   ],
                 ),
@@ -117,7 +119,9 @@ class MonthlySummaryWidget extends StatelessWidget {
                   context,
                   l10n.balance,
                   balance,
-                  balance >= 0 ? UIColors.balancePositiveColor : UIColors.balanceNegativeColor,
+                  balance >= 0
+                      ? UIColors.balancePositiveColor
+                      : UIColors.balanceNegativeColor,
                   balance >= 0 ? Icons.account_balance_wallet : Icons.warning,
                   isBalance: true,
                 ),
@@ -140,7 +144,7 @@ class MonthlySummaryWidget extends StatelessWidget {
     bool isExpense = false,
   }) {
     final currencySymbol = SettingsService.instance.currencySymbol.value;
-    
+
     // 부호 결정
     String prefix = '';
     if (isIncome && amount > 0) {
@@ -150,7 +154,7 @@ class MonthlySummaryWidget extends StatelessWidget {
     } else if (isBalance) {
       prefix = amount >= 0 ? '+' : '-';
     }
-    
+
     return Row(
       children: [
         Icon(icon, color: color, size: UILayout.iconSizeMedium),
@@ -166,7 +170,9 @@ class MonthlySummaryWidget extends StatelessWidget {
         Text(
           '$prefix$currencySymbol${NumberFormat('#,###').format(amount.abs())}',
           style: TextStyle(
-            fontSize: isBalance ? UIText.transactionBalanceSize : UIText.transactionAmountSize,
+            fontSize: isBalance
+                ? UIText.transactionBalanceSize
+                : UIText.transactionAmountSize,
             fontWeight: isBalance ? FontWeight.bold : FontWeight.w500,
             color: color,
           ),

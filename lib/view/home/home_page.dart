@@ -27,16 +27,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return StreamBuilder(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext con, AsyncSnapshot<User?> user) {
         if (!user.hasData) {
           return const LoginPage();
         } else {
-          return Scaffold(
-            body: _buildWindowScreenLayout(user.data),
-          );
+          return Scaffold(body: _buildWindowScreenLayout(user.data));
         }
       },
     );
@@ -92,8 +90,10 @@ class _HomePageState extends State<HomePage> {
                       key: ValueKey(_refreshTrigger), // 새로고침 트리거
                       selectedDate: _selectedDate,
                       initialIndex: _rightPanelIndex,
-                      onIndexChanged: (i) => setState(() => _rightPanelIndex = i),
-                      onTransactionAdded: () => setState(() => _refreshTrigger++),
+                      onIndexChanged: (i) =>
+                          setState(() => _rightPanelIndex = i),
+                      onTransactionAdded: () =>
+                          setState(() => _refreshTrigger++),
                     ),
                   ),
                 ],
@@ -121,7 +121,8 @@ class _HomePageState extends State<HomePage> {
                     IconButton(
                       icon: const Icon(Icons.tune),
                       tooltip: l10n.settings,
-                      onPressed: () => Navigator.pushNamed(context, '/settings'),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/settings'),
                     ),
                     IconButton(
                       icon: const Icon(Icons.logout),
@@ -142,7 +143,7 @@ class _HomePageState extends State<HomePage> {
   // 계정 정보 다이얼로그
   void _showAccountInfoDialog(BuildContext context, User? user) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     showDialog(
       context: context,
       builder: (BuildContext context) {

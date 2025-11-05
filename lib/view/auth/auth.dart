@@ -15,7 +15,7 @@ class AuthWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     if (user == null) {
       return Center(
         child: Text(
@@ -60,11 +60,11 @@ class AuthWidget extends StatelessWidget {
             ),
           ),
           SizedBox(height: UILayout.largeGap),
-          
+
           // 사용자 정보 카드
           AuthWidgetUserInfoCard(user: user!),
           SizedBox(height: UILayout.largeGap),
-          
+
           // 액션 버튼들
           _buildActionButtons(context),
         ],
@@ -105,13 +105,13 @@ class AuthWidget extends StatelessWidget {
           ),
           SizedBox(height: buttonSpacing),
         ],
-        
+
         // 대시보드 버튼
         ElevatedButton.icon(
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(l10n.featureComingSoon)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(l10n.featureComingSoon)));
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: UIColors.incomeColor,

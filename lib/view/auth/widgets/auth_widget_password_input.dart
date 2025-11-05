@@ -22,7 +22,8 @@ class AuthWidgetPasswordInput extends StatefulWidget {
   });
 
   @override
-  State<AuthWidgetPasswordInput> createState() => _AuthWidgetPasswordInputState();
+  State<AuthWidgetPasswordInput> createState() =>
+      _AuthWidgetPasswordInputState();
 }
 
 class _AuthWidgetPasswordInputState extends State<AuthWidgetPasswordInput> {
@@ -31,14 +32,16 @@ class _AuthWidgetPasswordInputState extends State<AuthWidgetPasswordInput> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return TextFormField(
       controller: widget.controller,
       obscureText: _obscureText,
       autofocus: widget.autofocus,
       focusNode: widget.focusNode,
       textInputAction: TextInputAction.done,
-      onFieldSubmitted: widget.onSubmitted != null ? (_) => widget.onSubmitted!() : null,
+      onFieldSubmitted: widget.onSubmitted != null
+          ? (_) => widget.onSubmitted!()
+          : null,
       validator: (val) {
         if (val == null || val.isEmpty) {
           return l10n.validationEmpty;
@@ -55,9 +58,7 @@ class _AuthWidgetPasswordInputState extends State<AuthWidgetPasswordInput> {
         labelStyle: UIText.mediumTextStyle(context),
         prefixIcon: const Icon(Icons.lock),
         suffixIcon: IconButton(
-          icon: Icon(
-            _obscureText ? Icons.visibility : Icons.visibility_off,
-          ),
+          icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
           onPressed: () {
             setState(() {
               _obscureText = !_obscureText;

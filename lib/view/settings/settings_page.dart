@@ -36,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
       });
     };
     ThemeService.instance.themeMode.addListener(_themeListener);
-    
+
     _localeListener = () {
       if (!mounted) return;
       setState(() {
@@ -44,7 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
       });
     };
     LocaleService.instance.locale.addListener(_localeListener);
-    
+
     _currencyListener = () {
       if (!mounted) return;
       setState(() {
@@ -66,7 +66,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settings)),
       body: Padding(

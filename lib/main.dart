@@ -46,7 +46,9 @@ void main() async {
       // Firestore 스레드 경고는 무시
       if (details.exception.toString().contains('platform thread') ||
           details.exception.toString().contains('firebase_firestore')) {
-        debugPrint('Firestore threading warning (known Windows issue): ${details.exception}');
+        debugPrint(
+          'Firestore threading warning (known Windows issue): ${details.exception}',
+        );
         return;
       }
       // 다른 에러는 정상 처리

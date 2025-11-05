@@ -25,11 +25,9 @@ class TransactionWidgetDetailDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final currencySymbol = SettingsService.instance.currencySymbol.value;
-    
+
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         padding: EdgeInsets.all(UILayout.dialogPadding),
         constraints: BoxConstraints(maxWidth: UILayout.dialogMaxWidth),
@@ -46,7 +44,9 @@ class TransactionWidgetDetailDialog extends StatelessWidget {
             _buildDetailRow(
               context,
               l10n.type,
-              transaction.type == TransactionType.income ? l10n.income : l10n.expense,
+              transaction.type == TransactionType.income
+                  ? l10n.income
+                  : l10n.expense,
             ),
             _buildDetailRow(
               context,
@@ -55,7 +55,11 @@ class TransactionWidgetDetailDialog extends StatelessWidget {
             ),
             _buildDetailRow(context, l10n.category, transaction.category),
             if (transaction.description.isNotEmpty)
-              _buildDetailRow(context, l10n.description, transaction.description),
+              _buildDetailRow(
+                context,
+                l10n.description,
+                transaction.description,
+              ),
             _buildDetailRow(
               context,
               l10n.date,

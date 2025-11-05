@@ -18,7 +18,7 @@ class DialogFooterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -33,22 +33,16 @@ class DialogFooterWidget extends StatelessWidget {
           )
         else
           const SizedBox.shrink(),
-        
+
         // 오른쪽: 수정 및 닫기 버튼
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (onEdit != null) ...[
-              TextButton(
-                onPressed: onEdit,
-                child: Text(l10n.edit),
-              ),
+              TextButton(onPressed: onEdit, child: Text(l10n.edit)),
               SizedBox(width: UILayout.smallGap),
             ],
-            TextButton(
-              onPressed: onClose,
-              child: Text(l10n.close),
-            ),
+            TextButton(onPressed: onClose, child: Text(l10n.close)),
           ],
         ),
       ],

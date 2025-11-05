@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Scaffold(
       body: Row(
         children: [
@@ -60,15 +60,17 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(height: UILayout.largeGap),
                     Text(
                       l10n.appTitle,
-                      style: UIText.extraLargeTextStyle(context, weight: FontWeight.bold)
-                          .copyWith(color: UIColors.incomeColor.withOpacity(0.5)),
+                      style: UIText.extraLargeTextStyle(
+                        context,
+                        weight: FontWeight.bold,
+                      ).copyWith(color: UIColors.incomeColor.withOpacity(0.5)),
                     ),
                   ],
                 ),
               ),
             ),
           ),
-          
+
           // 오른쪽 패널 (로그인 폼)
           Expanded(
             child: Stack(
@@ -94,7 +96,8 @@ class _LoginPageState extends State<LoginPage> {
                       child: IconButton(
                         icon: const Icon(Icons.tune),
                         tooltip: l10n.settings,
-                        onPressed: () => Navigator.pushNamed(context, '/settings'),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, '/settings'),
                       ),
                     ),
                   ),
@@ -115,11 +118,7 @@ class _LoginPageState extends State<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // 로고 또는 타이틀
-          Icon(
-            Icons.login,
-            size: 80,
-            color: UIColors.incomeColor,
-          ),
+          Icon(Icons.login, size: 80, color: UIColors.incomeColor),
           SizedBox(height: UILayout.smallGap),
           Text(
             l10n.welcomeBack,
@@ -127,25 +126,22 @@ class _LoginPageState extends State<LoginPage> {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: UILayout.largeGap),
-          
+
           // 이메일 입력
-          AuthWidgetEmailInput(
-            controller: _emailController,
-            autofocus: true,
-          ),
+          AuthWidgetEmailInput(controller: _emailController, autofocus: true),
           SizedBox(height: UILayout.mediumGap),
-          
+
           // 비밀번호 입력
           AuthWidgetPasswordInput(
             controller: _pwdController,
             onSubmitted: _handleLogin,
           ),
           SizedBox(height: UILayout.largeGap),
-          
+
           // 로그인 버튼
           _buildLoginButton(l10n),
           SizedBox(height: UILayout.mediumGap),
-          
+
           // 구분선
           Row(
             children: [
@@ -158,11 +154,11 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
           SizedBox(height: UILayout.mediumGap),
-          
+
           // 임시 로그인 버튼
           _buildAnonymousLoginButton(l10n),
           SizedBox(height: UILayout.mediumGap),
-          
+
           // 회원가입 버튼
           _buildSignUpButton(l10n),
         ],
@@ -174,14 +170,13 @@ class _LoginPageState extends State<LoginPage> {
     return ElevatedButton.icon(
       onPressed: _handleLogin,
       icon: const Icon(Icons.login),
-      label: Text(
-        l10n.login,
-        style: UIText.mediumTextStyle(context),
-      ),
+      label: Text(l10n.login, style: UIText.mediumTextStyle(context)),
       style: ElevatedButton.styleFrom(
         backgroundColor: UIColors.incomeColor,
         foregroundColor: UIColors.whiteColor,
-        padding: EdgeInsets.symmetric(vertical: UILayout.buttonPadding(context)),
+        padding: EdgeInsets.symmetric(
+          vertical: UILayout.buttonPadding(context),
+        ),
       ),
     );
   }
@@ -190,12 +185,11 @@ class _LoginPageState extends State<LoginPage> {
     return OutlinedButton.icon(
       onPressed: _handleAnonymousLogin,
       icon: const Icon(Icons.person_off),
-      label: Text(
-        l10n.continueAsGuest,
-        style: UIText.mediumTextStyle(context),
-      ),
+      label: Text(l10n.continueAsGuest, style: UIText.mediumTextStyle(context)),
       style: OutlinedButton.styleFrom(
-        padding: EdgeInsets.symmetric(vertical: UILayout.buttonPadding(context)),
+        padding: EdgeInsets.symmetric(
+          vertical: UILayout.buttonPadding(context),
+        ),
       ),
     );
   }
@@ -225,7 +219,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _handleLogin() async {
     if (_formKey.currentState!.validate()) {
       final l10n = AppLocalizations.of(context)!;
-      
+
       try {
         await AuthService.signInWithEmailPassword(
           email: _emailController.text.trim(),
@@ -236,7 +230,7 @@ class _LoginPageState extends State<LoginPage> {
         }
       } on FirebaseAuthException catch (e) {
         if (!mounted) return;
-        
+
         String message = l10n.errorOccurredAuth;
         if (e.code == 'user-not-found') {
           message = l10n.errorUserNotFound;
@@ -245,7 +239,7 @@ class _LoginPageState extends State<LoginPage> {
         } else if (e.code == 'invalid-email') {
           message = l10n.errorInvalidEmail;
         }
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(message),
@@ -254,10 +248,12 @@ class _LoginPageState extends State<LoginPage> {
         );
       } catch (e) {
         if (!mounted) return;
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${AppLocalizations.of(context)!.errorOccurred}: ${e.toString()}'),
+            content: Text(
+              '${AppLocalizations.of(context)!.errorOccurred}: ${e.toString()}',
+            ),
             backgroundColor: UIColors.expenseColor,
           ),
         );
@@ -273,7 +269,7 @@ class _LoginPageState extends State<LoginPage> {
       }
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error: ${e.code}'),
@@ -282,7 +278,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     } catch (e) {
       if (!mounted) return;
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error: ${e.toString()}'),

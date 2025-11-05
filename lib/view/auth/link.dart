@@ -30,7 +30,7 @@ class _LinkPageState extends State<LinkPage> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Scaffold(
       body: Row(
         children: [
@@ -59,15 +59,17 @@ class _LinkPageState extends State<LinkPage> {
                     SizedBox(height: UILayout.largeGap),
                     Text(
                       l10n.appTitle,
-                      style: UIText.extraLargeTextStyle(context, weight: FontWeight.bold)
-                          .copyWith(color: UIColors.incomeColor.withOpacity(0.5)),
+                      style: UIText.extraLargeTextStyle(
+                        context,
+                        weight: FontWeight.bold,
+                      ).copyWith(color: UIColors.incomeColor.withOpacity(0.5)),
                     ),
                   ],
                 ),
               ),
             ),
           ),
-          
+
           // 오른쪽 패널 (계정 연결 폼)
           Expanded(
             child: Stack(
@@ -109,11 +111,7 @@ class _LinkPageState extends State<LinkPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // 로고 또는 타이틀
-          Icon(
-            Icons.link,
-            size: 80,
-            color: UIColors.incomeColor,
-          ),
+          Icon(Icons.link, size: 80, color: UIColors.incomeColor),
           SizedBox(height: UILayout.smallGap),
           Text(
             l10n.linkAccount,
@@ -127,30 +125,25 @@ class _LinkPageState extends State<LinkPage> {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: UILayout.largeGap),
-          
+
           // 이메일 입력
-          AuthWidgetEmailInput(
-            controller: _emailController,
-            autofocus: true,
-          ),
+          AuthWidgetEmailInput(controller: _emailController, autofocus: true),
           SizedBox(height: UILayout.mediumGap),
-          
+
           // 비밀번호 입력 (엔터로 연결)
           Focus(
             onKeyEvent: (node, event) {
-              if (event is KeyDownEvent && 
+              if (event is KeyDownEvent &&
                   event.logicalKey == LogicalKeyboardKey.enter) {
                 _handleLinkAccount();
                 return KeyEventResult.handled;
               }
               return KeyEventResult.ignored;
             },
-            child: AuthWidgetPasswordInput(
-              controller: _pwdController,
-            ),
+            child: AuthWidgetPasswordInput(controller: _pwdController),
           ),
           SizedBox(height: UILayout.largeGap),
-          
+
           // 링크 버튼
           _buildLinkButton(l10n),
         ],
@@ -162,14 +155,13 @@ class _LinkPageState extends State<LinkPage> {
     return ElevatedButton.icon(
       onPressed: _handleLinkAccount,
       icon: const Icon(Icons.link),
-      label: Text(
-        l10n.linkAccount,
-        style: UIText.mediumTextStyle(context),
-      ),
+      label: Text(l10n.linkAccount, style: UIText.mediumTextStyle(context)),
       style: ElevatedButton.styleFrom(
         backgroundColor: UIColors.incomeColor,
         foregroundColor: UIColors.whiteColor,
-        padding: EdgeInsets.symmetric(vertical: UILayout.buttonPadding(context)),
+        padding: EdgeInsets.symmetric(
+          vertical: UILayout.buttonPadding(context),
+        ),
       ),
     );
   }
@@ -177,28 +169,28 @@ class _LinkPageState extends State<LinkPage> {
   Future<void> _handleLinkAccount() async {
     if (_formKey.currentState!.validate()) {
       final l10n = AppLocalizations.of(context)!;
-      
+
       try {
         final credential = EmailAuthProvider.credential(
           email: _emailController.text.trim(),
           password: _pwdController.text,
         );
-        
+
         await FirebaseAuth.instance.currentUser?.linkWithCredential(credential);
-        
+
         if (!mounted) return;
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(l10n.accountLinkedSuccess),
             backgroundColor: UIColors.incomeColor,
           ),
         );
-        
+
         Navigator.pushReplacementNamed(context, "/");
       } on FirebaseAuthException catch (e) {
         if (!mounted) return;
-        
+
         String message = l10n.errorOccurredAuth;
         if (e.code == 'weak-password') {
           message = l10n.errorWeakPassword;
@@ -211,7 +203,7 @@ class _LinkPageState extends State<LinkPage> {
         } else if (e.code == 'credential-already-in-use') {
           message = l10n.errorCredentialInUse;
         }
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(message),
@@ -220,10 +212,12 @@ class _LinkPageState extends State<LinkPage> {
         );
       } catch (e) {
         if (!mounted) return;
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${AppLocalizations.of(context)!.errorOccurred}: ${e.toString()}'),
+            content: Text(
+              '${AppLocalizations.of(context)!.errorOccurred}: ${e.toString()}',
+            ),
             backgroundColor: UIColors.expenseColor,
           ),
         );

@@ -56,6 +56,21 @@
     "@date": {
         "description": "날짜"
     },
+    "dateFormat": "{year}년 {month}월 {day}일",
+    "@dateFormat": {
+        "description": "날짜 형식",
+        "placeholders": {
+            "year": {
+                "type": "int"
+            },
+            "month": {
+                "type": "int"
+            },
+            "day": {
+                "type": "int"
+            }
+        }
+    },
     "save": "저장",
     "@save": {
         "description": "저장 버튼"

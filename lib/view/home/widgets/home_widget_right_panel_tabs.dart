@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../../uivalue/ui_layout.dart';
 import '../../uivalue/ui_text.dart';
+import '../../uivalue/ui_colors.dart';
 
 class RightPanelTabsWidget extends StatelessWidget {
   final int currentIndex;
@@ -16,7 +17,7 @@ class RightPanelTabsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Container(
       padding: EdgeInsets.all(UILayout.smallGap),
       decoration: BoxDecoration(
@@ -94,7 +95,7 @@ class _TabButton extends StatelessWidget {
               size: UILayout.iconSizeSmall,
               color: isSelected
                   ? Theme.of(context).colorScheme.onPrimary
-                  : Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                  : UIColors.textPrimaryColor(context),
             ),
             SizedBox(width: UILayout.tinyGap),
             Text(
@@ -103,7 +104,7 @@ class _TabButton extends StatelessWidget {
                 context,
                 color: isSelected
                     ? Theme.of(context).colorScheme.onPrimary
-                    : Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+                    : UIColors.textPrimaryColor(context),
                 weight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),
             ),

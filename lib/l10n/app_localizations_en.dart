@@ -51,6 +51,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get date => 'Date';
 
   @override
+  String dateFormat(int year, int month, int day) {
+    return '$month/$day/$year';
+  }
+
+  @override
   String get save => 'Save';
 
   @override

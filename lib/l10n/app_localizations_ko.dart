@@ -51,6 +51,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get date => '날짜';
 
   @override
+  String dateFormat(int year, int month, int day) {
+    return '$year년 $month월 $day일';
+  }
+
+  @override
   String get save => '저장';
 
   @override

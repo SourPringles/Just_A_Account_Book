@@ -56,6 +56,21 @@
     "@date": {
         "description": "Date"
     },
+    "dateFormat": "{month}/{day}/{year}",
+    "@dateFormat": {
+        "description": "Date format",
+        "placeholders": {
+            "year": {
+                "type": "int"
+            },
+            "month": {
+                "type": "int"
+            },
+            "day": {
+                "type": "int"
+            }
+        }
+    },
     "save": "Save",
     "@save": {
         "description": "Save button"

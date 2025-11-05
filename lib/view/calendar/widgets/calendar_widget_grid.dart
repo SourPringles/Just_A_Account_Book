@@ -40,7 +40,7 @@ class CalendarGridWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context);
-    
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -88,6 +88,11 @@ class CalendarGridWidget extends StatelessWidget {
             formatButtonVisible: true,
             titleCentered: true,
             formatButtonShowsNext: false,
+            titleTextStyle: TextStyle(
+              fontSize: UIText.calendarHeader,
+              fontWeight: FontWeight.w600,
+              color: UIColors.textPrimaryColor(context),
+            ),
             formatButtonDecoration: const BoxDecoration(
               color: Colors.blue,
               borderRadius: BorderRadius.all(Radius.circular(12.0)),
@@ -96,10 +101,7 @@ class CalendarGridWidget extends StatelessWidget {
               color: UIColors.whiteColor,
               fontSize: UIText.calendarHeader - 2,
             ),
-            leftChevronIcon: const Icon(
-              Icons.chevron_left,
-              color: Colors.blue,
-            ),
+            leftChevronIcon: const Icon(Icons.chevron_left, color: Colors.blue),
             rightChevronIcon: const Icon(
               Icons.chevron_right,
               color: Colors.blue,

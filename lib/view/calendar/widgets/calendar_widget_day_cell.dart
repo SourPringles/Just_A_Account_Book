@@ -24,7 +24,7 @@ class CalendarDayCellWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     // 요일에 따른 날짜 색상 설정
     Color dateTextColor = UIColors.textPrimaryColor(context);
     if (date.weekday == DateTime.sunday) {
@@ -51,9 +51,7 @@ class CalendarDayCellWidget extends StatelessWidget {
           // 날짜 영역
           Container(
             height: 20,
-            padding: EdgeInsets.only(
-              left: UILayout.calendarCellDatePadding,
-            ),
+            padding: EdgeInsets.only(left: UILayout.calendarCellDatePadding),
             alignment: Alignment.topLeft,
             child: Text(
               date.day.toString(),
@@ -74,7 +72,9 @@ class CalendarDayCellWidget extends StatelessWidget {
                 children: [
                   // 수입 (파란색)
                   Text(
-                    income > 0 ? '+${CurrencyFormatter.formatCompact(income, l10n)}' : '',
+                    income > 0
+                        ? '+${CurrencyFormatter.formatCompact(income, l10n)}'
+                        : '',
                     style: TextStyle(
                       fontSize: UIText.calendarAmount,
                       color: UIColors.incomeColor,
@@ -85,7 +85,9 @@ class CalendarDayCellWidget extends StatelessWidget {
                   ),
                   // 지출 (빨간색)
                   Text(
-                    expense > 0 ? '-${CurrencyFormatter.formatCompact(expense, l10n)}' : '',
+                    expense > 0
+                        ? '-${CurrencyFormatter.formatCompact(expense, l10n)}'
+                        : '',
                     style: TextStyle(
                       fontSize: UIText.calendarAmount,
                       color: UIColors.expenseColor,

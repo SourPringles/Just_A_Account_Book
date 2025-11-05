@@ -17,7 +17,7 @@ class TransactionHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Container(
       padding: EdgeInsets.all(UILayout.defaultPadding),
       decoration: BoxDecoration(
@@ -37,7 +37,11 @@ class TransactionHeaderWidget extends StatelessWidget {
           ),
           SizedBox(width: UILayout.smallGap),
           Text(
-            '${selectedDate.year}년 ${selectedDate.month}월 ${selectedDate.day}일',
+            l10n.dateFormat(
+              selectedDate.year,
+              selectedDate.month,
+              selectedDate.day,
+            ),
             style: UIText.largeTextStyle(context),
           ),
           const Spacer(),

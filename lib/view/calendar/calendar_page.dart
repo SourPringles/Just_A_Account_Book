@@ -75,9 +75,9 @@ class _CalendarPageState extends State<CalendarPage> {
     try {
       final transactions =
           await TransactionService.getMonthlyTransactionsFuture(
-        userId: user.uid,
-        month: _focusedDay,
-      );
+            userId: user.uid,
+            month: _focusedDay,
+          );
 
       final Map<String, Map<String, double>> newTotals = {};
 

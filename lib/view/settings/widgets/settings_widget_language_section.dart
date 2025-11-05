@@ -16,16 +16,13 @@ class LanguageSectionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          l10n.language,
-          style: UIText.largeTextStyle(context),
-        ),
+        Text(l10n.language, style: UIText.largeTextStyle(context)),
         SizedBox(height: UILayout.smallGap),
-        
+
         RadioListTile<Locale>(
           title: Text(l10n.korean),
           value: const Locale('ko'),
@@ -36,7 +33,7 @@ class LanguageSectionWidget extends StatelessWidget {
             }
           },
         ),
-        
+
         RadioListTile<Locale>(
           title: Text(l10n.english),
           value: const Locale('en'),

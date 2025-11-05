@@ -4,48 +4,58 @@ import 'package:flutter/material.dart';
 /// Light/Dark 모드별 색상을 정의합니다.
 class UIColors {
   // ========== 색상 정의 (Light/Dark 모드 분리) ==========
-  
+
   // 공통 색상 (모드 무관)
   static const Color commonPositiveColor = Colors.blue; // 긍정적 요소 색상
   static const Color commonNegativeColor = Colors.red; // 부정적 요소 색상
   static const Color commonNeutralColor = Colors.black; // 중립적 요소 색상
   static const Color commonExtraColor = Colors.grey; // 추가 중립적 요소 색상
-  
+
   // 거래 관련 색상
   static const Color incomeColor = commonPositiveColor; // 수입 색상
   static const Color expenseColor = commonNegativeColor; // 지출 색상
   static const Color balancePositiveColor = commonPositiveColor; // 잔액 양수
   static const Color balanceNegativeColor = commonNegativeColor; // 잔액 음수
-  
+
   // UI 요소 색상
   static const Color borderColor = Color(0xFFE0E0E0); // 테두리 색상 (Grey shade 300)
-  static const Color dividerColor = Color(0xFFBDBDBD); // 구분선 색상 (Grey shade 400)
+  static const Color dividerColor = Color(
+    0xFFBDBDBD,
+  ); // 구분선 색상 (Grey shade 400)
   static const Color shadowColor = Color(0x1A000000); // 그림자 색상 (투명도 0.1)
   static const Color todayBorderColor = Colors.orange; // 오늘 날짜 테두리
   static const Color warningColor = Colors.orange; // 경고 색상
   static const Color whiteColor = Colors.white; // 흰색
-  
+
   // 배경 색상
-  static const Color cardBackgroundLight = Color(0xFFF5F5F5); // 카드 배경 (Grey shade 100)
-  
+  static const Color cardBackgroundLight = Color(
+    0xFFF5F5F5,
+  ); // 카드 배경 (Grey shade 100)
+
   // Light 모드 색상
   static const Color lightWeekdayTextColor = Colors.black; // 평일 날짜 색상
-  static const Color lightDefaultTextColor = Colors.black; // 별도 정의하지 않은 텍스트 색상
+  static const Color lightDefaultTextColor = Color(
+    0xFFAEB1B8,
+  ); // 별도 정의하지 않은 텍스트 색상
   static const Color lightDefaultColor = Colors.black; // 별도 정의하지 않은 기본 색상
   static const Color lightBackgroundColor = Colors.white; // 바탕화면 색상
-  
+
   // Dark 모드 색상
   static const Color darkWeekdayTextColor = Colors.white; // 평일 날짜 색상
-  static const Color darkDefaultTextColor = Colors.white; // 별도 정의하지 않은 텍스트 색상
+  static const Color darkDefaultTextColor = Color(
+    0xFFAEB1B8,
+  ); // 별도 정의하지 않은 텍스트 색상
   static const Color darkDefaultColor = Colors.white; // 별도 정의하지 않은 기본 색상
   static const Color darkBackgroundColor = Color(0xFF1C1D1F); // 바탕화면 색상
 
   // ========== Theme-aware 색상 헬퍼 메서드 ==========
-  
+
   // 기본 텍스트 색상
   static Color textPrimaryColor(BuildContext context) {
     final brightness = Theme.of(context).brightness;
-    return brightness == Brightness.dark ? darkDefaultTextColor : lightDefaultTextColor;
+    return brightness == Brightness.dark
+        ? darkDefaultTextColor
+        : lightDefaultTextColor;
   }
 
   // 약한 텍스트 색상 (부가 정보 등)
@@ -59,13 +69,17 @@ class UIColors {
   // 평일 날짜 색상
   static Color weekdayDateTextColor(BuildContext context) {
     final brightness = Theme.of(context).brightness;
-    return brightness == Brightness.dark ? darkWeekdayTextColor : lightWeekdayTextColor;
+    return brightness == Brightness.dark
+        ? darkWeekdayTextColor
+        : lightWeekdayTextColor;
   }
 
   // 바탕화면 색상
   static Color backgroundColor(BuildContext context) {
     final brightness = Theme.of(context).brightness;
-    return brightness == Brightness.dark ? darkBackgroundColor : lightBackgroundColor;
+    return brightness == Brightness.dark
+        ? darkBackgroundColor
+        : lightBackgroundColor;
   }
 
   // 주말 색상
@@ -86,7 +100,7 @@ class UIColors {
       Theme.of(context).colorScheme.onSurface;
 
   // ========== Theme 생성 메서드 ==========
-  
+
   /// Light 모드 테마
   static ThemeData appTheme(BuildContext context) {
     return ThemeData(
@@ -101,9 +115,7 @@ class UIColors {
       scaffoldBackgroundColor: lightBackgroundColor,
       useMaterial3: true,
       // 모든 위젯에 디버그 테두리 추가
-      extensions: [
-        _DebugBorderTheme(),
-      ],
+      extensions: [_DebugBorderTheme()],
       // Container 기본 장식
       cardTheme: CardThemeData(
         shape: RoundedRectangleBorder(
@@ -139,9 +151,7 @@ class UIColors {
       scaffoldBackgroundColor: darkBackgroundColor,
       useMaterial3: true,
       // 모든 위젯에 디버그 테두리 추가
-      extensions: [
-        _DebugBorderTheme(),
-      ],
+      extensions: [_DebugBorderTheme()],
       // Container 기본 장식
       cardTheme: CardThemeData(
         shape: RoundedRectangleBorder(

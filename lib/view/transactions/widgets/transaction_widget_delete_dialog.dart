@@ -21,11 +21,9 @@ class TransactionWidgetDeleteDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
         padding: EdgeInsets.all(UILayout.dialogPadding),
         constraints: BoxConstraints(maxWidth: UILayout.dialogMaxWidth),
@@ -63,7 +61,7 @@ class TransactionWidgetDeleteDialog extends StatelessWidget {
 
   Future<void> _handleDelete(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
-    
+
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null && transaction.id != null) {
@@ -82,9 +80,9 @@ class TransactionWidgetDeleteDialog extends StatelessWidget {
     } catch (e) {
       if (context.mounted) {
         Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${l10n.errorDeleting}: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('${l10n.errorDeleting}: $e')));
       }
     }
   }

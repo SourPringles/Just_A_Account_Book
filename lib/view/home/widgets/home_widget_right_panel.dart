@@ -40,18 +40,24 @@ class _RightPanelWidgetState extends State<RightPanelWidget> {
   @override
   void didUpdateWidget(RightPanelWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
+
     // key가 변경되면 (새로고침 트리거) 캐시 무효화
     if (widget.key != oldWidget.key) {
       _cachedSummaryContent = null;
       _cachedMonthKey = null;
     }
-    
+
     // 요약 탭(index 1)일 때는 월이 변경된 경우만 업데이트
     if (_panelIndex == 1) {
-      final newMonth = DateTime(widget.selectedDate.year, widget.selectedDate.month);
-      final oldMonth = DateTime(oldWidget.selectedDate.year, oldWidget.selectedDate.month);
-      
+      final newMonth = DateTime(
+        widget.selectedDate.year,
+        widget.selectedDate.month,
+      );
+      final oldMonth = DateTime(
+        oldWidget.selectedDate.year,
+        oldWidget.selectedDate.month,
+      );
+
       if (newMonth != oldMonth) {
         _lastMonth = newMonth;
         _cachedSummaryContent = null; // 캐시 무효화
@@ -70,7 +76,10 @@ class _RightPanelWidgetState extends State<RightPanelWidget> {
             _panelIndex = i;
             // 요약 탭으로 전환 시 현재 선택된 날짜의 월로 업데이트
             if (i == 1) {
-              final newMonth = DateTime(widget.selectedDate.year, widget.selectedDate.month);
+              final newMonth = DateTime(
+                widget.selectedDate.year,
+                widget.selectedDate.month,
+              );
               if (_lastMonth != newMonth) {
                 _lastMonth = newMonth;
                 _cachedSummaryContent = null; // 캐시 무효화
@@ -99,7 +108,8 @@ class _RightPanelWidgetState extends State<RightPanelWidget> {
               child: TransactionsPage(
                 selectedDate: widget.selectedDate,
                 showDailyOnly: true,
-                onTransactionChanged: widget.onTransactionAdded, // 트랜잭션 변경 시 전체 새로고침
+                onTransactionChanged:
+                    widget.onTransactionAdded, // 트랜잭션 변경 시 전체 새로고침
               ),
             ),
           ],
@@ -107,12 +117,12 @@ class _RightPanelWidgetState extends State<RightPanelWidget> {
       case 1:
         // 요약 탭은 월 단위이므로 _lastMonth를 사용하여 불필요한 리빌드 방지
         final monthKey = '${_lastMonth.year}-${_lastMonth.month}';
-        
+
         // 캐시된 콘텐츠가 있고 월 키가 같으면 캐시 반환
         if (_cachedSummaryContent != null && _cachedMonthKey == monthKey) {
           return _cachedSummaryContent!;
         }
-        
+
         // 새로운 요약 콘텐츠 생성 및 캐싱
         _cachedMonthKey = monthKey;
         _cachedSummaryContent = Column(
@@ -128,12 +138,13 @@ class _RightPanelWidgetState extends State<RightPanelWidget> {
                 key: ValueKey('transaction_list_$monthKey'),
                 selectedDate: _lastMonth,
                 showDailyOnly: false,
-                onTransactionChanged: widget.onTransactionAdded, // 트랜잭션 변경 시 전체 새로고침
+                onTransactionChanged:
+                    widget.onTransactionAdded, // 트랜잭션 변경 시 전체 새로고침
               ),
             ),
           ],
         );
-        
+
         return _cachedSummaryContent!;
       default:
         return Container();

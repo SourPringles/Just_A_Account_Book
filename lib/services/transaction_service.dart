@@ -188,10 +188,7 @@ class TransactionService {
           .collection('users')
           .doc(userId)
           .collection('transactions')
-          .where(
-            'date',
-            isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay),
-          )
+          .where('date', isGreaterThanOrEqualTo: Timestamp.fromDate(startOfDay))
           .where('date', isLessThanOrEqualTo: Timestamp.fromDate(endOfDay))
           .orderBy('date', descending: true)
           .get();

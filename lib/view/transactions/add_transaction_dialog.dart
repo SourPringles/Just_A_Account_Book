@@ -13,11 +13,7 @@ class AddTransactionDialog extends StatefulWidget {
   final DateTime? initialDate;
   final TransactionModel? transaction; // 수정할 거래 (null이면 새로 추가)
 
-  const AddTransactionDialog({
-    super.key,
-    this.initialDate,
-    this.transaction,
-  });
+  const AddTransactionDialog({super.key, this.initialDate, this.transaction});
 
   @override
   State<AddTransactionDialog> createState() => _AddTransactionDialogState();
@@ -38,14 +34,15 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
   @override
   void initState() {
     super.initState();
-    
+
     // 수정 모드인 경우 기존 데이터로 초기화
     if (widget.transaction != null) {
       final transaction = widget.transaction!;
       _selectedType = transaction.type;
       _selectedCategory = transaction.category;
       _selectedDate = transaction.date;
-      _amountController.text = transaction.amount.toString(); // int는 자동으로 깔끔하게 표시됨
+      _amountController.text = transaction.amount
+          .toString(); // int는 자동으로 깔끔하게 표시됨
       _descriptionController.text = transaction.description;
     } else {
       // 새로 추가하는 경우
@@ -64,7 +61,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    
+
     // 카테고리 초기화 (l10n 사용)
     if (_categories.isEmpty) {
       _categories = {
@@ -83,15 +80,15 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
           l10n.categoryOtherExpense,
         ],
       };
-      
+
       // 새 추가 모드이고 카테고리가 비어있으면 초기화
       if (widget.transaction == null && _selectedCategory.isEmpty) {
         _selectedCategory = _categories[_selectedType]!.first;
       }
     }
-    
+
     final currencySymbol = SettingsService.instance.currencySymbol.value;
-    
+
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
@@ -125,12 +122,18 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                           ButtonSegment(
                             value: TransactionType.income,
                             label: Text(l10n.income),
-                            icon: Icon(Icons.add_circle, color: UIColors.incomeColor),
+                            icon: Icon(
+                              Icons.add_circle,
+                              color: UIColors.incomeColor,
+                            ),
                           ),
                           ButtonSegment(
                             value: TransactionType.expense,
                             label: Text(l10n.expense),
-                            icon: Icon(Icons.remove_circle, color: UIColors.expenseColor),
+                            icon: Icon(
+                              Icons.remove_circle,
+                              color: UIColors.expenseColor,
+                            ),
                           ),
                         ],
                         selected: {_selectedType},
@@ -157,7 +160,8 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                           if (value == null || value.isEmpty) {
                             return l10n.validationAmount;
                           }
-                          if (int.tryParse(value) == null) { // double에서 int로 변경
+                          if (int.tryParse(value) == null) {
+                            // double에서 int로 변경
                             return l10n.validationInteger;
                           }
                           return null;
@@ -262,7 +266,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
           if (transactionId == null) {
             throw Exception(l10n.errorTransactionIdNotFound);
           }
-          
+
           await TransactionService.updateTransaction(
             userId: user.uid,
             transactionId: transactionId,

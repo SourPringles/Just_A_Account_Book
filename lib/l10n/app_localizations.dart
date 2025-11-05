@@ -182,6 +182,12 @@ abstract class AppLocalizations {
   /// **'날짜'**
   String get date;
 
+  /// 날짜 형식
+  ///
+  /// In ko, this message translates to:
+  /// **'{year}년 {month}월 {day}일'**
+  String dateFormat(int year, int month, int day);
+
   /// 저장 버튼
   ///
   /// In ko, this message translates to:

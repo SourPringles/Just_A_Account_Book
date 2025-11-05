@@ -250,4 +250,113 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get currencyUSD => 'US Dollar (\$)';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get signup => 'Sign Up';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get name => 'Name';
+
+  @override
+  String get welcomeBack => 'Welcome Back';
+
+  @override
+  String get createAccount => 'Create Account';
+
+  @override
+  String get linkAccount => 'Link Account';
+
+  @override
+  String get continueAsGuest => 'Continue as Guest';
+
+  @override
+  String get dontHaveAccount => 'Don\'t have an account?';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account?';
+
+  @override
+  String get enterEmail => 'Enter your email address';
+
+  @override
+  String get enterPassword => 'Enter your password';
+
+  @override
+  String get enterName => 'Enter your name';
+
+  @override
+  String get validationEmail => 'Please enter a valid email address';
+
+  @override
+  String get validationPassword => 'Password must be at least 6 characters';
+
+  @override
+  String get validationName => 'Please enter your name';
+
+  @override
+  String get validationEmpty => 'The input is empty';
+
+  @override
+  String get successfullyLoggedIn => 'Successfully logged in!';
+
+  @override
+  String get currentUserUID => 'Current User UID';
+
+  @override
+  String get anonymousUser => 'Anonymous User';
+
+  @override
+  String get dashboard => 'Dashboard';
+
+  @override
+  String get featureComingSoon => 'Feature coming soon!';
+
+  @override
+  String get linkAccountDescription =>
+      'Link your anonymous account with email and password';
+
+  @override
+  String get accountLinkedSuccess => 'Account linked successfully!';
+
+  @override
+  String get errorOccurredAuth => 'An error occurred';
+
+  @override
+  String get errorUserNotFound => 'No user found for that email';
+
+  @override
+  String get errorWrongPassword => 'Wrong password provided';
+
+  @override
+  String get errorInvalidEmail => 'Invalid email address';
+
+  @override
+  String get errorWeakPassword => 'The password provided is too weak';
+
+  @override
+  String get errorEmailInUse => 'The account already exists for that email';
+
+  @override
+  String get errorProviderLinked =>
+      'The provider has already been linked to the user';
+
+  @override
+  String get errorInvalidCredential =>
+      'The provider\'s credential is not valid';
+
+  @override
+  String get errorCredentialInUse =>
+      'This credential is already associated with a different user account';
+
+  @override
+  String get noUserLoggedIn => 'No user logged in';
 }

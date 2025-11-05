@@ -577,6 +577,216 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'미국 달러 (\$)'**
   String get currencyUSD;
+
+  /// 로그인
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인'**
+  String get login;
+
+  /// 회원가입
+  ///
+  /// In ko, this message translates to:
+  /// **'회원가입'**
+  String get signup;
+
+  /// 이메일
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일'**
+  String get email;
+
+  /// 비밀번호
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호'**
+  String get password;
+
+  /// 이름
+  ///
+  /// In ko, this message translates to:
+  /// **'이름'**
+  String get name;
+
+  /// 로그인 환영 메시지
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 오신 것을 환영합니다'**
+  String get welcomeBack;
+
+  /// 회원가입 타이틀
+  ///
+  /// In ko, this message translates to:
+  /// **'계정 만들기'**
+  String get createAccount;
+
+  /// 계정 연결
+  ///
+  /// In ko, this message translates to:
+  /// **'계정 연결'**
+  String get linkAccount;
+
+  /// 게스트 로그인
+  ///
+  /// In ko, this message translates to:
+  /// **'게스트로 계속하기'**
+  String get continueAsGuest;
+
+  /// 계정 없음 메시지
+  ///
+  /// In ko, this message translates to:
+  /// **'계정이 없으신가요?'**
+  String get dontHaveAccount;
+
+  /// 계정 있음 메시지
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 계정이 있으신가요?'**
+  String get alreadyHaveAccount;
+
+  /// 이메일 입력 힌트
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일 주소를 입력하세요'**
+  String get enterEmail;
+
+  /// 비밀번호 입력 힌트
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 입력하세요'**
+  String get enterPassword;
+
+  /// 이름 입력 힌트
+  ///
+  /// In ko, this message translates to:
+  /// **'이름을 입력하세요'**
+  String get enterName;
+
+  /// 이메일 유효성 검사
+  ///
+  /// In ko, this message translates to:
+  /// **'올바른 이메일 주소를 입력하세요'**
+  String get validationEmail;
+
+  /// 비밀번호 유효성 검사
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호는 최소 6자 이상이어야 합니다'**
+  String get validationPassword;
+
+  /// 이름 유효성 검사
+  ///
+  /// In ko, this message translates to:
+  /// **'이름을 입력하세요'**
+  String get validationName;
+
+  /// 빈 입력값 에러
+  ///
+  /// In ko, this message translates to:
+  /// **'입력값이 비어있습니다'**
+  String get validationEmpty;
+
+  /// 로그인 성공 메시지
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인 성공!'**
+  String get successfullyLoggedIn;
+
+  /// 사용자 UID 라벨
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 사용자 UID'**
+  String get currentUserUID;
+
+  /// 익명 사용자
+  ///
+  /// In ko, this message translates to:
+  /// **'익명 사용자'**
+  String get anonymousUser;
+
+  /// 대시보드
+  ///
+  /// In ko, this message translates to:
+  /// **'대시보드'**
+  String get dashboard;
+
+  /// 준비중 메시지
+  ///
+  /// In ko, this message translates to:
+  /// **'곧 출시될 기능입니다!'**
+  String get featureComingSoon;
+
+  /// 계정 연결 설명
+  ///
+  /// In ko, this message translates to:
+  /// **'익명 계정을 이메일과 비밀번호로 연결하세요'**
+  String get linkAccountDescription;
+
+  /// 계정 연결 성공
+  ///
+  /// In ko, this message translates to:
+  /// **'계정이 성공적으로 연결되었습니다!'**
+  String get accountLinkedSuccess;
+
+  /// 인증 오류
+  ///
+  /// In ko, this message translates to:
+  /// **'오류가 발생했습니다'**
+  String get errorOccurredAuth;
+
+  /// 사용자 없음 에러
+  ///
+  /// In ko, this message translates to:
+  /// **'해당 이메일의 사용자를 찾을 수 없습니다'**
+  String get errorUserNotFound;
+
+  /// 잘못된 비밀번호 에러
+  ///
+  /// In ko, this message translates to:
+  /// **'잘못된 비밀번호입니다'**
+  String get errorWrongPassword;
+
+  /// 잘못된 이메일 에러
+  ///
+  /// In ko, this message translates to:
+  /// **'올바르지 않은 이메일 주소입니다'**
+  String get errorInvalidEmail;
+
+  /// 약한 비밀번호 에러
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호가 너무 약합니다'**
+  String get errorWeakPassword;
+
+  /// 이메일 중복 에러
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 사용중인 이메일입니다'**
+  String get errorEmailInUse;
+
+  /// 제공자 중복 에러
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 연결된 제공자입니다'**
+  String get errorProviderLinked;
+
+  /// 잘못된 인증 정보
+  ///
+  /// In ko, this message translates to:
+  /// **'인증 정보가 유효하지 않습니다'**
+  String get errorInvalidCredential;
+
+  /// 인증 정보 중복 사용
+  ///
+  /// In ko, this message translates to:
+  /// **'이 인증 정보는 이미 다른 계정에 연결되어 있습니다'**
+  String get errorCredentialInUse;
+
+  /// 로그인 안됨 메시지
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인된 사용자가 없습니다'**
+  String get noUserLoggedIn;
 }
 
 class _AppLocalizationsDelegate

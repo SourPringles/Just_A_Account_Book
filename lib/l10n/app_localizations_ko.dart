@@ -249,4 +249,109 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get currencyUSD => '미국 달러 (\$)';
+
+  @override
+  String get login => '로그인';
+
+  @override
+  String get signup => '회원가입';
+
+  @override
+  String get email => '이메일';
+
+  @override
+  String get password => '비밀번호';
+
+  @override
+  String get name => '이름';
+
+  @override
+  String get welcomeBack => '다시 오신 것을 환영합니다';
+
+  @override
+  String get createAccount => '계정 만들기';
+
+  @override
+  String get linkAccount => '계정 연결';
+
+  @override
+  String get continueAsGuest => '게스트로 계속하기';
+
+  @override
+  String get dontHaveAccount => '계정이 없으신가요?';
+
+  @override
+  String get alreadyHaveAccount => '이미 계정이 있으신가요?';
+
+  @override
+  String get enterEmail => '이메일 주소를 입력하세요';
+
+  @override
+  String get enterPassword => '비밀번호를 입력하세요';
+
+  @override
+  String get enterName => '이름을 입력하세요';
+
+  @override
+  String get validationEmail => '올바른 이메일 주소를 입력하세요';
+
+  @override
+  String get validationPassword => '비밀번호는 최소 6자 이상이어야 합니다';
+
+  @override
+  String get validationName => '이름을 입력하세요';
+
+  @override
+  String get validationEmpty => '입력값이 비어있습니다';
+
+  @override
+  String get successfullyLoggedIn => '로그인 성공!';
+
+  @override
+  String get currentUserUID => '현재 사용자 UID';
+
+  @override
+  String get anonymousUser => '익명 사용자';
+
+  @override
+  String get dashboard => '대시보드';
+
+  @override
+  String get featureComingSoon => '곧 출시될 기능입니다!';
+
+  @override
+  String get linkAccountDescription => '익명 계정을 이메일과 비밀번호로 연결하세요';
+
+  @override
+  String get accountLinkedSuccess => '계정이 성공적으로 연결되었습니다!';
+
+  @override
+  String get errorOccurredAuth => '오류가 발생했습니다';
+
+  @override
+  String get errorUserNotFound => '해당 이메일의 사용자를 찾을 수 없습니다';
+
+  @override
+  String get errorWrongPassword => '잘못된 비밀번호입니다';
+
+  @override
+  String get errorInvalidEmail => '올바르지 않은 이메일 주소입니다';
+
+  @override
+  String get errorWeakPassword => '비밀번호가 너무 약합니다';
+
+  @override
+  String get errorEmailInUse => '이미 사용중인 이메일입니다';
+
+  @override
+  String get errorProviderLinked => '이미 연결된 제공자입니다';
+
+  @override
+  String get errorInvalidCredential => '인증 정보가 유효하지 않습니다';
+
+  @override
+  String get errorCredentialInUse => '이 인증 정보는 이미 다른 계정에 연결되어 있습니다';
+
+  @override
+  String get noUserLoggedIn => '로그인된 사용자가 없습니다';
 }

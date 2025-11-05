@@ -11,6 +11,7 @@ class UIText {
   static const double smallFontSize = 12.0; // 작은 폰트 크기 (트랜잭션 위젯 내용, 트랜잭션 상세보기 창 내부 등)
   static const double mediumFontSize = 16.0; // 중간 폰트 크기 (캘린더 연/월, 트랜잭션 위젯 제목 등)
   static const double largeFontSize = 20.0; // 큰 폰트 크기 (페이지 제목 등)
+  static const double extraLargeFontSize = 28.0; // 아주 큰 폰트 크기 (브랜딩, 로고 등)
 
   // ========== 캘린더 전용 폰트 크기 정의 ==========
   
@@ -86,6 +87,20 @@ class UIText {
   }) {
     return TextStyle(
       fontSize: largeFontSize,
+      fontWeight: weight ?? fontWeightBold,
+      color: color ?? UIColors.textPrimaryColor(context),
+      fontFamily: fontFamily.isEmpty ? null : fontFamily,
+    );
+  }
+
+  // 아주 큰 텍스트 스타일 (브랜딩, 로고 등)
+  static TextStyle extraLargeTextStyle(
+    BuildContext context, {
+    Color? color,
+    FontWeight? weight,
+  }) {
+    return TextStyle(
+      fontSize: extraLargeFontSize,
       fontWeight: weight ?? fontWeightBold,
       color: color ?? UIColors.textPrimaryColor(context),
       fontFamily: fontFamily.isEmpty ? null : fontFamily,

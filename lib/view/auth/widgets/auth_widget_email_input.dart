@@ -6,11 +6,15 @@ import '../../uivalue/ui_text.dart';
 class AuthWidgetEmailInput extends StatelessWidget {
   final TextEditingController controller;
   final bool autofocus;
+  final FocusNode? focusNode;
+  final Function(String)? onFieldSubmitted;
 
   const AuthWidgetEmailInput({
     super.key,
     required this.controller,
     this.autofocus = false,
+    this.focusNode,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -20,7 +24,10 @@ class AuthWidgetEmailInput extends StatelessWidget {
     return TextFormField(
       controller: controller,
       autofocus: autofocus,
+      focusNode: focusNode,
       keyboardType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.next,
+      onFieldSubmitted: onFieldSubmitted,
       validator: (val) {
         if (val == null || val.isEmpty) {
           return l10n.validationEmpty;

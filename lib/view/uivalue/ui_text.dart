@@ -19,7 +19,7 @@ class UIText {
   static const double calendarAmount = smallFontSize; // 캘린더 금액
   static const double calendarHeader = mediumFontSize; // 캘린더 헤더
   static const double calendarDayOfWeek = mediumFontSize - 2; // 캘린더 요일
-  static const double calendarRowHeight = 75.0; // 캘린더 행 높이
+  static const double calendarRowHeight = 80.0; // 캘린더 행 높이
   static const double calendarSumFontSize = 22.0; // 캘린더 합계 폰트 크기
   
   // 거래 관련 폰트 크기

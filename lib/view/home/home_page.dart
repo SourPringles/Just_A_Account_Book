@@ -6,6 +6,7 @@ import '../uivalue/ui_layout.dart';
 import '../../services/auth_service.dart';
 import '../auth/login.dart';
 import '../auth/auth.dart';
+import '../uivalue/ui_colors.dart';
 import 'widgets/home_widget_left_panel.dart';
 import 'widgets/home_widget_right_panel.dart';
 import '../dialog/dialog_header_widget.dart';
@@ -34,38 +35,6 @@ class _HomePageState extends State<HomePage> {
           return const LoginPage();
         } else {
           return Scaffold(
-            appBar: AppBar(
-              title: Text(l10n.appTitle),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  tooltip: l10n.refresh,
-                  onPressed: () {
-                    setState(() {
-                      _refreshTrigger++;
-                    });
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () => _showAccountInfoDialog(context, user.data),
-                ),
-                // 설정 페이지로 이동하는 버튼
-                IconButton(
-                  icon: const Icon(Icons.tune),
-                  tooltip: l10n.settings,
-                  onPressed: () => Navigator.pushNamed(context, '/settings'),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.logout),
-                  onPressed: () async {
-                    await AuthService.signOut();
-                    // StreamBuilder가 자동으로 LoginPage를 표시하므로 
-                    // Navigator.pushNamed 호출 불필요
-                  },
-                ),
-              ],
-            ),
             body: _buildWindowScreenLayout(user.data),
           );
         }
@@ -74,29 +43,96 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildWindowScreenLayout(User? user) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       children: [
         // 좌측 - 캘린더
         Expanded(
-          child: LeftPanelWidget(
-            selectedDate: _selectedDate,
-            refreshTrigger: _refreshTrigger,
-            rightPanelIndex: _rightPanelIndex,
-            onDateSelected: (date) {
-              setState(() {
-                _selectedDate = date;
-              });
-            },
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  UIColors.incomeColor.withOpacity(0.1),
+                  UIColors.expenseColor.withOpacity(0.1),
+                ],
+              ),
+            ),
+            child: Column(
+              children: [
+                // 버튼 높이와 동일한 여백 (패딩 + 아이콘 크기 + 패딩)
+                SizedBox(height: UILayout.defaultPadding * 2 + 24),
+                Expanded(
+                  child: LeftPanelWidget(
+                    selectedDate: _selectedDate,
+                    refreshTrigger: _refreshTrigger,
+                    rightPanelIndex: _rightPanelIndex,
+                    onDateSelected: (date) {
+                      setState(() {
+                        _selectedDate = date;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         // 우측 - 거래내역/요약
         Expanded(
-          child: RightPanelWidget(
-            key: ValueKey(_refreshTrigger), // 새로고침 트리거
-            selectedDate: _selectedDate,
-            initialIndex: _rightPanelIndex,
-            onIndexChanged: (i) => setState(() => _rightPanelIndex = i),
-            onTransactionAdded: () => setState(() => _refreshTrigger++),
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  // 버튼 높이와 동일한 여백 (패딩 + 아이콘 크기 + 패딩)
+                  SizedBox(height: UILayout.defaultPadding * 2 + 24),
+                  Expanded(
+                    child: RightPanelWidget(
+                      key: ValueKey(_refreshTrigger), // 새로고침 트리거
+                      selectedDate: _selectedDate,
+                      initialIndex: _rightPanelIndex,
+                      onIndexChanged: (i) => setState(() => _rightPanelIndex = i),
+                      onTransactionAdded: () => setState(() => _refreshTrigger++),
+                    ),
+                  ),
+                ],
+              ),
+              // 우상단 버튼들
+              Positioned(
+                top: UILayout.defaultPadding,
+                right: UILayout.defaultPadding,
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.refresh),
+                      tooltip: l10n.refresh,
+                      onPressed: () {
+                        setState(() {
+                          _refreshTrigger++;
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.settings),
+                      tooltip: l10n.accountInfo,
+                      onPressed: () => _showAccountInfoDialog(context, user),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.tune),
+                      tooltip: l10n.settings,
+                      onPressed: () => Navigator.pushNamed(context, '/settings'),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.logout),
+                      onPressed: () async {
+                        await AuthService.signOut();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ],

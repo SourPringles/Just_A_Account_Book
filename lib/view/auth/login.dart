@@ -88,10 +88,15 @@ class _LoginPageState extends State<LoginPage> {
                 Positioned(
                   top: UILayout.defaultPadding,
                   right: UILayout.defaultPadding,
-                  child: IconButton(
-                    icon: const Icon(Icons.tune),
-                    tooltip: l10n.settings,
-                    onPressed: () => Navigator.pushNamed(context, '/settings'),
+                  child: IgnorePointer(
+                    ignoring: false,
+                    child: ExcludeFocus(
+                      child: IconButton(
+                        icon: const Icon(Icons.tune),
+                        tooltip: l10n.settings,
+                        onPressed: () => Navigator.pushNamed(context, '/settings'),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -130,19 +135,10 @@ class _LoginPageState extends State<LoginPage> {
           ),
           SizedBox(height: UILayout.mediumGap),
           
-          // 비밀번호 입력 (엔터로 로그인)
-          Focus(
-            onKeyEvent: (node, event) {
-              if (event is KeyDownEvent && 
-                  event.logicalKey == LogicalKeyboardKey.enter) {
-                _handleLogin();
-                return KeyEventResult.handled;
-              }
-              return KeyEventResult.ignored;
-            },
-            child: AuthWidgetPasswordInput(
-              controller: _pwdController,
-            ),
+          // 비밀번호 입력
+          AuthWidgetPasswordInput(
+            controller: _pwdController,
+            onSubmitted: _handleLogin,
           ),
           SizedBox(height: UILayout.largeGap),
           

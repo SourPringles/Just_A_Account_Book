@@ -8,6 +8,8 @@ class AuthWidgetPasswordInput extends StatefulWidget {
   final bool autofocus;
   final String? labelText;
   final String? hintText;
+  final FocusNode? focusNode;
+  final VoidCallback? onSubmitted;
 
   const AuthWidgetPasswordInput({
     super.key,
@@ -15,6 +17,8 @@ class AuthWidgetPasswordInput extends StatefulWidget {
     this.autofocus = false,
     this.labelText,
     this.hintText,
+    this.focusNode,
+    this.onSubmitted,
   });
 
   @override
@@ -32,6 +36,9 @@ class _AuthWidgetPasswordInputState extends State<AuthWidgetPasswordInput> {
       controller: widget.controller,
       obscureText: _obscureText,
       autofocus: widget.autofocus,
+      focusNode: widget.focusNode,
+      textInputAction: TextInputAction.done,
+      onFieldSubmitted: widget.onSubmitted != null ? (_) => widget.onSubmitted!() : null,
       validator: (val) {
         if (val == null || val.isEmpty) {
           return l10n.validationEmpty;

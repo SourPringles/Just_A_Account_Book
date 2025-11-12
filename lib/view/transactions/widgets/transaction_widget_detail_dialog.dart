@@ -68,7 +68,7 @@ class TransactionWidgetDetailDialog extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
                         color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.transparent
+                            ? UIColors.transparentColor
                             : UIColors.borderColor,
                       ),
                       borderRadius: BorderRadius.circular(16),
@@ -111,7 +111,7 @@ class TransactionWidgetDetailDialog extends StatelessWidget {
                               color:
                                   Theme.of(context).brightness ==
                                       Brightness.dark
-                                  ? Colors.transparent
+                                  ? UIColors.transparentColor
                                   : UIColors.borderColor,
                             ),
                             borderRadius: BorderRadius.circular(8),
@@ -174,7 +174,7 @@ class TransactionWidgetDetailDialog extends StatelessWidget {
                               color:
                                   Theme.of(context).brightness ==
                                       Brightness.dark
-                                  ? Colors.transparent
+                                  ? UIColors.transparentColor
                                   : UIColors.borderColor,
                             ),
                             borderRadius: BorderRadius.circular(8),

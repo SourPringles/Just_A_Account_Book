@@ -118,7 +118,7 @@ class CalendarDayCellWidget extends StatelessWidget {
                 margin: EdgeInsets.all(UILayout.tinyGap / 2),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8.0),
-                  color: Colors.white.withOpacity(0.2),
+                  color: UIColors.whiteColor.withAlpha(51),
                 ),
               ),
             ),

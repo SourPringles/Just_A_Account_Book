@@ -20,14 +20,8 @@ class TransactionHeaderWidget extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.all(UILayout.defaultPadding),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            color: UIColors.borderColor,
-            width: UILayout.borderWidthNormal,
-          ),
-        ),
-      ),
+      // removed bottom border to simplify right panel appearance
+      decoration: const BoxDecoration(),
       child: Row(
         children: [
           Icon(

@@ -6,47 +6,53 @@ class UIColors {
   // ========== 색상 정의 (Light/Dark 모드 분리) ==========
 
   // 공통 색상 (모드 무관)
-  static const Color commonPositiveColor = Colors.blue; // 긍정적 요소 색상
-  static const Color commonNegativeColor = Colors.red; // 부정적 요소 색상
-  static const Color commonNeutralColor = Colors.black; // 중립적 요소 색상
-  static const Color commonExtraColor = Colors.grey; // 추가 중립적 요소 색상
+  // 새로운 팔레트: 참조 사이트의 감성(부드럽고 현대적인 톤)을 반영한 색상
+  // primary 계열: 그린, 긍정(수입) 강조는 그린, 부정(지출)은 레드
+  static const Color commonPrimaryColor = Color(
+    0xFF10B981,
+  ); //Color(0xFF2563EB); // Indigo-600
+  static const Color commonPositiveColor = Color(0xFF10B981); // Emerald (수입/긍정)
+  static const Color commonNegativeColor = Color(0xFFEF4444); // Red (지출/부정)
+  static const Color commonNeutralColor = Color(0xFF374151); // Slate-700 (본문)
+  static const Color commonExtraColor = Color(0xFF9CA3AF); // Gray-400 (보조)
+  static const Color saturdayColor = Color(0xFF2563EB); // Indigo-600
+  static const Color sundayColor = Color(0xFFEF4444); // Red (주말)
 
   // 거래 관련 색상
-  static const Color incomeColor = commonPositiveColor; // 수입 색상
-  static const Color expenseColor = commonNegativeColor; // 지출 색상
+  static const Color incomeColor = commonPositiveColor; // 수입 색상 (green)
+  static const Color expenseColor = commonNegativeColor; // 지출 색상 (red)
   static const Color balancePositiveColor = commonPositiveColor; // 잔액 양수
   static const Color balanceNegativeColor = commonNegativeColor; // 잔액 음수
 
   // UI 요소 색상
-  static const Color borderColor = Color(0xFFE0E0E0); // 테두리 색상 (Grey shade 300)
-  static const Color dividerColor = Color(
-    0xFFBDBDBD,
-  ); // 구분선 색상 (Grey shade 400)
-  static const Color shadowColor = Color(0x1A000000); // 그림자 색상 (투명도 0.1)
-  static const Color todayBorderColor = Colors.orange; // 오늘 날짜 테두리
-  static const Color warningColor = Colors.orange; // 경고 색상
+  static const Color borderColor = Color(0xFFE5E7EB); // Cool gray 200
+  static const Color dividerColor = Color(0xFFCBD5E1); // Slate-300
+  static const Color shadowColor = Color(0x1F000000); // 그림자 색상 (투명도 약 12%)
+  static const Color todayBorderColor = Color(0xFFF59E0B); // Amber (오늘/강조)
+  static const Color warningColor = Color(0xFFF59E0B); // 경고 색상
   static const Color whiteColor = Colors.white; // 흰색
+  static const Color transparentColor = Color(0x00000000); // 투명
 
   // 배경 색상
   static const Color cardBackgroundLight = Color(
-    0xFFF5F5F5,
-  ); // 카드 배경 (Grey shade 100)
+    0xFFF8FAFC,
+  ); // Off-white (very light)
 
   // Light 모드 색상
-  static const Color lightWeekdayTextColor = Colors.black; // 평일 날짜 색상
+  static const Color lightWeekdayTextColor = commonNeutralColor; // 평일 날짜 색상
   static const Color lightDefaultTextColor = Color(
-    0xFFAEB1B8,
-  ); // 별도 정의하지 않은 텍스트 색상
-  static const Color lightDefaultColor = Colors.black; // 별도 정의하지 않은 기본 색상
-  static const Color lightBackgroundColor = Colors.white; // 바탕화면 색상
+    0xFF4B5563,
+  ); // Gray-600 (보조텍스트)
+  static const Color lightDefaultColor = commonNeutralColor; // 기본 텍스트
+  static const Color lightBackgroundColor = Color(0xFFF7FAFC); // 앱 배경 (밝은 회색 톤)
 
   // Dark 모드 색상
-  static const Color darkWeekdayTextColor = Colors.white; // 평일 날짜 색상
-  static const Color darkDefaultTextColor = Color(
-    0xFFAEB1B8,
-  ); // 별도 정의하지 않은 텍스트 색상
-  static const Color darkDefaultColor = Colors.white; // 별도 정의하지 않은 기본 색상
-  static const Color darkBackgroundColor = Color(0xFF1C1D1F); // 바탕화면 색상
+  static const Color darkWeekdayTextColor = Color(0xFFE6EEF8); // 밝은 텍스트
+  static const Color darkDefaultTextColor = Color(0xFFD1D5DB); // Slate-300
+  static const Color darkDefaultColor = Color(0xFFFFFFFF); // 기본 텍스트(다크)
+  static const Color darkBackgroundColor = Color(
+    0xFF0F1724,
+  ); // 다크 배경 (진한 네이비/슬레이트)
 
   // ========== Theme-aware 색상 헬퍼 메서드 ==========
 
@@ -97,8 +103,9 @@ class UIColors {
   }
 
   // 주말 색상
-  static Color saturdayTextColor(BuildContext context) => Colors.blue;
-  static Color sundayTextColor(BuildContext context) => Colors.red;
+  // 주말 색상 (토큰 사용)
+  static Color saturdayTextColor(BuildContext context) => saturdayColor;
+  static Color sundayTextColor(BuildContext context) => sundayColor;
 
   // 요일에 따른 텍스트 색상 (DateTime.weekday: Mon=1 .. Sun=7)
   static Color weekdayTextColor(BuildContext context, int weekday) {
@@ -121,7 +128,7 @@ class UIColors {
       brightness: Brightness.light,
       colorScheme: ColorScheme.light(
         primary: commonPositiveColor,
-        secondary: commonPositiveColor.withOpacity(0.8),
+        secondary: commonPositiveColor.withAlpha(204),
         surface: lightBackgroundColor,
         error: commonNegativeColor,
         outline: lightDefaultColor, // 테두리 색상
@@ -130,6 +137,29 @@ class UIColors {
       useMaterial3: true,
       // 모든 위젯에 디버그 테두리 추가
       extensions: [_DebugBorderTheme()],
+      // AppBar / Button 테마로 전역 색상 통일
+      appBarTheme: const AppBarTheme(
+        backgroundColor: UIColors.commonPrimaryColor,
+        foregroundColor: UIColors.whiteColor,
+        centerTitle: true,
+        elevation: 0,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: commonPrimaryColor,
+          foregroundColor: whiteColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(foregroundColor: commonPrimaryColor),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: commonPrimaryColor,
+          side: BorderSide(color: borderColor),
+        ),
+      ),
       // Container 기본 장식
       cardTheme: CardThemeData(
         shape: RoundedRectangleBorder(
@@ -157,7 +187,7 @@ class UIColors {
       brightness: Brightness.dark,
       colorScheme: ColorScheme.dark(
         primary: commonPositiveColor,
-        secondary: commonPositiveColor.withOpacity(0.8),
+        secondary: commonPositiveColor.withAlpha(204),
         surface: darkBackgroundColor,
         error: commonNegativeColor,
         outline: darkDefaultColor, // 테두리 색상
@@ -166,6 +196,29 @@ class UIColors {
       useMaterial3: true,
       // 모든 위젯에 디버그 테두리 추가
       extensions: [_DebugBorderTheme()],
+      // AppBar / Button 테마 (다크 모드)
+      appBarTheme: const AppBarTheme(
+        backgroundColor: UIColors.commonPrimaryColor,
+        foregroundColor: UIColors.whiteColor,
+        centerTitle: true,
+        elevation: 0,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: commonPrimaryColor,
+          foregroundColor: whiteColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(foregroundColor: commonPrimaryColor),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: commonPrimaryColor,
+          side: BorderSide(color: borderColor),
+        ),
+      ),
       // Container 기본 장식
       cardTheme: CardThemeData(
         shape: RoundedRectangleBorder(

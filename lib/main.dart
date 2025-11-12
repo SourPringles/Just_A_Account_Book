@@ -72,7 +72,7 @@ Future<void> _initializeWindowManager() async {
     size: windowScreenSize,
     minimumSize: windowScreenSize,
     center: true,
-    backgroundColor: Colors.transparent,
+    backgroundColor: UIColors.transparentColor,
     skipTaskbar: false,
     titleBarStyle: TitleBarStyle.normal,
   );

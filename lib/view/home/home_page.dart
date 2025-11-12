@@ -52,8 +52,8 @@ class _HomePageState extends State<HomePage> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  UIColors.incomeColor.withOpacity(0.1),
-                  UIColors.expenseColor.withOpacity(0.1),
+                  UIColors.incomeColor.withAlpha(26),
+                  UIColors.expenseColor.withAlpha(26),
                 ],
               ),
             ),
@@ -77,6 +77,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
+        // removed gap so background gradient flows continuously between panels
         // 우측 - 거래내역/요약
         Expanded(
           child: Stack(

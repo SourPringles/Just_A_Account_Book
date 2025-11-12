@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../uivalue/ui_layout.dart';
-import '../../uivalue/ui_colors.dart';
 import '../../calendar/calendar_page.dart';
 
 class LeftPanelWidget extends StatelessWidget {
@@ -20,14 +19,7 @@ class LeftPanelWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          right: BorderSide(
-            color: UIColors.borderColor,
-            width: UILayout.borderWidthNormal,
-          ),
-        ),
-      ),
+      // No shadow/border: keep background gradient continuous with right panel
       child: Padding(
         padding: EdgeInsets.all(UILayout.defaultPadding),
         child: Column(

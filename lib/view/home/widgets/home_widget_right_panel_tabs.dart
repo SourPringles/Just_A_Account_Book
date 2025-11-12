@@ -22,12 +22,7 @@ class RightPanelTabsWidget extends StatelessWidget {
       padding: EdgeInsets.all(UILayout.smallGap),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
-        border: Border(
-          bottom: BorderSide(
-            color: Theme.of(context).dividerColor,
-            width: UILayout.borderWidthNormal,
-          ),
-        ),
+        // removed bottom border for a cleaner right-panel header
       ),
       child: Row(
         children: [
@@ -84,7 +79,7 @@ class _TabButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: isSelected
               ? Theme.of(context).colorScheme.primary
-              : Colors.transparent,
+              : UIColors.transparentColor,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(

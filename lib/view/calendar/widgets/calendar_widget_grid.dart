@@ -148,17 +148,20 @@ class _CalendarGridWidgetState extends State<CalendarGridWidget> {
               color: UIColors.textPrimaryColor(context),
             ),
             formatButtonDecoration: const BoxDecoration(
-              color: Colors.blue,
+              color: UIColors.commonPrimaryColor,
               borderRadius: BorderRadius.all(Radius.circular(12.0)),
             ),
             formatButtonTextStyle: TextStyle(
               color: UIColors.defaultColor(context),
               fontSize: UIText.calendarHeader - 2,
             ),
-            leftChevronIcon: const Icon(Icons.chevron_left, color: Colors.blue),
+            leftChevronIcon: const Icon(
+              Icons.chevron_left,
+              color: UIColors.commonPrimaryColor,
+            ),
             rightChevronIcon: const Icon(
               Icons.chevron_right,
-              color: Colors.blue,
+              color: UIColors.commonPrimaryColor,
             ),
           ),
           calendarBuilders: CalendarBuilders(

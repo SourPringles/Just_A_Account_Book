@@ -37,7 +37,7 @@ class CalendarSummaryWidget extends StatelessWidget {
     final bgColor = theme.colorScheme.surface;
     // border color: use provided color but make it a bit muted on dark backgrounds
     final borderColor = theme.brightness == Brightness.dark
-        ? color.withOpacity(0.8)
+        ? color.withAlpha(204)
         : color;
 
     return Container(

@@ -192,25 +192,42 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                       Wrap(
                         spacing: 8,
                         runSpacing: 8,
-                        children: _categories[_selectedType]!
-                            .map(
-                              (category) => ChoiceChip(
-                                selectedColor:
-                                    _selectedType == TransactionType.income
-                                    ? UIColors.incomeColor.withOpacity(0.14)
-                                    : UIColors.expenseColor.withOpacity(0.14),
-                                label: Text(category),
-                                selected: _selectedCategory == category,
-                                onSelected: (selected) {
-                                  if (selected) {
-                                    setState(() {
-                                      _selectedCategory = category;
-                                    });
-                                  }
-                                },
-                              ),
-                            )
-                            .toList(),
+                        children: _categories[_selectedType]!.map((category) {
+                          final isSelected = _selectedCategory == category;
+                          return ChoiceChip(
+                            // Solid selected background for clear UX
+                            selectedColor: UIColors.commonPrimaryColor,
+                            // Explicit unselected background to keep border visible
+                            backgroundColor: UIColors.cardBackground(context),
+                            // Disable default checkmark
+                            showCheckmark: false,
+                            // Consistent border/shape to avoid broken-looking edges
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(color: UIColors.borderColor),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            // label text adapts depending on selection
+                            label: Text(
+                              category,
+                              style: isSelected
+                                  ? TextStyle(
+                                      color: UIColors.onPrimaryColor(context),
+                                      fontWeight: FontWeight.w600,
+                                    )
+                                  : TextStyle(
+                                      color: UIColors.textPrimaryColor(context),
+                                    ),
+                            ),
+                            selected: isSelected,
+                            onSelected: (selected) {
+                              if (selected) {
+                                setState(() {
+                                  _selectedCategory = category;
+                                });
+                              }
+                            },
+                          );
+                        }).toList(),
                       ),
                       const SizedBox(height: 16),
 

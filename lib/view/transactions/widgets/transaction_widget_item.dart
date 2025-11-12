@@ -33,7 +33,7 @@ class TransactionWidgetItem extends StatelessWidget {
       ),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: color.withOpacity(0.1),
+          backgroundColor: color.withAlpha(26),
           child: Icon(icon, color: color),
         ),
         title: Row(

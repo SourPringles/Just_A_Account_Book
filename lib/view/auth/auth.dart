@@ -33,7 +33,7 @@ class AuthWidget extends StatelessWidget {
           // 성공 메시지
           Card(
             elevation: 0,
-            color: UIColors.incomeColor.withOpacity(0.1),
+            color: UIColors.incomeColor.withAlpha(26),
             child: Padding(
               padding: EdgeInsets.all(UILayout.defaultPadding),
               child: Row(

@@ -42,8 +42,8 @@ class _LinkPageState extends State<LinkPage> {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    UIColors.incomeColor.withOpacity(0.1),
-                    UIColors.expenseColor.withOpacity(0.1),
+                    UIColors.incomeColor.withAlpha(26),
+                    UIColors.expenseColor.withAlpha(26),
                   ],
                 ),
               ),
@@ -54,7 +54,7 @@ class _LinkPageState extends State<LinkPage> {
                     Icon(
                       Icons.account_balance_wallet,
                       size: 120,
-                      color: UIColors.incomeColor.withOpacity(0.3),
+                      color: UIColors.incomeColor.withAlpha(77),
                     ),
                     SizedBox(height: UILayout.largeGap),
                     Text(
@@ -62,7 +62,7 @@ class _LinkPageState extends State<LinkPage> {
                       style: UIText.extraLargeTextStyle(
                         context,
                         weight: FontWeight.bold,
-                      ).copyWith(color: UIColors.incomeColor.withOpacity(0.5)),
+                      ).copyWith(color: UIColors.incomeColor.withAlpha(128)),
                     ),
                   ],
                 ),

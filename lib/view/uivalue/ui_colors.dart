@@ -88,6 +88,14 @@ class UIColors {
         : lightBackgroundColor;
   }
 
+  // 카드/칩 배경 색상 (테마에 따라 다르게 사용)
+  static Color cardBackground(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
+    return brightness == Brightness.dark
+        ? const Color(0xFF242526)
+        : cardBackgroundLight;
+  }
+
   // 주말 색상
   static Color saturdayTextColor(BuildContext context) => Colors.blue;
   static Color sundayTextColor(BuildContext context) => Colors.red;

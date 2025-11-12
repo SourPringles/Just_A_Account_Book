@@ -8,6 +8,7 @@ import '../../models/transaction_model.dart';
 import '../dialog/dialog_header_widget.dart';
 import '../uivalue/ui_layout.dart';
 import '../uivalue/ui_colors.dart';
+import '../uivalue/ui_text.dart';
 
 class AddTransactionDialog extends StatefulWidget {
   final DateTime? initialDate;
@@ -147,7 +148,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                       ),
                       const SizedBox(height: 16),
 
-                      // 금액 입력
+                      // 금액 입력 (크게 보여주기)
                       TextFormField(
                         controller: _amountController,
                         decoration: InputDecoration(
@@ -155,13 +156,18 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                           prefixText: '$currencySymbol ',
                           border: OutlineInputBorder(),
                         ),
+                        style: TextStyle(
+                          fontSize: UIText.largeFontSize,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.right,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return l10n.validationAmount;
                           }
                           if (int.tryParse(value) == null) {
-                            // double에서 int로 변경
+                            // integer expected
                             return l10n.validationInteger;
                           }
                           return null;
@@ -169,26 +175,42 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                       ),
                       const SizedBox(height: 16),
 
-                      // 카테고리 선택
-                      DropdownButtonFormField<String>(
-                        value: _selectedCategory,
-                        decoration: InputDecoration(
-                          labelText: l10n.category,
-                          border: OutlineInputBorder(),
+                      // 카테고리 선택 (ChoiceChips으로 바로 선택)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            l10n.category,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: UIColors.mutedTextColor(context),
+                            ),
+                          ),
                         ),
-                        items: _categories[_selectedType]!
+                      ),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: _categories[_selectedType]!
                             .map(
-                              (category) => DropdownMenuItem(
-                                value: category,
-                                child: Text(category),
+                              (category) => ChoiceChip(
+                                selectedColor:
+                                    _selectedType == TransactionType.income
+                                    ? UIColors.incomeColor.withOpacity(0.14)
+                                    : UIColors.expenseColor.withOpacity(0.14),
+                                label: Text(category),
+                                selected: _selectedCategory == category,
+                                onSelected: (selected) {
+                                  if (selected) {
+                                    setState(() {
+                                      _selectedCategory = category;
+                                    });
+                                  }
+                                },
                               ),
                             )
                             .toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedCategory = value!;
-                          });
-                        },
                       ),
                       const SizedBox(height: 16),
 
@@ -241,6 +263,9 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                 ),
                 SizedBox(width: UILayout.smallGap),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(120, 44),
+                  ),
                   onPressed: _saveTransaction,
                   child: Text(l10n.save),
                 ),

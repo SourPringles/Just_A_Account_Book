@@ -88,7 +88,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
       }
     }
 
-  // currencySymbol is a ValueNotifier; widgets that display it should listen
+    // currencySymbol is a ValueNotifier; widgets that display it should listen
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -150,7 +150,8 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
 
                       // 금액 입력 (크게 보여주기)
                       ValueListenableBuilder<String>(
-                        valueListenable: SettingsService.instance.currencySymbol,
+                        valueListenable:
+                            SettingsService.instance.currencySymbol,
                         builder: (context, currencySymbol, _) {
                           return TextFormField(
                             controller: _amountController,

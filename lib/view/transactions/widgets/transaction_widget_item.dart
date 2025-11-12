@@ -24,7 +24,7 @@ class TransactionWidgetItem extends StatelessWidget {
     final isIncome = transaction.type == TransactionType.income;
     final color = isIncome ? UIColors.incomeColor : UIColors.expenseColor;
     final icon = isIncome ? Icons.add_circle : Icons.remove_circle;
-  // currencySymbol is a ValueNotifier so use a ValueListenableBuilder where needed
+    // currencySymbol is a ValueNotifier so use a ValueListenableBuilder where needed
 
     return Card(
       margin: EdgeInsets.symmetric(

@@ -24,7 +24,7 @@ class TransactionWidgetDetailDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final l10n = AppLocalizations.of(context)!;
+    final l10n = AppLocalizations.of(context)!;
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

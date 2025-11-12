@@ -19,8 +19,8 @@ import 'services/settings_service.dart';
 import 'services/locale_service.dart';
 import 'package:just_a_account_book/l10n/app_localizations.dart';
 
-// 윈도우 화면 크기
-const Size windowScreenSize = Size(1280, 720);
+// 윈도우 기본 화면 크기
+const Size defaultWindowScreenSize = Size(1280, 720);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,8 +69,8 @@ Future<void> _initializeWindowManager() async {
   await windowManager.ensureInitialized();
 
   const windowOptions = WindowOptions(
-    size: windowScreenSize,
-    minimumSize: windowScreenSize,
+    size: defaultWindowScreenSize,
+    minimumSize: defaultWindowScreenSize,
     center: true,
     backgroundColor: UIColors.transparentColor,
     skipTaskbar: false,

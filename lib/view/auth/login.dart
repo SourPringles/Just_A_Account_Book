@@ -33,66 +33,67 @@ class _LoginPageState extends State<LoginPage> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      body: Row(
-        children: [
-          // 왼쪽 패널 (나중에 내용 추가 가능)
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    UIColors.incomeColor.withAlpha(26),
-                    UIColors.expenseColor.withAlpha(26),
-                  ],
-                ),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.account_balance_wallet,
-                      size: 120,
-                      color: UIColors.incomeColor.withAlpha(77),
-                    ),
-                    SizedBox(height: UILayout.largeGap),
-                    Text(
-                      l10n.appTitle,
-                      style: UIText.extraLargeTextStyle(
-                        context,
-                        weight: FontWeight.bold,
-                      ).copyWith(color: UIColors.incomeColor.withAlpha(128)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+      resizeToAvoidBottomInset: true,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isMobile = constraints.maxWidth < 700;
 
-          // 오른쪽 패널 (로그인 폼)
-          Expanded(
-            child: Stack(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(UILayout.defaultPadding),
-                  child: Center(
-                    child: SingleChildScrollView(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 500),
-                        child: _buildLoginForm(l10n),
+          // 모바일 - 상단에 그래디언트/로고, 하단에 폼을 세로로 배치하고 스크롤 가능하게 함
+          if (isMobile) {
+            return SafeArea(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(UILayout.defaultPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Container(
+                      height: 260,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            UIColors.incomeColor.withAlpha(26),
+                            UIColors.expenseColor.withAlpha(26),
+                          ],
+                        ),
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.account_balance_wallet,
+                              size: 120,
+                              color: UIColors.incomeColor.withAlpha(77),
+                            ),
+                            SizedBox(height: UILayout.largeGap),
+                            Text(
+                              l10n.appTitle,
+                              style:
+                                  UIText.extraLargeTextStyle(
+                                    context,
+                                    weight: FontWeight.bold,
+                                  ).copyWith(
+                                    color: UIColors.incomeColor.withAlpha(128),
+                                  ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                // 우상단 설정 버튼
-                Positioned(
-                  top: UILayout.defaultPadding,
-                  right: UILayout.defaultPadding,
-                  child: IgnorePointer(
-                    ignoring: false,
-                    child: ExcludeFocus(
+
+                    SizedBox(height: UILayout.largeGap),
+
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 500),
+                      child: _buildLoginForm(l10n),
+                    ),
+
+                    SizedBox(height: UILayout.defaultPadding),
+
+                    Align(
+                      alignment: Alignment.topRight,
                       child: IconButton(
                         icon: const Icon(Icons.tune),
                         tooltip: l10n.settings,
@@ -100,12 +101,91 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pushNamed(context, '/settings'),
                       ),
                     ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          // 데스크탑/넓은 화면 - 기존 좌우 패널 레이아웃 유지
+          return Row(
+            children: [
+              // 왼쪽 패널 (나중에 내용 추가 가능)
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        UIColors.incomeColor.withAlpha(26),
+                        UIColors.expenseColor.withAlpha(26),
+                      ],
+                    ),
+                  ),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.account_balance_wallet,
+                          size: 120,
+                          color: UIColors.incomeColor.withAlpha(77),
+                        ),
+                        SizedBox(height: UILayout.largeGap),
+                        Text(
+                          l10n.appTitle,
+                          style:
+                              UIText.extraLargeTextStyle(
+                                context,
+                                weight: FontWeight.bold,
+                              ).copyWith(
+                                color: UIColors.incomeColor.withAlpha(128),
+                              ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
-        ],
+              ),
+
+              // 오른쪽 패널 (로그인 폼)
+              Expanded(
+                child: Stack(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(UILayout.defaultPadding),
+                      child: Center(
+                        child: SingleChildScrollView(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 500),
+                            child: _buildLoginForm(l10n),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // 우상단 설정 버튼
+                    Positioned(
+                      top: UILayout.defaultPadding,
+                      right: UILayout.defaultPadding,
+                      child: IgnorePointer(
+                        ignoring: false,
+                        child: ExcludeFocus(
+                          child: IconButton(
+                            icon: const Icon(Icons.tune),
+                            tooltip: l10n.settings,
+                            onPressed: () =>
+                                Navigator.pushNamed(context, '/settings'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

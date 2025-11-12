@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:just_a_account_book/l10n/app_localizations.dart';
 import '../uivalue/ui_layout.dart';
 
+import '../calendar/calendar_page.dart';
+import '../transactions/add_transaction_dialog.dart';
+
 import '../../services/auth_service.dart';
 import '../auth/login.dart';
 import '../auth/auth.dart';
@@ -26,7 +29,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    // Localization accessed where needed in dialogs/widgets
 
     return StreamBuilder(
       stream: FirebaseAuth.instance.authStateChanges(),
@@ -34,6 +37,11 @@ class _HomePageState extends State<HomePage> {
         if (!user.hasData) {
           return const LoginPage();
         } else {
+          // Responsive: use mobile layout for narrow screens
+          final width = MediaQuery.of(con).size.width;
+          if (width < 600) {
+            return _buildMobileScreenLayout(user.data);
+          }
           return Scaffold(body: _buildWindowScreenLayout(user.data));
         }
       },
@@ -138,6 +146,78 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ],
+    );
+  }
+
+  // Mobile-friendly layout: Tabbed view with Calendar and Transactions
+  Widget _buildMobileScreenLayout(User? user) {
+    final l10n = AppLocalizations.of(context)!;
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(l10n.appTitle),
+          centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.settings),
+              onPressed: () => Navigator.pushNamed(context, '/settings'),
+            ),
+          ],
+        ),
+        body: TabBarView(
+          children: [
+            // Calendar tab
+            Padding(
+              padding: EdgeInsets.all(UILayout.defaultPadding),
+              child: CalendarPage(
+                initialSelectedDate: _selectedDate,
+                refreshTrigger: _refreshTrigger,
+                uiType: CalendarUIType.mobile,
+                onDateSelected: (date) {
+                  setState(() => _selectedDate = date);
+                },
+              ),
+            ),
+            // Transactions tab uses RightPanelWidget to show list/summary
+            RightPanelWidget(
+              selectedDate: _selectedDate,
+              onTransactionAdded: () => setState(() => _refreshTrigger++),
+              initialIndex: 0,
+            ),
+          ],
+        ),
+        bottomNavigationBar: SafeArea(
+          child: Material(
+            color: Theme.of(context).appBarTheme.backgroundColor,
+            child: TabBar(
+              // Explicit colors so selected tab label is always visible
+              labelColor: UIColors.onPrimaryColor(context),
+              unselectedLabelColor: UIColors.onSurfaceColor(context),
+              indicatorColor: UIColors.onPrimaryColor(context),
+              indicatorWeight: 2.0,
+              tabs: [
+                Tab(
+                  icon: const Icon(Icons.calendar_today),
+                  text: l10n.dashboard,
+                ),
+                Tab(icon: const Icon(Icons.list), text: l10n.transactions),
+              ],
+            ),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            final result = await showDialog<bool>(
+              context: context,
+              builder: (context) =>
+                  AddTransactionDialog(initialDate: _selectedDate),
+            );
+            if (result == true) setState(() => _refreshTrigger++);
+          },
+          child: const Icon(Icons.add),
+        ),
+      ),
     );
   }
 

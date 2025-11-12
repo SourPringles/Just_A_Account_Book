@@ -152,10 +152,17 @@ class _HomePageState extends State<HomePage> {
   // Mobile-friendly layout: Tabbed view with Calendar and Transactions
   Widget _buildMobileScreenLayout(User? user) {
     final l10n = AppLocalizations.of(context)!;
+    // compute scaled sizes for tab bar icons and labels (2/3 of defaults)
+    final double _baseIconSize = IconTheme.of(context).size ?? 24.0;
+    final double _baseLabelSize =
+        Theme.of(context).textTheme.bodySmall?.fontSize ?? 12.0;
+    final double _tabIconSize = _baseIconSize * (2 / 3);
+    final double _tabLabelSize = _baseLabelSize * (2 / 3);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          toolbarHeight: kToolbarHeight * 2 / 3,
           title: Text(l10n.appTitle),
           centerTitle: true,
           actions: [
@@ -188,21 +195,34 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         bottomNavigationBar: SafeArea(
-          child: Material(
-            color: Theme.of(context).appBarTheme.backgroundColor,
-            child: TabBar(
-              // Explicit colors so selected tab label is always visible
-              labelColor: UIColors.onPrimaryColor(context),
-              unselectedLabelColor: UIColors.onSurfaceColor(context),
-              indicatorColor: UIColors.onPrimaryColor(context),
-              indicatorWeight: 2.0,
-              tabs: [
-                Tab(
-                  icon: const Icon(Icons.calendar_today),
-                  text: l10n.dashboard,
+          child: SizedBox(
+            // reduce tab bar height to one third of the toolbar height for mobile
+            height: kToolbarHeight * 2 / 3,
+            child: Material(
+              color: Theme.of(context).appBarTheme.backgroundColor,
+              child: IconTheme(
+                data: IconThemeData(size: _tabIconSize),
+                child: TabBar(
+                  // Explicit colors so selected tab label is always visible
+                  labelColor: UIColors.onPrimaryColor(context),
+                  unselectedLabelColor: UIColors.onSurfaceColor(context),
+                  indicatorColor: UIColors.onPrimaryColor(context),
+                  indicatorWeight: 2.0,
+                  // reduce label font size to fit the smaller tab bar
+                  labelStyle: TextStyle(fontSize: _tabLabelSize),
+                  unselectedLabelStyle: TextStyle(fontSize: _tabLabelSize),
+                  tabs: [
+                    Tab(
+                      //icon: const Icon(Icons.calendar_today),
+                      text: l10n.dashboard,
+                    ),
+                    Tab(
+                      //icon: const Icon(Icons.list),
+                      text: l10n.transactions,
+                    ),
+                  ],
                 ),
-                Tab(icon: const Icon(Icons.list), text: l10n.transactions),
-              ],
+              ),
             ),
           ),
         ),

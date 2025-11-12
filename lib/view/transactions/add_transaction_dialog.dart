@@ -88,7 +88,7 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
       }
     }
 
-    final currencySymbol = SettingsService.instance.currencySymbol.value;
+  // currencySymbol is a ValueNotifier; widgets that display it should listen
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -149,28 +149,33 @@ class _AddTransactionDialogState extends State<AddTransactionDialog> {
                       const SizedBox(height: 16),
 
                       // 금액 입력 (크게 보여주기)
-                      TextFormField(
-                        controller: _amountController,
-                        decoration: InputDecoration(
-                          labelText: l10n.amount,
-                          prefixText: '$currencySymbol ',
-                          border: OutlineInputBorder(),
-                        ),
-                        style: TextStyle(
-                          fontSize: UIText.largeFontSize,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.right,
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return l10n.validationAmount;
-                          }
-                          if (int.tryParse(value) == null) {
-                            // integer expected
-                            return l10n.validationInteger;
-                          }
-                          return null;
+                      ValueListenableBuilder<String>(
+                        valueListenable: SettingsService.instance.currencySymbol,
+                        builder: (context, currencySymbol, _) {
+                          return TextFormField(
+                            controller: _amountController,
+                            decoration: InputDecoration(
+                              labelText: l10n.amount,
+                              prefixText: '$currencySymbol ',
+                              border: OutlineInputBorder(),
+                            ),
+                            style: TextStyle(
+                              fontSize: UIText.largeFontSize,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.right,
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return l10n.validationAmount;
+                              }
+                              if (int.tryParse(value) == null) {
+                                // integer expected
+                                return l10n.validationInteger;
+                              }
+                              return null;
+                            },
+                          );
                         },
                       ),
                       const SizedBox(height: 16),

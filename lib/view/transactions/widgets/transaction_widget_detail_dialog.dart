@@ -24,8 +24,7 @@ class TransactionWidgetDetailDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final currencySymbol = SettingsService.instance.currencySymbol.value;
+  final l10n = AppLocalizations.of(context)!;
 
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -52,15 +51,20 @@ class TransactionWidgetDetailDialog extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      '${transaction.type == TransactionType.income ? '+' : '-'}$currencySymbol${NumberFormat('#,###').format(transaction.amount)}',
-                      style: TextStyle(
-                        fontSize: UIText.calendarSumFontSize,
-                        fontWeight: FontWeight.bold,
-                        color: transaction.type == TransactionType.income
-                            ? UIColors.incomeColor
-                            : UIColors.expenseColor,
-                      ),
+                    child: ValueListenableBuilder<String>(
+                      valueListenable: SettingsService.instance.currencySymbol,
+                      builder: (context, currencySymbol, _) {
+                        return Text(
+                          '${transaction.type == TransactionType.income ? '+' : '-'}$currencySymbol${NumberFormat('#,###').format(transaction.amount)}',
+                          style: TextStyle(
+                            fontSize: UIText.calendarSumFontSize,
+                            fontWeight: FontWeight.bold,
+                            color: transaction.type == TransactionType.income
+                                ? UIColors.incomeColor
+                                : UIColors.expenseColor,
+                          ),
+                        );
+                      },
                     ),
                   ),
                   Chip(

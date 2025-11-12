@@ -143,8 +143,6 @@ class MonthlySummaryWidget extends StatelessWidget {
     bool isIncome = false,
     bool isExpense = false,
   }) {
-    final currencySymbol = SettingsService.instance.currencySymbol.value;
-
     // 부호 결정
     String prefix = '';
     if (isIncome && amount > 0) {
@@ -155,29 +153,34 @@ class MonthlySummaryWidget extends StatelessWidget {
       prefix = amount >= 0 ? '+' : '-';
     }
 
-    return Row(
-      children: [
-        Icon(icon, color: color, size: UILayout.iconSizeMedium),
-        SizedBox(width: UILayout.smallGap),
-        Text(
-          label,
-          style: UIText.mediumTextStyle(
-            context,
-            weight: isBalance ? FontWeight.bold : FontWeight.normal,
-          ),
-        ),
-        const Spacer(),
-        Text(
-          '$prefix$currencySymbol${NumberFormat('#,###').format(amount.abs())}',
-          style: TextStyle(
-            fontSize: isBalance
-                ? UIText.transactionBalanceSize
-                : UIText.transactionAmountSize,
-            fontWeight: isBalance ? FontWeight.bold : FontWeight.w500,
-            color: color,
-          ),
-        ),
-      ],
+    return ValueListenableBuilder<String>(
+      valueListenable: SettingsService.instance.currencySymbol,
+      builder: (context, currencySymbol, _) {
+        return Row(
+          children: [
+            Icon(icon, color: color, size: UILayout.iconSizeMedium),
+            SizedBox(width: UILayout.smallGap),
+            Text(
+              label,
+              style: UIText.mediumTextStyle(
+                context,
+                weight: isBalance ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+            const Spacer(),
+            Text(
+              '$prefix$currencySymbol${NumberFormat('#,###').format(amount.abs())}',
+              style: TextStyle(
+                fontSize: isBalance
+                    ? UIText.transactionBalanceSize
+                    : UIText.transactionAmountSize,
+                fontWeight: isBalance ? FontWeight.bold : FontWeight.w500,
+                color: color,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

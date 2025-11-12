@@ -66,6 +66,12 @@ class UIColors {
         : Colors.grey.shade600;
   }
 
+  // 기본 컬러 (모드에 따라 라이트/다크 기본 색상 반환)
+  static Color defaultColor(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
+    return brightness == Brightness.dark ? darkDefaultColor : lightDefaultColor;
+  }
+
   // 평일 날짜 색상
   static Color weekdayDateTextColor(BuildContext context) {
     final brightness = Theme.of(context).brightness;

@@ -33,14 +33,21 @@ class CalendarSummaryWidget extends StatelessWidget {
     final formattedAmount = CurrencyFormatter.formatWithUnit(amount, l10n);
     final prefix = getPrefix();
 
+    final theme = Theme.of(context);
+    final bgColor = theme.colorScheme.surface;
+    // border color: use provided color but make it a bit muted on dark backgrounds
+    final borderColor = theme.brightness == Brightness.dark
+        ? color.withOpacity(0.8)
+        : color;
+
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 4.0),
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
       decoration: BoxDecoration(
-        color: UIColors.whiteColor,
+        color: bgColor,
         borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: color, width: 1),
+        border: Border.all(color: borderColor, width: 1),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

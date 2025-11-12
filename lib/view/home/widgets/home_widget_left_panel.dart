@@ -33,14 +33,16 @@ class LeftPanelWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CalendarPage(
-              initialSelectedDate: selectedDate,
-              refreshTrigger: refreshTrigger,
-              uiType: CalendarUIType.window,
-              onDateSelected: onDateSelected,
+            // Make the calendar take available vertical space to avoid overflow.
+            Expanded(
+              child: CalendarPage(
+                initialSelectedDate: selectedDate,
+                refreshTrigger: refreshTrigger,
+                uiType: CalendarUIType.window,
+                onDateSelected: onDateSelected,
+              ),
             ),
             SizedBox(height: UILayout.smallGap),
-            Expanded(child: Container()),
           ],
         ),
       ),

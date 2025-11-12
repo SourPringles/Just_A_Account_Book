@@ -104,8 +104,29 @@ class CalendarDayCellWidget extends StatelessWidget {
       ),
     );
 
-    // 선택된 날짜는 그림자 추가
+    // 선택된 날짜은 라이트모드에서는 기존 그림자 유지,
+    // 다크모드에서는 선택 영역을 약간 밝게(화이트 오버레이) 강조
     if (isSelected) {
+      final brightness = Theme.of(context).brightness;
+      if (brightness == Brightness.dark) {
+        // Dark: subtle white overlay to slightly brighten the cell
+        return Stack(
+          children: [
+            cellContent,
+            Positioned.fill(
+              child: Container(
+                margin: EdgeInsets.all(UILayout.tinyGap / 2),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  color: Colors.white.withOpacity(0.2),
+                ),
+              ),
+            ),
+          ],
+        );
+      }
+
+      // Light: keep previous shadow-based highlight
       return Stack(
         children: [
           cellContent,

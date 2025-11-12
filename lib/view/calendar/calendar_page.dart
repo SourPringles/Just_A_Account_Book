@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../services/transaction_service.dart';
@@ -31,6 +32,8 @@ class _CalendarPageState extends State<CalendarPage> {
   late DateTime _selectedDay;
   late DateTime _focusedDay;
   CalendarFormat _calendarFormat = CalendarFormat.month;
+  bool _showWeeklySummary = false;
+  Timer? _summaryTimer;
 
   // 날짜별 거래 데이터 캐시
   Map<String, Map<String, double>> _dailyTotals = {};
@@ -135,6 +138,7 @@ class _CalendarPageState extends State<CalendarPage> {
         selectedDay: _selectedDay,
         focusedDay: _focusedDay,
         calendarFormat: _calendarFormat,
+        showWeeklySummary: _showWeeklySummary,
         dailyTotals: _dailyTotals,
         onDaySelected: (selectedDay, focusedDay) {
           setState(() {
@@ -145,9 +149,25 @@ class _CalendarPageState extends State<CalendarPage> {
         },
         onFormatChanged: (format) {
           if (mounted) {
+            // When switching formats, update the calendar format immediately.
             setState(() {
               _calendarFormat = format;
+              // hide the weekly summary initially when starting transition away/from month
+              if (format != CalendarFormat.week) _showWeeklySummary = false;
             });
+
+            // If switched to week view, delay showing the summary until the
+            // collapse animation finishes to avoid RenderFlex overflow.
+            _summaryTimer?.cancel();
+            if (format == CalendarFormat.week) {
+              _summaryTimer = Timer(const Duration(milliseconds: 350), () {
+                if (mounted) {
+                  setState(() {
+                    _showWeeklySummary = true;
+                  });
+                }
+              });
+            }
           }
         },
         onPageChanged: (focusedDay) {
@@ -162,5 +182,11 @@ class _CalendarPageState extends State<CalendarPage> {
         weeklyTotal: _getWeeklyTotal(),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _summaryTimer?.cancel();
+    super.dispose();
   }
 }

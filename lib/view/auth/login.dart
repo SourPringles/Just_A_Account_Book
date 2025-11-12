@@ -170,7 +170,10 @@ class _LoginPageState extends State<LoginPage> {
     return ElevatedButton.icon(
       onPressed: _handleLogin,
       icon: const Icon(Icons.login),
-      label: Text(l10n.login, style: UIText.mediumTextStyle(context)),
+      label: Text(
+        l10n.login,
+        style: UIText.mediumTextStyle(context, color: UIColors.whiteColor),
+      ),
       style: ElevatedButton.styleFrom(
         backgroundColor: UIColors.incomeColor,
         foregroundColor: UIColors.whiteColor,

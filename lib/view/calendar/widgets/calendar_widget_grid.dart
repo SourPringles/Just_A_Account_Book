@@ -9,7 +9,7 @@ import 'calendar_widget_day_cell.dart';
 import 'calendar_widget_summary.dart';
 
 /// TableCalendar를 래핑한 그리드 위젯
-class CalendarGridWidget extends StatelessWidget {
+class CalendarGridWidget extends StatefulWidget {
   final DateTime selectedDay;
   final DateTime focusedDay;
   final CalendarFormat calendarFormat;
@@ -18,6 +18,7 @@ class CalendarGridWidget extends StatelessWidget {
   final Function(CalendarFormat format) onFormatChanged;
   final Function(DateTime focusedDay) onPageChanged;
   final double weeklyTotal;
+  final bool showWeeklySummary;
 
   const CalendarGridWidget({
     super.key,
@@ -29,17 +30,70 @@ class CalendarGridWidget extends StatelessWidget {
     required this.onFormatChanged,
     required this.onPageChanged,
     required this.weeklyTotal,
+    this.showWeeklySummary = false,
   });
+
+  @override
+  State<CalendarGridWidget> createState() => _CalendarGridWidgetState();
+}
+
+class _CalendarGridWidgetState extends State<CalendarGridWidget> {
+  // Controls whether the summary widget is built (used to avoid building it
+  // before the collapse animation finishes).
+  bool _summaryBuilt = false;
+  double _summaryOpacity = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _summaryBuilt = widget.showWeeklySummary;
+    _summaryOpacity = widget.showWeeklySummary ? 1.0 : 0.0;
+  }
+
+  @override
+  void didUpdateWidget(covariant CalendarGridWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // When parent signals to show the weekly summary, build it and then
+    // animate opacity to 1.0. When signaled to hide, animate opacity to 0.0
+    // and remove it after animation ends.
+    if (widget.showWeeklySummary && !_summaryBuilt) {
+      setState(() {
+        _summaryBuilt = true;
+        _summaryOpacity = 0.0;
+      });
+      // Wait a frame so AnimatedOpacity can see the initial 0.0 value.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            _summaryOpacity = 1.0;
+          });
+        }
+      });
+    } else if (!widget.showWeeklySummary && _summaryBuilt) {
+      // When switching from week -> month, remove the summary immediately
+      // to avoid layout shifts during the collapse animation.
+      setState(() {
+        _summaryBuilt = false;
+        _summaryOpacity = 0.0;
+      });
+    }
+  }
 
   Map<String, double> _getDailyTotals(DateTime date) {
     final dateKey = DateFormat('yyyy-MM-dd').format(date);
-    return dailyTotals[dateKey] ?? {'income': 0, 'expense': 0};
+    return widget.dailyTotals[dateKey] ?? {'income': 0, 'expense': 0};
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context);
+    final selectedDay = widget.selectedDay;
+    final focusedDay = widget.focusedDay;
+    final calendarFormat = widget.calendarFormat;
+    final onDaySelected = widget.onDaySelected;
+    final onFormatChanged = widget.onFormatChanged;
+    final onPageChanged = widget.onPageChanged;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -98,7 +152,7 @@ class CalendarGridWidget extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(12.0)),
             ),
             formatButtonTextStyle: TextStyle(
-              color: UIColors.whiteColor,
+              color: UIColors.defaultColor(context),
               fontSize: UIText.calendarHeader - 2,
             ),
             leftChevronIcon: const Icon(Icons.chevron_left, color: Colors.blue),
@@ -179,12 +233,33 @@ class CalendarGridWidget extends StatelessWidget {
           ),
         ),
         SizedBox(height: UILayout.largeGap),
-        if (calendarFormat == CalendarFormat.week)
-          CalendarSummaryWidget(
-            val: weeklyTotal.toInt(),
-            label: l10n.weeklyTotal,
-            color: UIColors.textPrimaryColor(context),
-            fontSize: UIText.calendarSumFontSize,
+        // Build the summary only when it's been allowed by parent (built flag).
+        if (_summaryBuilt)
+          AnimatedOpacity(
+            opacity: _summaryOpacity,
+            duration: const Duration(milliseconds: 300),
+            onEnd: () {
+              // If we've faded out, remove the built widget to free layout.
+              if (_summaryOpacity == 0.0 && mounted) {
+                setState(() {
+                  _summaryBuilt = false;
+                });
+              }
+            },
+            child: (calendarFormat == CalendarFormat.week)
+                ? CalendarSummaryWidget(
+                    val: widget.weeklyTotal.toInt(),
+                    label: l10n.weeklyTotal,
+                    color: UIColors.textPrimaryColor(context),
+                    fontSize: UIText.calendarSumFontSize,
+                  )
+                : // during fade-out we still show the widget so it can fade
+                  CalendarSummaryWidget(
+                    val: widget.weeklyTotal.toInt(),
+                    label: l10n.weeklyTotal,
+                    color: UIColors.textPrimaryColor(context),
+                    fontSize: UIText.calendarSumFontSize,
+                  ),
           ),
       ],
     );
